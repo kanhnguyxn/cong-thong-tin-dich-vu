@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Fira_Sans } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+const firaSans = Fira_Sans({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-fira-sans",
+});
 
 export const metadata: Metadata = {
   title: "Cổng thông tin dịch vụ",
@@ -12,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${firaSans.variable}`}>
         <header className="bg-blue-600 text-white p-4">
           <div className="container mx-auto flex justify-between items-center">
             <h1 className="text-2xl font-bold">Cổng thông tin dịch vụ</h1>
