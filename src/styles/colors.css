@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --color-orange: #F46425;
+    --color-blue: #135FAA;
+    --color-gray-stroke: #C6C5C5;
+    --color-gray-fill: #888686;
+}
