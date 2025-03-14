@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, useEffect } from 'react';
-import { useForm } from './Form';
+import { useForm } from './FormInput';
 
 // Định nghĩa props cho component TextInput
 interface TextFieldProps {
@@ -84,7 +84,7 @@ export function TextInput(props: TextFieldProps) {
           htmlFor={id || name}
         >
           {label}
-          {required && <span className="required">*</span>} {/* Hiển thị dấu * nếu trường bắt buộc */}
+          {/* {required && <span className="required">*</span>} Hiển thị dấu * nếu trường bắt buộc */}
         </label>
       )}
       <input
