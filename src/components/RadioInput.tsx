@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, useEffect } from 'react';
-import { useForm } from './Form';
+import { useForm } from './FormInput';
 
 // Định nghĩa tùy chọn cho radio
 interface RadioOption {

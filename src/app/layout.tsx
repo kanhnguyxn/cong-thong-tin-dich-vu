@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="vi">
       <body>
       <Header isLoggedIn={true} />
-        <main className="w-screen p-8">
+        <main className="w-screen">
           {children}
         </main>
         <Footer />
