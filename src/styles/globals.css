@@ -1,67 +1,60 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Your additional custom styles below */
-
 body {
     margin: 0;
-    font-family: 'fira sans', sans-serif;
+    font-family: 'Fira Sans', sans-serif;
     font-size: 16px;
     line-height: 1.5;
     color: black;
     width: 100vw;
-    height: 100vh;
-}
-.text-fira-sans{
-    font-family: 'fira sans', sans-serif;
-}
-.container{
-    width: 100%;
     height: 100%;
 }
-/* Mobile devices (small screens) */
+
+.text-fira-sans {
+    font-family: 'Fira Sans', sans-serif;
+}
+
 @media (max-width: 640px) {
     body {
         font-size: 14px;
     }
-   
-    .container{
-        width: 100%;
-        height: 100%;
-    }
 }
-/* Tablets (medium screens) */
+
 @media (min-width: 640px) and (max-width: 786px) {
     body {
         font-size: 15px;
     }
-    .container{
-        width: 100%;
-        height: 100%;
-    }
 }
 
-/* Desktops/laptops (large screens) */
-@media (min-width: 786x) and (max-width: 1024px) {
+@media (min-width: 786px) and (max-width: 1024px) {
     body {
         font-size: 16px;
     }
-    .container{
-        width: 100%;
-        height: 100%;
-    }
 }
 
-/* Extra large screens */
 @media (min-width: 1024px) {
     body {
         font-size: 18px;
     }
-    .container{
-        width: 100%;
-        height: 100%;
-    }
 }
 
+input:hover, input:focus {
+  outline: 2px solid #3b82f6;
+}
+
+input.error {
+  outline: 2px solid #ef4444 !important;
+  border-color: #ef4444 !important;
+}
+
+*:focus {
+  outline: none;
+}
+
+input {
+  transition: outline-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}

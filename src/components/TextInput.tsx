@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent} from 'react';
 import { useForm } from './FormInput';
 
 // Định nghĩa props cho component TextInput
@@ -12,7 +12,6 @@ interface TextFieldProps {
   wrapperClassName?: string;    // CSS class cho div bao quanh
   inputClassName?: string;      // CSS class cho input
   labelClassName?: string;      // CSS class cho label
-  validation?: ((value: string) => string | null)[]; // Mảng các hàm kiểm tra
   type?: string;                // Loại input (text, password, etc.)
   placeholder?: string;         // Văn bản gợi ý
   maxLength?: number;           // Độ dài tối đa
@@ -33,7 +32,6 @@ export function TextInput(props: TextFieldProps) {
     wrapperClassName,
     inputClassName,
     labelClassName,
-    validation = [],
     type = 'text',
     placeholder,
     maxLength,
@@ -41,14 +39,8 @@ export function TextInput(props: TextFieldProps) {
   } = props;
 
   // Sử dụng context của Form
-  const { values, errors, touched, handleChange, registerValidation } = useForm();
+  const { values, errors, touched, handleChange } = useForm();
   
-  // Đăng ký các quy tắc kiểm tra khi component được tạo
-  useEffect(() => {
-    if (validation.length > 0) {
-      registerValidation(name, validation);
-    }
-  }, [name, registerValidation, validation]); // Chạy lại khi các dependencies thay đổi
 
   // Xử lý sự kiện khi giá trị input thay đổi
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
