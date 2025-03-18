@@ -8,12 +8,12 @@ export const metadata: Metadata = {
 };
 
 const infor ={
-  logo: '/assets/icon/logo_truong.svg', 
+  logo: '/assets/icons/logo_truong.svg', 
   school: 'Đại học Đà Nẵng',
   unit:'Trường Đại học Kinh Tế',
   system:'Cổng thông tin dich vụ',
-  background_image:"/assets/icon/background_header.svg",
-  avatarUrl :'/assets/icon/avatar.svg' 
+  background_image:"/assets/images/background_header.svg",
+  avatarUrl :'/assets/icons/avatar.svg',
 }
 
 interface HeaderProps {

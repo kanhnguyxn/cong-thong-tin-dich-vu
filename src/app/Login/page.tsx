@@ -1,88 +1,17 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Import router Next.js để điều hướng
+import { useRouter } from "next/navigation";
 
 // Import các component tùy chỉnh từ ứng dụng
-import { Form, useForm } from "@components/FormInput";
-import { TextInput } from "@components/TextInput";
+import { Form } from "@components/FormInput";
 import { Container } from "@components/Container";
 import Button from "@components/button";
 
-// Các kiểu dữ liệu cho cấu hình form
-// FormField định nghĩa cấu trúc cho mỗi trường nhập liệu
-type FormField = {
-  name: string;       // Định danh của trường
-  required: boolean;  // Xác định trường có bắt buộc hay không
-  type: string;       // Loại input (text, password, v.v.)
-  placeholder: string; // Văn bản gợi ý
-};
-
-// Kiểu cấu hình cho toàn bộ form đăng nhập
-type LoginFormConfig = {
-  title: string;      // Tiêu đề form
-  subtitle: string;   // Phụ đề form
-  username: FormField; // Cấu hình trường tên đăng nhập
-  password: FormField; // Cấu hình trường mật khẩu
-  validation?: ((value: string) => string | null)[]; // Quy tắc xác thực
-};
-
-// Cấu hình form - nơi tập trung tất cả các thiết lập form
-const LOGIN_FORM_CONFIG: LoginFormConfig = {
-  title: "Cổng Thông tin-Dịch vụ",
-  subtitle: "Đăng nhập",
-  username: {
-    name: "username",
-    required: true,
-    type: "text",
-    placeholder: "username",
-  },
-  password: {
-    name: "password",
-    required: true,
-    type: "password",
-    placeholder: "password",
-  },
-  // Xác thực mặc định để đảm bảo các trường không được để trống
-  validation:[
-    (value:string)=>{
-      if (!value) return "Không được để trống"; // Thông báo lỗi nếu trống
-      return null; // Trả về null khi hợp lệ
-    }
-  ]
-};
-
-// Các lớp CSS với trạng thái hover và lỗi - kiểu dáng tập trung
-const STYLES = {
-  input: "w-full px-4 py-2 border rounded-full mb-4 outline-none transition-all duration-200 hover:outline hover:outline-2 hover:outline-blue-500 focus:outline focus:outline-2 focus:outline-blue-500 text-sm md:text-lg", // Kiểu cơ bản cho input
-  inputError: "outline outline-2 outline-red-500 border-red-500", // Kiểu khi có lỗi
-  button: "w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4", // Kiểu cho nút
-  title: "text-[var(--color-orange)] text-lg md:text-xl lg:text-2xl font-bold mb-2", // Kiểu cho tiêu đề
-  subtitle: "text-[var(--color-blue)] uppercase font-bold mb-4 text-sm md:text-lg lg:text-xl", // Kiểu cho phụ đề
-  errorPlaceholder: "placeholder:text-red-500", // Kiểu placeholder khi có lỗi
-};
-
-// Component xử lý trường với tăng cường xử lý lỗi
-function EnhancedInput({ field, className }: { field: FormField, className: string }) {
-  const { errors, touched } = useForm(); // Lấy giá trị từ context form
-  const error = touched[field.name] ? errors[field.name] : null; // Hiển thị lỗi chỉ khi trường đã được chạm vào
-  
-  // Kết hợp các lớp input dựa trên trạng thái lỗi
-  const inputClass = `${className} ${error ? STYLES.inputError : ''}`;
-  
-  return (
-    <div>
-      <TextInput
-        id={field.name}
-        name={field.name}
-        required={field.required}
-        type={field.type}
-        placeholder={field.placeholder}
-        inputClassName={`${inputClass} ${error ? STYLES.errorPlaceholder : ""}`} // Áp dụng kiểu lỗi có điều kiện
-        validationRules={LOGIN_FORM_CONFIG.validation} // Truyền quy tắc xác thực
-      />
-    </div>
-  );
-}
+// Import từ các file đã tách
+import { LOGIN_FORM_CONFIG } from "./config";
+import { STYLES } from "./styles";
+import { EnhancedInput } from "./EnhancedInput";
+import { loginUser } from "../services/auth";
 
 export default function LoginPage() {
   // Quản lý trạng thái
@@ -98,7 +27,7 @@ export default function LoginPage() {
     if (!values.password) emptyFields.push('password');
     
     if (emptyFields.length > 0) {
-      setError('Vui lòng điền đầy đủ thông tin đăng nhập');
+      setError(LOGIN_FORM_CONFIG.errorMessages.emptyFields);
       return;
     }
     
@@ -118,34 +47,14 @@ export default function LoginPage() {
         router.push('/dashboard');
       } else {
         // Hiển thị lỗi từ API
-        setError(response.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+        setError(response.message || LOGIN_FORM_CONFIG.errorMessages.loginFailed);
       }
     } catch (err) {
       // Xử lý lỗi không mong đợi
-      setError('Có lỗi xảy ra. Vui lòng thử lại sau.');
+      setError(LOGIN_FORM_CONFIG.errorMessages.generalError);
     } finally {
       setIsLoading(false); // Đặt lại trạng thái đang tải
     }
-  };
-  
-  // Hàm đăng nhập giả - thay thế bằng cuộc gọi API thực tế trong sản phẩm
-  const loginUser = async (username: string, password: string) => {
-    // Mô phỏng độ trễ yêu cầu API
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Logic xác thực đơn giản giả lập
-    if (username === 'admin' && password === 'password') {
-      return {
-        success: true,
-        token: 'mock-auth-token-12345',
-        user: { id: 1, username, name: 'Administrator' }
-      };
-    }
-    
-    return {
-      success: false,
-      message: 'Tên đăng nhập hoặc mật khẩu không chính xác'
-    };
   };
   
   // Giao diện trang đăng nhập
@@ -159,7 +68,7 @@ export default function LoginPage() {
           
           {/* Hiển thị lỗi có điều kiện */}
           {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-md mb-4 text-sm border border-red-200">
+            <div className={STYLES.errorStyle}>
               {error}
             </div>
           )}
@@ -178,14 +87,14 @@ export default function LoginPage() {
           
           {/* Liên kết khôi phục mật khẩu */}
           <div className="text-left w-full">
-            <a className="text-blue-500 text-sm" href="#">Quên mật khẩu?</a>
+            <a className={STYLES.linkClassName} href="#">{LOGIN_FORM_CONFIG.links.forgotPassword}</a>
           </div>
           
           {/* Nút đăng nhập với trạng thái đang tải */}
           <Button 
             type="submit"
             className={STYLES.button}
-            name={isLoading ? "Đang đăng nhập..." : "Đăng nhập"} // Văn bản nút động
+            name={isLoading ? LOGIN_FORM_CONFIG.buttonText.loading : LOGIN_FORM_CONFIG.buttonText.login}
             disabled={isLoading} // Vô hiệu hóa nút khi đang tải
           />
         </Form>
