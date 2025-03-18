@@ -17,6 +17,8 @@ interface TextFieldProps {
   maxLength?: number;           // Độ dài tối đa
   validationRules?: ((value: string) => string | null)[]; // Hàm xác thực tùy chỉnh
   onBlur?: () => void;          // Xử lý sự kiện blur tùy chỉnh
+  // thêm 1 số props khác
+  rest?: any;
 }
 
 export function TextInput(props: TextFieldProps) {
@@ -91,6 +93,7 @@ export function TextInput(props: TextFieldProps) {
         onBlur={handleBlur}
         required={required}
         className={`${inputClassName || ''} ${error ? 'error' : ''}`} // Áp dụng lớp lỗi nếu cần
+        {...props.rest}
       />
     </div>
   );
