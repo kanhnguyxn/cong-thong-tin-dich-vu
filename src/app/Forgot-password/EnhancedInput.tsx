@@ -39,13 +39,6 @@ export function EnhancedInput({ field, className}: EnhancedInputProps) {
             break;
           }
         }
-        if (rule === 'minLength' && values[field.name]) {
-          // Kiểm tra độ dài tối thiểu
-          if (values[field.name].length < validationRules[rule].value) {
-            errorMessage = validationRules[rule].message;
-            break;
-          }
-        }
       }
       
       setLocalError(errorMessage);

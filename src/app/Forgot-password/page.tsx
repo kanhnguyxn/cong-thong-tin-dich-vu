@@ -62,7 +62,8 @@ export default function ForgotPassword() {
         >
           <h1 className={STYLES.title}>{FORGOT_PASSWORD_FORM_CONFIG.title}</h1>
           <h2 className={STYLES.subtitle}>{FORGOT_PASSWORD_FORM_CONFIG.subtitle}</h2>
-          
+           {/* Display error if any */}
+           {error && <div className="text-red-500 mt-2">{error}</div>}
           {showOtpNotification && (
             <div className={STYLES.notification}>
               <div className={STYLES.noti_mess}>
@@ -150,9 +151,6 @@ export default function ForgotPassword() {
               )}
             </>
           )}
-          
-          {/* Display error if any */}
-          {error && <div className="text-red-500 mt-2">{error}</div>}
         </Form>
       }
     />
