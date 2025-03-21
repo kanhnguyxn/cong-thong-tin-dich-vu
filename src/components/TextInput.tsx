@@ -20,7 +20,7 @@ interface TextFieldProps {
   // thêm 1 số props khác
   rest?: any;
 }
-
+export type TextInputProps = TextFieldProps;
 export function TextInput(props: TextFieldProps) {
   // Phân rã props với giá trị mặc định
   const {

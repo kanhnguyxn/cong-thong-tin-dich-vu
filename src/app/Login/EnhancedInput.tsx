@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useForm } from "@components/FormInput";
 import { TextInput } from "@components/TextInput";
-import { FormField } from "./types";
+import { FormField } from "@types/types";
 import { STYLES } from "./styles";
 import { LOGIN_FORM_CONFIG } from "./config";
 

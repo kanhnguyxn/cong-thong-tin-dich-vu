@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 // Import các component tùy chỉnh từ ứng dụng
 import { Form } from "@components/FormInput";
 import { Container } from "@components/Container";
-import Button from "@components/button";
+import Button from "@components/Button";
 
 // Import từ các file đã tách
 import { LOGIN_FORM_CONFIG } from "./config";
@@ -87,7 +87,7 @@ export default function LoginPage() {
           
           {/* Liên kết khôi phục mật khẩu */}
           <div className="text-left w-full">
-            <a className={STYLES.linkClassName} href="#">{LOGIN_FORM_CONFIG.links.forgotPassword}</a>
+            <a className={STYLES.linkClassName} href={LOGIN_FORM_CONFIG.links.link}>{LOGIN_FORM_CONFIG.links.forgotPassword}</a>
           </div>
           
           {/* Nút đăng nhập với trạng thái đang tải */}

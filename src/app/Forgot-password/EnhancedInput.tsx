@@ -1,0 +1,80 @@
+"use client";
+import React, { useState, useEffect } from "react";
+import { useForm } from "@components/FormInput";
+import { TextInput } from "@components/TextInput";
+import { TextFieldProps } from "@components/TextInput";
+
+import { STYLES } from "./styles";
+import { FORGOT_PASSWORD_FORM_CONFIG } from "./config";
+
+interface EnhancedInputProps {
+  field: TextFieldProps;
+  className: string;
+  
+}
+
+export function EnhancedInput({ field, className}: EnhancedInputProps) {
+  const { errors, touched, values } = useForm(); // Lấy giá trị từ context form
+  const [localError, setLocalError] = useState<string | null>(null);
+  
+  // Kiểm tra nếu input có giá trị thì áp dụng style inputFilled
+  const hasValue = values[field.name] ? true : false;
+  
+  // chuyển đổi giữ email và OTP
+  const inputType = field.type === 'email' ? 'email' : 'text';
+  const validationRules = field.type === 'email' 
+    ? FORGOT_PASSWORD_FORM_CONFIG.email.validation 
+    : FORGOT_PASSWORD_FORM_CONFIG.otp.validation;
+  
+  // Tự động kiểm tra validation khi giá trị thay đổi
+  useEffect(() => {
+    if (hasValue) {
+      let errorMessage = null;
+      
+      for (const rule in validationRules) {
+        if (rule === 'pattern' && values[field.name]) {
+          // Kiểm tra pattern
+          if (!validationRules[rule].value.test(values[field.name])) {
+            errorMessage = validationRules[rule].message;
+            break;
+          }
+        }
+        if (rule === 'minLength' && values[field.name]) {
+          // Kiểm tra độ dài tối thiểu
+          if (values[field.name].length < validationRules[rule].value) {
+            errorMessage = validationRules[rule].message;
+            break;
+          }
+        }
+      }
+      
+      setLocalError(errorMessage);
+    } else {
+      setLocalError(null);
+    }
+  }, [values[field.name], hasValue, field.name]);
+
+  // Kiểm tra lỗi: hiển thị lỗi nếu trường đã chạm vào hoặc trường đã có giá trị
+  let error = (touched[field.name] || hasValue) ? (errors[field.name] || localError) : null;
+
+  // Kết hợp các lớp input dựa trên trạng thái lỗi và có giá trị hay không
+  const inputClass = `${className} ${error ? STYLES.inputError : ''} ${hasValue ? STYLES.inputFilled : ''}`;
+
+  return (
+    <div className="w-full">
+      <TextInput
+        id={field.name}
+        name={field.name}
+        label={field.label}
+        required={field.required}
+        type={inputType}
+        placeholder={field.placeholder}
+        inputClassName={`${inputClass} ${error ? STYLES.errorPlaceholder : ""}`}
+        labelClassName={STYLES.label}
+        wrapperClassName={STYLES.wrapper}
+        validationRules={FORGOT_PASSWORD_FORM_CONFIG.validation}
+      />
+    </div>
+  );
+}
+
