@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "@components/FormInput";
 import { TextInput } from "@components/TextInput";
 import { TextFieldProps } from "@components/TextInput";
+import PopUp from "@components/pop-up";
+import Button from "@components/Button";
 
 import { STYLES } from "./styles";
 import { FORGOT_PASSWORD_FORM_CONFIG } from "./config";
@@ -68,6 +70,54 @@ export function EnhancedInput({ field, className}: EnhancedInputProps) {
         validationRules={FORGOT_PASSWORD_FORM_CONFIG.validation}
       />
     </div>
+  );
+}
+
+interface PopupNotiProps {
+  message?: string;
+  onClose: () => void;
+  onContinue: () => void;
+  navigateToLogin: () => void;
+}
+
+export function PopupNoti({ message, onClose, onContinue, navigateToLogin }: PopupNotiProps) {
+  return (
+    <PopUp
+      header={
+        <>
+          <h1 className={STYLES.title}>{FORGOT_PASSWORD_FORM_CONFIG.title}</h1>
+          <h2 className={STYLES.subtitle}>{FORGOT_PASSWORD_FORM_CONFIG.subtitle}</h2>
+        </>
+      }
+      content={
+        <div className={STYLES.noti_mess}>
+          {message || FORGOT_PASSWORD_FORM_CONFIG.popups.message}
+        </div>
+      }
+      footer={
+        <div className={STYLES.footer}>
+          <a 
+            href="#" 
+            className={STYLES.linkClassName}
+            onClick={(e) => {
+              e.preventDefault();
+              navigateToLogin();
+            }}
+          >
+            {FORGOT_PASSWORD_FORM_CONFIG.links.loginWithPassword}
+          </a>
+          <Button
+            type="button"
+            className={`${STYLES.button} ${STYLES.button_confirm}`}
+            onClick={onContinue}
+          >
+            {FORGOT_PASSWORD_FORM_CONFIG.buttons.continue}
+          </Button>
+        </div>
+      }
+      showOverlay={true}
+      onClose={onClose}
+    />
   );
 }
 
