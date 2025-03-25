@@ -21,16 +21,6 @@ export default function LoginPage() {
   
   // Xử lý gửi form
   const handleSubmit = async (values: Record<string, string>) => {
-    // Kiểm tra các trường trống như một lớp xác thực bổ sung
-    const emptyFields: string[] = [];
-    if (!values.username) emptyFields.push('username');
-    if (!values.password) emptyFields.push('password');
-    
-    if (emptyFields.length > 0) {
-      setError(LOGIN_FORM_CONFIG.errorMessages.emptyFields);
-      return;
-    }
-    
     try {
       setIsLoading(true); // Hiển thị trạng thái đang tải
       setError(null); // Xóa các lỗi trước đó
@@ -38,19 +28,23 @@ export default function LoginPage() {
       // Gọi API để xác thực người dùng
       const response = await loginUser(values.username, values.password);
       
-      if (response.success) {
-        // Lưu trữ dữ liệu xác thực trong localStorage
+      // Xử lý dựa trên mã trạng thái
+      if (response.status === 200 || response.status === 201) {
+        // Đăng nhập thành công
         localStorage.setItem('authToken', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
         
         // Chuyển hướng đến trang tổng quan sau khi đăng nhập thành công
         router.push('/dashboard');
+      } else if (response.status === 500) {
+        // Lỗi server
+        setError('đã có lỗi xảy ra, vui lòng thử lại');
       } else {
-        // Hiển thị lỗi từ API
+        // Lỗi client (400, 401, 403, etc.)
         setError(response.message || LOGIN_FORM_CONFIG.errorMessages.loginFailed);
       }
     } catch (err) {
-      // Xử lý lỗi không mong đợi
+      // Xử lý lỗi không mong đợi - lỗi client
       setError(LOGIN_FORM_CONFIG.errorMessages.generalError);
     } finally {
       setIsLoading(false); // Đặt lại trạng thái đang tải

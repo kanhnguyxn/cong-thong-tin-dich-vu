@@ -44,7 +44,6 @@ export function EnhancedInput({ field, className }: EnhancedInputProps) {
         type={inputType}
         placeholder={field.placeholder}
         inputClassName={`${inputClass} ${error ? STYLES.errorPlaceholder : ""}`} // Áp dụng kiểu lỗi có điều kiện
-        validationRules={LOGIN_FORM_CONFIG.validation} // Truyền quy tắc xác thực
       />
       
       {/* Nút hiển thị/ẩn mật khẩu */}
