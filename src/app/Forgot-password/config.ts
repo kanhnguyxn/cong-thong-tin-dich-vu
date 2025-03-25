@@ -5,7 +5,6 @@ export interface FormConfig {
   subtitle: string;
   email: TextFieldProps;
   otp: TextFieldProps;
-  validation?: ((value: string) => string | null)[]; // Quy tắc xác thực
   buttons: {
     submit: string;
     cancel: string;
@@ -28,6 +27,16 @@ export interface FormConfig {
     sendingResetLink: string;
     verifyingOtp: string;
   };
+  errorMessages: {
+    emptyFields: string;
+    loginFailed: string;
+    generalError: string;
+    OTPIncorrect: string;
+    passwordNotMatch: string;
+  };
+  alert: {
+    changePassWordSuccess: string;
+  };
 }
 
 export const FORGOT_PASSWORD_FORM_CONFIG: FormConfig = {
@@ -47,7 +56,7 @@ export const FORGOT_PASSWORD_FORM_CONFIG: FormConfig = {
     },
   },
   otp: {
-    name: "opt",
+    name: "otp",
     label: "Mã OTP",
     type: "text",
     required: true,
@@ -59,13 +68,6 @@ export const FORGOT_PASSWORD_FORM_CONFIG: FormConfig = {
       },
     },
   },
-  // Xác thực mặc định để đảm bảo các trường không được để trống
-  validation:[
-    (value:string)=>{
-      if (!value) return "Không được để trống"; // Thông báo lỗi nếu trống
-      return null; // Trả về null khi hợp lệ
-    }
-  ],
   buttons: {
     submit: "Gửi",
     cancel: "Hủy",
@@ -88,4 +90,16 @@ export const FORGOT_PASSWORD_FORM_CONFIG: FormConfig = {
     sendingResetLink: "Sending reset link to:",
     verifyingOtp: "Verifying OTP:",
   },
+  errorMessages: {
+    emptyFields: "Vui lòng điền đầy đủ thông tin",
+    loginFailed: "Đăng nhập thất bại, vui lòng thử lại",
+    generalError: "Có lỗi xảy ra, vui lòng thử lại sau",
+    OTPIncorrect: "Mã OTP không chính xác",
+    passwordNotMatch: "Mật khẩu chưa hợp lệ",
+
+
+  },
+  alert: {
+    changePassWordSuccess: "Mật khẩu đã được thay đổi thành công",
+  }
 };

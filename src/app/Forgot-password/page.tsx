@@ -1,54 +1,45 @@
 "use client";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 
 // Import các component tùy chỉnh từ ứng dụng
 import { Form } from "@components/FormInput";
 import { Container } from "@components/Container";
-import Button from "@components/Button";
 
 // Import từ các file đã tách
 import { FORGOT_PASSWORD_FORM_CONFIG } from "./config";
 import { STYLES } from "./styles";
-import { EnhancedInput, PopupNoti } from "./EnhancedInput";
+import { PopupNoti } from "./EnhancedInput";
+import { useForgotPassword } from "./useForgotPassword";
+
+// Import các component đã tách
+import EmailForm from "./forms/EmailForm";
+import OtpForm from "./forms/OtpForm";
+import ResetPasswordForm from "./forms/ResetPasswordForm";
 
 export default function ForgotPassword() {
-  const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formStep, setFormStep] = useState("email"); // "email" or "otp"
-  const [showOtpNotification, setShowOtpNotification] = useState(false);
-  const [error, setError] = useState<string | null>(null); // Lưu trữ thông báo lỗi
+  const {
+    formStep,
+    isSubmitting,
+    error,
+    showOtpNotification,
+    handleSubmit,
+    handleCancel,
+    handleOtpClose,
+    handleOtpContinue,
+    handleNavigateToLogin
+  } = useForgotPassword();
 
-  // Handle form submission
-  const handleSubmit = async (values: any) => {
-    setIsSubmitting(true);
-    setError(null); // Reset any previous errors
-    
-    try {
-      if (formStep === "email") {
-        // Show OTP notification and ensure any previous submission state is reset
-        setShowOtpNotification(true);
-        console.log("Email submitted, showing OTP notification"); // Debugging log
-      } else if (formStep === "otp") {
-        // Redirect to reset password page or show success
-        router.push('/reset-password');
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setError("Có lỗi xảy ra. Vui lòng thử lại sau.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // Handle cancel button click
-  const handleCancel = () => {
-    if (formStep === "otp") {
-      // When cancelling from OTP form, ensure notification state is reset
-      setFormStep("email");
-      setShowOtpNotification(false);
-    } else {
-      router.push('/Login');
+  // Render form based on current step
+  const renderForm = () => {
+    switch(formStep) {
+      case "email":
+        return <EmailForm onCancel={handleCancel} isSubmitting={isSubmitting} />;
+      case "otp":
+        return <OtpForm onCancel={handleCancel} isSubmitting={isSubmitting} />;
+      case "password":
+        return <ResetPasswordForm isSubmitting={isSubmitting} />;
+      default:
+        return null;
     }
   };
 
@@ -57,14 +48,9 @@ export default function ForgotPassword() {
       {showOtpNotification && (
         <PopupNoti
           message={FORGOT_PASSWORD_FORM_CONFIG.popups.message}
-          onClose={() => {
-            setShowOtpNotification(false);
-          }}
-          onContinue={() => {
-            setShowOtpNotification(false);
-            setFormStep("otp");
-          }}
-          navigateToLogin={() => router.push('/Login')}
+          onClose={handleOtpClose}
+          onContinue={handleOtpContinue}
+          navigateToLogin={handleNavigateToLogin}
         />
       )}
       
@@ -74,65 +60,16 @@ export default function ForgotPassword() {
           content={
             <Form
               onSubmit={handleSubmit}
-              key={formStep} // Add a key to force re-render of the form when step changes
+              key={formStep}
             >
               <h1 className={STYLES.title}>{FORGOT_PASSWORD_FORM_CONFIG.title}</h1>
-              <h2 className={STYLES.subtitle}>{FORGOT_PASSWORD_FORM_CONFIG.subtitle}</h2>
+              <h2 className={STYLES.subtitle}>
+                {FORGOT_PASSWORD_FORM_CONFIG.subtitle}
+              </h2>
               
-              {/* Display error if any */}
-              {error && <div className="text-red-500 mt-2">{error}</div>}
+              {error && <div className={STYLES.errorStyle}>{error}</div>}
               
-              {formStep === "email" && (
-                <>
-                  <EnhancedInput
-                    field={FORGOT_PASSWORD_FORM_CONFIG.email}
-                    className={STYLES.input}
-                  />
-                  
-                  <div className={STYLES.footer}>
-                    <Button
-                      type="button"
-                      className={`${STYLES.button} ${STYLES.button_cancel}`}
-                      onClick={handleCancel}
-                    >
-                      {FORGOT_PASSWORD_FORM_CONFIG.buttons.cancel}
-                    </Button>
-                    <Button
-                      type="submit"
-                      className={`${STYLES.button} ${STYLES.button_confirm}`}
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? FORGOT_PASSWORD_FORM_CONFIG.buttons.loading : FORGOT_PASSWORD_FORM_CONFIG.buttons.submit}
-                    </Button>
-                  </div>
-                </>
-              )}
-              
-              {formStep === "otp" && (
-                <>
-                  <EnhancedInput
-                    field={FORGOT_PASSWORD_FORM_CONFIG.otp}
-                    className={STYLES.input}
-                  />
-                  
-                  <div className={STYLES.footer}>
-                    <Button
-                      type="button"
-                      className={`${STYLES.button} ${STYLES.button_cancel}`}
-                      onClick={handleCancel}
-                    >
-                      {FORGOT_PASSWORD_FORM_CONFIG.buttons.cancel}
-                    </Button>
-                    <Button
-                      type="submit"
-                      className={`${STYLES.button} ${STYLES.button_confirm}`}
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? FORGOT_PASSWORD_FORM_CONFIG.buttons.loading : FORGOT_PASSWORD_FORM_CONFIG.buttons.confirm}
-                    </Button>
-                  </div>
-                </>
-              )}
+              {renderForm()}
             </Form>
           }
         />

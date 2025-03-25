@@ -67,7 +67,6 @@ export function EnhancedInput({ field, className}: EnhancedInputProps) {
         inputClassName={`${inputClass} ${error ? STYLES.errorPlaceholder : ""}`}
         labelClassName={STYLES.label}
         wrapperClassName={STYLES.wrapper}
-        validationRules={FORGOT_PASSWORD_FORM_CONFIG.validation}
       />
     </div>
   );
