@@ -46,7 +46,7 @@ export default function PopUp({ header, content, footer, showOverlay = true, onC
                         className="w-full z-50 max-w-md"
                     >
                         <Container
-                            className="w-full my-8 px-4 sm:w-[95%] mx-auto md:w-full"
+                            className="w-full my-8 px-4 sm:w-[95%] mx-auto md:fit-content"
                             content={
                                 <>
                                     {header && <div className="mb-4">{header}</div>}

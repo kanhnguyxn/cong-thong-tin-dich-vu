@@ -3,6 +3,9 @@
 import { ChangeEvent, useEffect } from 'react';
 import { useForm } from './FormInput'; // Import hook context form
 
+
+import { COMMON_STYLES } from '@styles/common_styles';
+
 // Props đơn giản hóa cho component TextInput
 interface TextFieldProps {
   id?: string;                  // ID tùy chọn cho phần tử input
@@ -44,16 +47,12 @@ export function TextInput(props: TextFieldProps) {
   // Đăng ký quy tắc xác thực khi component được tạo
   useEffect(() => {
     // Nếu trường là bắt buộc nhưng không có quy tắc xác thực, thêm kiểm tra trống mặc định
-    if (required && (!validationRules || validationRules.length === 0)) {
+    if (required ) {
       validation(name, [(value: string) => {
         if (!value) return "Không được để trống"; // Thông báo xác thực bắt buộc mặc định
         return null;
       }]);
     } 
-    // Đăng ký quy tắc xác thực tùy chỉnh nếu được cung cấp
-    else if (validationRules && validationRules.length > 0) {
-      validation(name, validationRules);
-    }
   }, [name, required, validation, validationRules]);
 
   // Xử lý thay đổi giá trị input
@@ -92,7 +91,7 @@ export function TextInput(props: TextFieldProps) {
         onChange={onInputChange}
         onBlur={handleBlur}
         required={required}
-        className={`${inputClassName || ''} ${error ? 'error' : ''}`} // Áp dụng lớp lỗi nếu cần
+        className={`${inputClassName || ''} ${error ? COMMON_STYLES.errorPlaceholder : ''}`} // Áp dụng lớp lỗi nếu cần
         {...props.rest}
       />
     </div>
