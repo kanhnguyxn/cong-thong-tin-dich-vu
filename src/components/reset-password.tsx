@@ -62,7 +62,7 @@ export function ResetPasswprdInput(className: ClassNameProps){
      const { errors, touched, values } = useForm(); // Lấy giá trị từ context form
       const [newPasswordLocalError, setNewPasswordLocalError] = useState<string | null>(null);
       const [confirmPasswordLocalError, setConfirmPasswordLocalError] = useState<string | null>(null);
-      const [showPopup, setShowPopup] = useState(false);
+      const [showPopup, setShowPopup] = useState(true);
       
       const iconInfo = {
         icon: "./assets/icons/info.svg",
@@ -182,7 +182,7 @@ export function PopupNoti({ onClose }: { onClose: () => void }) {
         <PopUp
         header={
             <div className="flex flex-row justify-center items-center  font-bold">
-                <img src='./assets/icons/info.svg'/> 
+                <img src='./assets/icons/info.svg' className="cursor-pointer" alt="info"/> 
                 <h1 className=" ml-2 text-md md:text-lg lg:text-xl">{notiMessage.title}</h1>
             </div>
             }
