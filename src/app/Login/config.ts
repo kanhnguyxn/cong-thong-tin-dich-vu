@@ -46,13 +46,7 @@ export const LOGIN_FORM_CONFIG: LoginFormConfig = {
       },
     }
   },
-  // Xác thực mặc định để đảm bảo các trường không được để trống
-  validation:[
-    (value:string)=>{
-      if (!value) return "Không được để trống"; // Thông báo lỗi nếu trống
-      return null; // Trả về null khi hợp lệ
-    }
-  ],
+ 
   // Nội dung hiện ra trong trang login
   buttonText: {
     login: "Đăng nhập",
