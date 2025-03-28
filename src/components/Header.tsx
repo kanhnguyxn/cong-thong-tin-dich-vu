@@ -1,3 +1,6 @@
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import "../styles/colors.css";
