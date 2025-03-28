@@ -35,7 +35,7 @@ export default function LoginPage() {
         localStorage.setItem('user', JSON.stringify(response.user));
         
         // Chuyển hướng đến trang tổng quan sau khi đăng nhập thành công
-        router.push('/dashboard');
+        router.push('/gioi-thieu');
       } else if (response.status === 500) {
         // Lỗi server
         setError('đã có lỗi xảy ra, vui lòng thử lại');
