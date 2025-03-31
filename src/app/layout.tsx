@@ -3,8 +3,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import "../styles/globals.css";
 import Footer from "@components/Footer";
-import Header from "@components/Header";
-import Navbar from "@components/navbar";
+import Header from "@components/AppBar";
 
 
 const background = "/assets/images/background.svg";
@@ -31,9 +30,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
           <AuthContext.Provider value={{ isLoggedIn }}>
             <Header isLoggedIn={isLoggedIn} />
-            <Navbar  />
             <main className="flex-1 flex justify-center items-center">
-              {isLoaded && children}
+              {children}
             </main>
             <Footer />
           </AuthContext.Provider>
