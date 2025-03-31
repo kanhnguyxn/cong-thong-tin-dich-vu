@@ -25,12 +25,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi">
       <body 
-        className={`flex flex-col min-h-screen ${!isLoggedIn ? 'bg-auto bg-center' : ''}`}
+        className={`flex flex-col min-h-screen max-w-full ${!isLoggedIn ? 'bg-auto bg-center' : ''}`}
         style={!isLoggedIn ? { backgroundImage: `url(${background})` } : {}}
       >
           <AuthContext.Provider value={{ isLoggedIn }}>
             <Header isLoggedIn={isLoggedIn} />
-            <main className="flex-1 flex justify-center items-center">
+            <main className="flex-1 flex items-center w-full">
               {children}
             </main>
             <Footer />
