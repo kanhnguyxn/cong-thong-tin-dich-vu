@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@components/Button";
-import { ResetPasswprdInput } from "@components/reset-password";
+import { ResetPasswprdInput } from "@components/ResetPassword";
 import { FORGOT_PASSWORD_FORM_CONFIG } from "../config";
 import { STYLES } from "../styles";
 
