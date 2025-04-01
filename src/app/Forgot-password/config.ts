@@ -1,4 +1,4 @@
-import { TextFieldProps } from "@components/TextInput";
+import { TextFieldProps } from "@components/input/TextInput";
 
 export interface FormConfig {
   title: string;

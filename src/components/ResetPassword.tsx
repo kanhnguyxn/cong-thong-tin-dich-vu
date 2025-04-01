@@ -1,10 +1,10 @@
 import { useState,useEffect } from "react";
-import {useForm} from "@components/FormInput";
+import {useForm} from "@components/input/FormInput";
 
 import { COMMON_STYLES } from "@styles/common_styles";
-import { TextInput } from "@components/TextInput";
-import { TextFieldProps } from "@components/TextInput"; 
-import PopUp from "@components/pop-up";
+import { TextInput } from "@components/input/TextInput";
+import { TextFieldProps } from "@components/input/TextInput"; 
+import PopUp from "@components/PopUp";
 
 
 export interface ClassNameProps {

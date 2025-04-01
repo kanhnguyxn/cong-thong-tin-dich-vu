@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useForm } from './FormInput';
+import { useForm } from './input/FormInput';
 
 // Định nghĩa props cho component FileInput
 interface FileFieldProps {
