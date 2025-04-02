@@ -26,8 +26,8 @@ export function useForm() {
 // Props cho component Form
 interface FormProps {
   className?: string;                       // Lớp CSS cho phần tử form
-  children: ReactNode;                      // Các component con (các trường form)
-  onSubmit: (values: Record<string, string>) => void; // Xử lý gửi form
+  children?: ReactNode;                      // Các component con (các trường form)
+  onSubmit?: (values: Record<string, string>) => void; // Xử lý gửi form
   initialValues?: Record<string, string>;   // Giá trị ban đầu của các trường
 }
 
@@ -148,7 +148,7 @@ export function Form(props: FormProps) {
     
     // Gửi chỉ khi tất cả xác thực đều thành công
     if (validateForm()) {
-      onSubmit(values); // Gọi xử lý gửi được cung cấp với giá trị form
+      onSubmit && onSubmit(values); // Gọi xử lý gửi được cung cấp với giá trị form
     }
   };
 

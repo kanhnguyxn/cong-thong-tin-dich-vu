@@ -38,7 +38,8 @@ export function TextInput(props: TextFieldProps) {
     placeholder,
     maxLength,
     validationRules,
-    onBlur
+    onBlur,
+    // Removed onSearch and debounceTime from destructuring
   } = props;
 
   // Lấy hàm và trạng thái context form
@@ -55,8 +56,11 @@ export function TextInput(props: TextFieldProps) {
     } 
   }, [name, required, validation, validationRules]);
 
+  
+
   // Xử lý thay đổi giá trị input
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value, 'value');
     handleChange(name, e.target.value); // Cập nhật context form với giá trị mới
   };
 
