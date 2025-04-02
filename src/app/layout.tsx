@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
           <AuthContext.Provider value={{ isLoggedIn }}>
             <Header isLoggedIn={isLoggedIn} />
-            <main className="flex-1 flex items-center w-full">
+            <main className="flex-1 flex w-full">
               {children}
             </main>
             <Footer />
