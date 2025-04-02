@@ -3,7 +3,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import "../styles/globals.css";
 import Footer from "@components/Footer";
-import Header from "@components/AppBar";
+import Header from "@components/header/Header";
 
 
 const background = "/assets/images/background.svg";
