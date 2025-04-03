@@ -29,7 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         style={!isLoggedIn ? { backgroundImage: `url(${background})` } : {}}
       >
           <AuthContext.Provider value={{ isLoggedIn }}>
-            <Header isLoggedIn={isLoggedIn} />
+            <div className="sticky top-0 z-50 w-full">
+              <Header isLoggedIn={isLoggedIn} />
+            </div>
             <main className="flex-1 flex w-full">
               {children}
             </main>
