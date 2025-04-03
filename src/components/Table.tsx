@@ -11,10 +11,10 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 interface CustomTableProps {
     columns: Array<{ id: string; label: string; width?: string }>;
     data: Array<{ [key: string]: any }> | undefined;
-    props?: any;
+    tableCellStyles?: any;
 }
 
-export default function CustomTable ({columns, data,...props}: CustomTableProps) {
+export default function CustomTable ({columns, data,tableCellStyles}: CustomTableProps) {
     const theme = createTheme({
         components: {
           MuiTableCell: {
@@ -36,6 +36,13 @@ export default function CustomTable ({columns, data,...props}: CustomTableProps)
               }),
             },
           },
+          MuiTableContainer:{
+           styleOverrides:{
+            root: ({ theme }) => ({
+              padding: '10px 0px',
+              }),
+           }
+          }
         },
       });
 
@@ -53,7 +60,7 @@ export default function CustomTable ({columns, data,...props}: CustomTableProps)
                                 <TableCell 
                                 key={column.id} 
                                 align="center" 
-                                sx={{width: column.width}}
+                                sx={{width: column?.width}}
                                 className='uppercase'
                                 >{column.label}</TableCell>
                             ))}
@@ -63,7 +70,12 @@ export default function CustomTable ({columns, data,...props}: CustomTableProps)
                         {data.map((row, index) => (
                             <TableRow key={index}>
                                 {columns.map((column) => (
-                                    <TableCell key={column.id} sx={props}>{row[column.id]}</TableCell>
+                                    <TableCell 
+                                        key={column.id} 
+                                        sx={tableCellStyles} 
+                                        data-column-id={column.id}>
+                                        {row[column.id]}
+                                    </TableCell>
                                 ))}
                             </TableRow>
                         ))}

@@ -15,7 +15,7 @@ const dataBieuMau: BieuMauType[] = [
   {
     TenBM: "Đơn đăng ký tạm trú",
     TenPB: "CAP/X",
-    Lienket: "/files/don-dang-ky-tam-tru.pdf",
+    Lienket: "/files/don-dang-ky-tam-tru.pdf", 
   },
   {
     TenBM: "Giấy khai sinh",
@@ -51,6 +51,31 @@ const dataBieuMau: BieuMauType[] = [
     TenBM: "Đơn đăng ký kết hôn",
     TenPB: "UBND P/X",
     Lienket: "/files/don-dang-ky-ket-hon.pdf",
+  },
+  {
+    TenBM: "Đơn xin cấp hộ chiếu",
+    TenPB: "CQLXNC",
+    Lienket: "/files/don-xin-cap-ho-chieu.pdf",
+  },
+  {
+    TenBM: "Đơn xin cấp hộ chiếu",
+    TenPB: "CQLXNC",
+    Lienket: "/files/don-xin-cap-ho-chieu.pdf",
+  },
+  {
+    TenBM: "Đơn xin cấp hộ chiếu",
+    TenPB: "CQLXNC",
+    Lienket: "/files/don-xin-cap-ho-chieu.pdf",
+  },
+  {
+    TenBM: "Đơn xin cấp hộ chiếu",
+    TenPB: "CQLXNC",
+    Lienket: "/files/don-xin-cap-ho-chieu.pdf",
+  },
+  {
+    TenBM: "Đơn xin cấp hộ chiếu",
+    TenPB: "CQLXNC",
+    Lienket: "/files/don-xin-cap-ho-chieu.pdf",
   },
   {
     TenBM: "Đơn xin cấp hộ chiếu",

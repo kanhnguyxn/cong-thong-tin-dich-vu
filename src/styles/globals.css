@@ -60,3 +60,43 @@ input.error {
 input {
   transition: outline-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
+
+
+/* Thay đổi kích thước thanh cuộn */
+::-webkit-scrollbar {
+    width: 7px; /* Độ rộng */
+    height: 7px; /* Độ cao (dùng cho thanh cuộn ngang) */
+  }
+  
+  /* Nền của thanh cuộn */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Màu nền */
+    border-radius: 10px;
+  }
+  
+  /* Phần di chuyển của thanh cuộn */
+  ::-webkit-scrollbar-thumb {
+    background: #d4d4dd; /* Màu thanh cuộn */
+    border-radius: 4px;
+  }
+  
+  /* Hiệu ứng hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #8e8e8e; /* Màu khi hover */
+  }
+
+  @media (max-width: 768px) {
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  
+    /* Ẩn trên Firefox */
+    * {
+      scrollbar-width: none;
+    }
+  
+    /* Ẩn trên IE và Edge */
+    *::-ms-overflow-style {
+      display: none;
+    }
+  }

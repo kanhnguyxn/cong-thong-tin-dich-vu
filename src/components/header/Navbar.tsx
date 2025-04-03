@@ -18,7 +18,7 @@ export default function Navbar (){
       ];
 
     return (
-        <Box className = 'w-[90%] grid grid-cols-1 grid-rows-4 gap-[2px] m-4 md:grid-cols-4 md:grid-rows-1 md:gap-2 md:m-0 md:w-full bg-white'>
+        <Box className = 'w-full p-4 grid grid-cols-1 grid-rows-4 gap-[2px] md:grid-cols-4 md:grid-rows-1 md:gap-2 md:p-0 md:w-full bg-white'>
            {navItems.map(({ label, path }) => (
             <Button
               key={path}
