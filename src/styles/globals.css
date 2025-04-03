@@ -22,13 +22,13 @@ body {
 
 @media (max-width: 640px) {
     body {
-        font-size: 14px;
+        font-size: 12px;
     }
 }
 
 @media (min-width: 640px) and (max-width: 786px) {
     body {
-        font-size: 15px;
+        font-size: 14px;
     }
 }
 
