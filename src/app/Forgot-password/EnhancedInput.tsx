@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useForm } from "@components/input/FormInput";
+import { useForm } from "@components/input/Form";
 import { TextInput } from "@components/input/TextInput";
 import { TextFieldProps } from "@components/input/TextInput";
 import PopUp from "@components/PopUp";

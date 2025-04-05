@@ -2,7 +2,7 @@
 import React from "react";
 
 // Import các component tùy chỉnh từ ứng dụng
-import { Form } from "@components/input/FormInput";
+import { Form } from "@components/input/Form";
 import { Container } from "@components/Container";
 
 // Import từ các file đã tách

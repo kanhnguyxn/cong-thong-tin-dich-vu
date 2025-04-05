@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Import các component tùy chỉnh từ ứng dụng
-import { Form } from "@components/input/FormInput";
+import { Form } from "@components/input/Form";
 import { Container } from "@components/Container";
 import Button from "@components/Button";
 

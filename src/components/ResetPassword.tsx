@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import {useForm} from "@components/input/FormInput";
+import {useForm} from "@components/input/Form";
 
 import { COMMON_STYLES } from "@styles/common_styles";
 import { TextInput } from "@components/input/TextInput";

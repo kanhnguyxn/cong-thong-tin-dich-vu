@@ -18,8 +18,6 @@ const Button: React.FC<ButtonProps> = ({
   type = "button",
   onClick,
   disabled = false,
-  startIcon,
-  endIcon,
   variant = "default",
   children,
 }) => {
@@ -43,9 +41,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {startIcon && <span className="mr-2">{startIcon}</span>}
       {children || name}
-      {endIcon && <span className="ml-2">{endIcon}</span>}
     </button>
   );
 };

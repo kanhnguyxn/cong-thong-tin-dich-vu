@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useForm } from "@components/input/FormInput";
+import { useForm } from "@components/input/Form";
 import { TextInput } from "@components/input/TextInput";
 import { FormField } from "@types/types";
 import { STYLES } from "./styles";
