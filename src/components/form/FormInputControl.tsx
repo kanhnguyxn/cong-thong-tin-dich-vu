@@ -1,4 +1,10 @@
-import { TextField } from "@mui/material";
+"use client";
+
+import styled from "styled-components";
+
+import { Box, TextField } from "@mui/material";
+import { StyledTextField } from "@styles/style_component";
+import PasswordInput from "./input/PasswordInput";
 
 type TextFieldVariant = "filled" | "outlined" | "standard";
 
@@ -11,6 +17,10 @@ interface FormInputControlProps {
   name: string;
   label: string;
   variant?: TextFieldVariant;
+  sx?: object;
+  onBlur: (value: any) => void;
+  errMessage?: string;
+  value?: any;
 }
 
 export default function FormInputControl({
@@ -21,27 +31,52 @@ export default function FormInputControl({
   name,
   label,
   variant,
-}) {
+  onBlur,
+  errMessage = "",
+  value,
+}: FormInputControlProps) {
   let inputEle = (
-    <TextField
+    <StyledTextField
       id={name}
       label={label}
       variant={variant}
       placeholder={placeholder}
+      className={className}
+      value={value}
+      onBlur={(e) => onBlur(e.target.value)}
       onChange={(e) => onChange(e.target.value)}
     />
   );
 
   switch (type) {
+    case "password":
+      inputEle = (
+        <PasswordInput
+          id={name}
+          label={label}
+          variant={variant}
+          placeholder={placeholder}
+          value={value}
+          className={className}
+          onBlur={(e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onBlur(e.target.value)}
+          onChange={(e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange(e.target.value)}
+        />
+      );
+      break;
     default:
       break;
   }
-
   return (
-    <div className={className}>
-      {/* <label htmlFor={name}>{label}</label> */}
+    <Box>
       {inputEle}
-      {/* {isError && <span className="error-message">{errors[name]}</span>} */}
-    </div>
+      {errMessage.length > 0 && <div className="text-red-500 text-start px-2 mt-1 italic text-xs">{errMessage}</div>}
+    </Box>
   );
+  // return (
+  //   <div>
+  //     {/* <label htmlFor={name}>{label}</label> */}
+  //     {inputEle}
+  //     {/* {isError && <span className="error-message">{errors[name]}</span>} */}
+  //   </div>
+  // );
 }

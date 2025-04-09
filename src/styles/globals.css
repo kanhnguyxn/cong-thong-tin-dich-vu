@@ -44,9 +44,9 @@ body {
     }
 }
 
-input:hover, input:focus {
+/* input:hover, input:focus {
   outline: 2px solid #3b82f6;
-}
+} */
 
 input.error {
   outline: 2px solid #ef4444 !important;
