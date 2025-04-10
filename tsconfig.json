@@ -17,7 +17,7 @@
         "src/pages/*"
       ],
       "@assets/*": [
-        "src/assets/*"
+        "public/assets/*"
       ],
       "@styles/*": [
         "src/styles/*"
@@ -30,6 +30,9 @@
       ],
       "@constants/*": [
         "src/constants/*"
+      ],
+      "public/*": [
+        "public/*"
       ]
     },
     "lib": [
