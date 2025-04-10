@@ -22,7 +22,7 @@ export default function FormMui({
   className,
   inputClassName = "",
   formErrMsg = "",
-}) {
+}:FormProps) {
   const [formData, setFormData] = useState({});
   // lưu lại các lỗi của các trường
   const [errors, setErrors] = useState({});
@@ -109,9 +109,14 @@ export default function FormMui({
 
   return (
     <Form className={className} action={handleSubmit}>
-      <div className="text-red-500 text-start px-2 mt-1 italic text-xs">
-        {formErrMsg}
-      </div>
+      {
+        formErrMsg && (
+          <div className="text-red-500 text-sm md:text-[15px] lg:text-base uppercase mt-4 text-left font-semibold">
+            {formErrMsg}
+          </div>
+        )
+
+      }
       {inputSchema.map((field: any, index: number) => {
         const { name, type, placeholder, label, className, ...rest } = field;
         return (
