@@ -1,53 +1,58 @@
-import React from "react";
+import { Button } from "@mui/material";
 
-interface ButtonProps {
-  className?: string;
-  name?: string;
-  type?: "button" | "submit" | "reset";
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+type ButtonProps = {
+  variants?: "text" | "outlined" | "contained";
   disabled?: boolean;
-  startIcon?: React.ReactNode;
-  endIcon?: React.ReactNode;
-  variant?: "default" | "outline";
-  children?: React.ReactNode;
-}
-
-const Button: React.FC<ButtonProps> = ({
-  className = "",
-  name,
-  type = "button",
-  onClick,
-  disabled = false,
-  startIcon,
-  endIcon,
-  variant = "default",
-  children,
-}) => {
-  // Base classes for the button
-  const baseClasses = "font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
-
-  // Variant styles
-  const variantClasses =
-    variant === "outline"
-      ? "hover:bg-gray-50"
-      : "hover:bg-blue-700";
-
-  // Disabled class
-  const disabledClass = disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer";
-
-  return (
-    <button
-      type={type as "button" | "submit" | "reset"}
-      name={name}
-      className={`${baseClasses} ${variantClasses} ${disabledClass} ${className} px-4 py-2`}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      {startIcon && <span className="mr-2">{startIcon}</span>}
-      {children || name}
-      {endIcon && <span className="ml-2">{endIcon}</span>}
-    </button>
-  );
+  size?: "small" | "medium" | "large";
+  href?: string;
+  className?: string;
+  onClick?: () => void;
+  label?: string;
+  type?: "button" | "submit" | "reset";
+  sx?: object;
 };
 
-export default Button;
+export default function CustomButton({
+  variants = "contained",
+  disabled = false,
+  size = "medium",
+  sx = {},
+  href,
+  className = "",
+  label = "Button",
+  type = "button",
+  onClick = () => {},
+}: ButtonProps) {
+  const defaultSx = {
+    fontSize: {
+      xs: "12px", // ~text-base
+      sm: "14px", // ~text-xl
+      md: "16px", // ~text-2xl
+      lg: "18px", // ~text-3xl
+    },
+    width: "fit-content",
+    fontWeight: 600,
+    borderRadius: "9999px", // rounded-full
+    textTransform: "none",
+    "&:focus": {
+      outline: "none",
+      boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.5)", // focus:shadow-outline
+    },
+    ...sx, 
+  };
+
+  return (
+    <Button
+      variant={variants}
+      disabled={disabled}
+      size={size}
+      href={href}
+      className={className}
+      type={type}
+      onClick={onClick}
+      sx={defaultSx}
+    >
+      {label}
+    </Button>
+  );
+}

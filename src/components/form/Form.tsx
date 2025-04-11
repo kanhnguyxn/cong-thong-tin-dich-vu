@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import FormInputControl from "./FormInputControl";
+import CustomButton from "@components/button";
 import { COMMON_STYLES } from "@styles/common_styles";
 import Form from 'next/form'
 
@@ -8,20 +9,21 @@ interface FormProps {
   className?: string;
   inputSchema: Array<any>;
   onSubmit: (formData: Object) => void;
-  buttonLabel?: string;
-  buttonClassName?: string;
   inputClassName?: string;
   formErrMsg?: string;
+  buttons?: Array<any>;
+  buttonClassName?: string;
 }
 
 export default function FormMui({
   inputSchema,
   onSubmit,
-  buttonLabel = "Submit",
-  buttonClassName,
   className,
   inputClassName = "",
   formErrMsg = "",
+  buttons = [],
+  buttonClassName = "",
+  ...rest
 }:FormProps) {
   const [formData, setFormData] = useState({});
   // lưu lại các lỗi của các trường
@@ -108,10 +110,10 @@ export default function FormMui({
   };
 
   return (
-    <Form className={className} action={handleSubmit}>
+    <Form className={`${className} ${formErrMsg? 'mt-0': 'mt-2'}`} action={handleSubmit}>
       {
         formErrMsg && (
-          <div className="text-red-500 text-sm md:text-[15px] lg:text-base uppercase mt-4 text-left font-semibold">
+          <div className="text-red-500 text-sm md:text-[15px] lg:text-base uppercase mt-2 md:mt-3 text-left font-semibold">
             {formErrMsg}
           </div>
         )
@@ -137,9 +139,24 @@ export default function FormMui({
         );
       })}
 
-      <button type="submit" className={buttonClassName} >
-        {buttonLabel}
-      </button>
+      {/* có nhiều button hoặc 1 */}
+      {
+        buttons.length > 0 && (
+          <div className={buttonClassName}>
+            {buttons.map((button: any, index: number) => {
+              const { label, className, ...rest } = button;
+              return (
+                <CustomButton
+                  key={index}
+                  label={label}
+                  className={`${className}`}
+                  {...rest}
+                />
+              );
+            })}
+          </div>
+        )
+      }
     </Form>
   );
 }

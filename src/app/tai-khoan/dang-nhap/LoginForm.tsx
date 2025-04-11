@@ -22,6 +22,38 @@ export default function LoginForm() {
     },
   ];
 
+  const buttons = [
+    {
+      label: "Quên mật khẩu?",
+      type: "button",
+      variants: "text",
+      size: "small",
+      disabled: false,
+      href: "tai-khoan/quen-mat-khau",
+      onClick: () => {
+        console.log("Quên mật khẩu");
+      },
+      sx:{
+        textAlign: "start",
+        textTransform: "capitalize",
+        placeSelf: "start",
+        color: "var(--color-blue)",
+        fontWeight:'500',
+      }
+    },
+    {
+      label: "Đăng nhập",
+      type: "submit",
+      variants: "contained",
+      size: "large",
+      disabled: false,
+      sx:{
+        backgroundColor: 'var(--color-blue)',
+        color: 'white',
+      }
+    },
+  ];
+
   const handleSubmit = (formData:any) => {
     loginUser(formData.username, formData.password)
     .then ((response) => {
@@ -42,9 +74,9 @@ export default function LoginForm() {
       <FormMui
         inputSchema={inputSchema}
         onSubmit={handleSubmit}
-        buttonLabel="Đăng nhập"
-        buttonClassName="bg-[var(--color-blue)] text-white py-2 px-4 rounded-full w-fit place-self-center text-sm md:text-md lg:text-lg"
-        className="w-full max-w-sm flex flex-col gap-2 md:gap-4"
+        className="w-full max-w-sm flex flex-col gap-2 md:gap-3"
+        buttons={buttons}
+        buttonClassName='flex flex-col w-full justify-center items-center mt-[-10px]'
         formErrMsg={error} 
       />
     </div>
