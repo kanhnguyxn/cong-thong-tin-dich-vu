@@ -2,8 +2,8 @@
 
 import styled from "styled-components";
 
-import { Box, TextField } from "@mui/material";
-import { StyledTextField } from "@styles/style_component";
+import { Box, FormControl, InputLabel, TextField } from "@mui/material";
+import { StyledTextField, labelStyles } from "@styles/style_component";
 import PasswordInput from "./input/PasswordInput";
 
 type TextFieldVariant = "filled" | "outlined" | "standard";
@@ -16,11 +16,13 @@ interface FormInputControlProps {
   className?: string;
   name: string;
   label: string;
+  sxLabel?: object;
   variant?: TextFieldVariant;
   sx?: object;
   onBlur: (value: any) => void;
   errMessage?: string;
   value?: any;
+  formControlClassName?: string;
 }
 
 export default function FormInputControl({
@@ -30,22 +32,26 @@ export default function FormInputControl({
   className,
   name,
   label,
+  sxLabel,
   variant,
   onBlur,
   errMessage = "",
   value,
+  formControlClassName,
 }: FormInputControlProps) {
   let inputEle = (
-    <StyledTextField
-      id={name}
-      label={label}
-      variant={variant}
-      placeholder={placeholder}
-      className={className}
-      value={value}
-      onBlur={(e) => onBlur(e.target.value)}
-      onChange={(e) => onChange(e.target.value)}
-    />
+    <FormControl className={`w-full ${formControlClassName}`} >
+      {label && (<InputLabel sx={{...labelStyles, ...sxLabel}}>{label}</InputLabel>)}
+      <StyledTextField
+        id={name}
+        variant={variant}
+        placeholder={placeholder}
+        className={className}
+        value={value}
+        onBlur={(e) => onBlur(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </FormControl>
   );
 
   switch (type) {

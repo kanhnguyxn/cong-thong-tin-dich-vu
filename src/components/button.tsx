@@ -44,6 +44,7 @@ export default function CustomButton({
   return (
     <Button
       variant={variants}
+      LinkComponent={href ? "a" : undefined}
       disabled={disabled}
       size={size}
       href={href}
