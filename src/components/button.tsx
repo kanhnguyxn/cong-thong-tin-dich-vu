@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, colors } from "@mui/material";
 
 type ButtonProps = {
   variants?: "text" | "outlined" | "contained";
@@ -30,6 +30,8 @@ export default function CustomButton({
       md: "16px", // ~text-2xl
       lg: "18px", // ~text-3xl
     },
+    color: "white",
+    padding: "5px 0px",
     width: "fit-content",
     fontWeight: 600,
     borderRadius: "9999px", // rounded-full
@@ -38,7 +40,7 @@ export default function CustomButton({
       outline: "none",
       boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.5)", // focus:shadow-outline
     },
-    ...sx, 
+    ...sx,
   };
 
   return (
