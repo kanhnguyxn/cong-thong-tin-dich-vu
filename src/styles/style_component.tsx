@@ -25,22 +25,19 @@ export const StyledTextField = styled(TextField)({
 
 export const titleStyles = {
   fontWeight: 500,
-  className: 'uppercase text-[var(--color-blue)]',
+  className: "uppercase text-[var(--color-blue)]",
   sx: {
     fontSize: {
-      xs: '14px',
-      sm: '16px',
-      md: '18px',
-      lg: '20px',
+      xs: "14px",
+      sm: "16px",
+      md: "18px",
+      lg: "20px",
     },
   },
 };
 
 export const labelStyles = {
-  position: 'static', 
-  textAlign:'left', 
-  transform: 'scale(1)'
-}
-export const formContrlStyles = {
-  
-}
+  position: "static",
+  textAlign: "left",
+  transform: "scale(1)",
+};
