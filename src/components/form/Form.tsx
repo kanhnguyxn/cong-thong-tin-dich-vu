@@ -3,7 +3,7 @@ import { useState } from "react";
 import FormInputControl from "./FormInputControl";
 import CustomButton from "@components/button";
 import { COMMON_STYLES } from "@styles/common_styles";
-import Form from 'next/form'
+import Form from "next/form";
 
 interface FormProps {
   className?: string;
@@ -24,7 +24,7 @@ export default function FormMui({
   buttons = [],
   buttonClassName = "",
   ...rest
-}:FormProps) {
+}: FormProps) {
   const [formData, setFormData] = useState({});
   // lưu lại các lỗi của các trường
   const [errors, setErrors] = useState({});
@@ -39,7 +39,7 @@ export default function FormMui({
     if (validations && validations.length > 0) {
       let errMsg: string;
       let flag = validations.every((val: any) => {
-        if (val?.rule && !val.rule(value)) {
+        if (val?.rule && !val.rule(value, formData)) {
           errMsg = val?.errMessage;
           return false;
         }
@@ -76,7 +76,6 @@ export default function FormMui({
 
   const handleChange = (name: string, value: any) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-
   };
 
   const handleSubmit = (e) => {
@@ -110,15 +109,15 @@ export default function FormMui({
   };
 
   return (
-    <Form className={`${className} ${formErrMsg? 'mt-0': 'mt-2'}`} action={handleSubmit}>
-      {
-        formErrMsg && (
-          <div className="text-red-500 text-sm md:text-[15px] lg:text-base uppercase mt-2 md:mt-3 text-left font-semibold">
-            {formErrMsg}
-          </div>
-        )
-
-      }
+    <Form
+      className={`${className} ${formErrMsg ? "mt-0" : "mt-2"}`}
+      action={handleSubmit}
+    >
+      {formErrMsg && (
+        <div className="text-red-500 text-sm md:text-[15px] lg:text-base uppercase mt-2 md:mt-3 text-left font-semibold">
+          {formErrMsg}
+        </div>
+      )}
       {inputSchema.map((field: any, index: number) => {
         const { name, type, placeholder, label, className, ...rest } = field;
         return (
@@ -140,23 +139,21 @@ export default function FormMui({
       })}
 
       {/* có nhiều button hoặc 1 */}
-      {
-        buttons.length > 0 && (
-          <div className={buttonClassName}>
-            {buttons.map((button: any, index: number) => {
-              const { label, className, ...rest } = button;
-              return (
-                <CustomButton
-                  key={index}
-                  label={label}
-                  className={`${className}`}
-                  {...rest}
-                />
-              );
-            })}
-          </div>
-        )
-      }
+      {buttons.length > 0 && (
+        <div className={buttonClassName}>
+          {buttons.map((button: any, index: number) => {
+            const { label, className, ...rest } = button;
+            return (
+              <CustomButton
+                key={index}
+                label={label}
+                className={`${className}`}
+                {...rest}
+              />
+            );
+          })}
+        </div>
+      )}
     </Form>
   );
 }

@@ -16,6 +16,7 @@ interface FormInputControlProps {
   className?: string;
   name: string;
   label: string;
+  lableRender?: () => JSX.Element;
   sxLabel?: object;
   variant?: TextFieldVariant;
   sx?: object;
@@ -32,6 +33,7 @@ export default function FormInputControl({
   className,
   name,
   label,
+  lableRender,
   sxLabel,
   variant,
   onBlur,
@@ -41,7 +43,7 @@ export default function FormInputControl({
 }: FormInputControlProps) {
   let inputEle = (
     <FormControl className={`w-full ${formControlClassName}`} >
-      {label && (<InputLabel sx={{...labelStyles, ...sxLabel}}>{label}</InputLabel>)}
+      {lableRender?  lableRender(): (<InputLabel sx={{...labelStyles, ...sxLabel}}>{label}</InputLabel>)}
       <StyledTextField
         id={name}
         variant={variant}
