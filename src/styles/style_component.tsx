@@ -40,4 +40,10 @@ export const labelStyles = {
   position: "static",
   textAlign: "left",
   transform: "scale(1)",
+  fontSize: {
+    xs: "12px",
+    sm: "14px",
+    md: "16px",
+    lg: "18px",
+  },
 };

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import FormInputControl from "./FormInputControl";
-import CustomButton from "@components/button";
+import CustomButton from "@components/Button";
 import { COMMON_STYLES } from "@styles/common_styles";
 import Form from "next/form";
 

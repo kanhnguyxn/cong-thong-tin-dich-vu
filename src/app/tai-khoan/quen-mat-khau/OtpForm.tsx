@@ -1,7 +1,10 @@
+'use client'
 import React from "react";
 import FormMui from "@components/form/Form";
+import { validateOtp } from '../../services/otpService'
 
-export default function OTPForm() {
+
+export default function OTPForm({onNext, onBack}) {
   const [error, setError] = React.useState<string | null>(null);
   const inputSchema = [
     {
@@ -19,7 +22,7 @@ export default function OTPForm() {
   const buttons = [
     {
       label: "Hủy",
-      type: "cancel",
+      type: "button",
       variants: "contained",
       size: "large",
       disabled: false,
@@ -27,6 +30,10 @@ export default function OTPForm() {
         backgroundColor: "var(--color-light-blue)",
         ...sxButton,
       },
+      onClick: () => {
+        setError(null);
+        onBack();
+      }
     },
     {
       label: "Xác nhận",
@@ -43,7 +50,15 @@ export default function OTPForm() {
   const handleSubmit = async (data: any) => {
     setError(null);
     try {
-      console.log("OTP submitted:", data.otp);
+      const { otp } = data;
+      const flag = validateOtp(otp,'123456');
+      if (!flag) {
+        setError("OTP không hợp lệ");
+        return;
+      }
+      else{
+        onNext();
+      }
     } catch (err) {
       setError("Xác thực OTP không thành công");
     }

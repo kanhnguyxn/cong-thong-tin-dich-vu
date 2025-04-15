@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Icon, InputLabel } from "@mui/material";
 
 
@@ -7,11 +8,14 @@ import FormMui from "@components/form/Form";
 import ICONS from "@components/icons";
 import BasicModal from "@components/Modal";
 import { labelStyles } from "@styles/style_component";
-import zIndex from "@mui/material/styles/zIndex";
+import {changePassword} from "../../services/auth";
+
 
 const newPasswordId = "matKhauMoi";
 
 export default function ResetPassword(props: any) {
+  const [error, setError] = React.useState<string | null>(null);
+  const router = useRouter();
   const inputSchema = [
     {
       name: newPasswordId,
@@ -27,6 +31,8 @@ export default function ResetPassword(props: any) {
         buttonClassName={{
           color: "var(--color-blue)",
           fontSize: "1.5rem",
+          paddingLeft: 0,
+          width: 'fit-content',
         }}
         children={
           <>
@@ -82,15 +88,29 @@ export default function ResetPassword(props: any) {
       },
     },
   ];
+  const handleSubmit =(formData:any)=>{
+    setError(null);
+    try{
+      // gui form toi API
+      console.log("doi mat khau thanh cong");
+      router.push("/tai-khoan/dang-nhap");
+      
+      setError(null);
+    }
+    catch(err){
+      setError("Đặt lại mật khẩu không thành công");
+    }
 
+  }
 
   return (
      <FormMui
       inputSchema={inputSchema}
-      onSubmit={() => {}}
+      onSubmit={handleSubmit}
       className="w-full max-w-sm flex flex-col gap-2 md:gap-3"
       buttons={buttons}
       buttonClassName="flex flex-row justify-around"
+      formErrMsg={error}
       {...props}
     />
        
