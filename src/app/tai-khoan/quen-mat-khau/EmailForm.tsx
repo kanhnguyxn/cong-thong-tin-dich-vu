@@ -2,12 +2,10 @@
 import React from "react";
 
 import FormMui from "@components/form/Form";
-import { Button, Typography } from "@mui/material";
-import Link from "next/link";
+import { isEmailExisted } from "src/app/services/otpService";
 
-export default function EmailForm() {
+export default function EmailForm({onNext}) {
   const [error, setError] = React.useState<string | null>(null);
-  const [isSuccess, setIsSuccess] = React.useState(false);
   const inputSchema = [
     {
       name: "email",
@@ -61,37 +59,27 @@ export default function EmailForm() {
       },
     },
   ];
-  const handleSubmit = (formData: any) => {
-    let flag = true;
-    if (!flag) setError("EMAIL KHÔNG TỒN TẠI");
-    else {
-      setIsSuccess(true);
-    }
-  };
+ const handleSubmit = (formData: any) => {
+      setError(null);
+     try{
+       const { email } = formData;
+       console.log("email", email);
+       const isExisted = isEmailExisted(email);
+       if (isExisted) {
+          onNext();
+       }
+       else{
+         setError('Email không tồn tại');
+       }
+     }
+     catch (error) {
+       console.log("error", error);
+       setError("Có lỗi xảy ra, vui lòng thử lại sau");
+     }
+   };
+
   return (
     <div className="flex flex-col items-center gap-2">
-      {isSuccess ? (
-        <>
-          <Typography fontSize={"1rem"} className="text-center my-4">
-            Chúng tôi đã gửi mã OTP đến email của bạn
-          </Typography>
-          <div className="flex justify-between gap-4">
-            <Link
-              className="text-blue-500 hover:underline text-sm"
-              href="./dang-nhap"
-            >
-              Đăng nhập bằng mật khẩu
-            </Link>
-            <Button
-              className="uppercase rounded-lg"
-              variant="contained"
-              color="primary"
-            >
-              Tiếp tục
-            </Button>
-          </div>
-        </>
-      ) : (
         <FormMui
           inputSchema={inputSchema}
           onSubmit={handleSubmit}
@@ -100,7 +88,6 @@ export default function EmailForm() {
           buttonClassName="flex flex-row justify-around"
           formErrMsg={error}
         />
-      )}
     </div>
   );
 }
