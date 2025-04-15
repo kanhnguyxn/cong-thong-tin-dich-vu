@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-import { Box, FormControl, InputLabel, TextField } from "@mui/material";
+import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { StyledTextField, labelStyles } from "@styles/style_component";
 import PasswordInput from "./input/PasswordInput";
 
@@ -24,6 +24,7 @@ interface FormInputControlProps {
   errMessage?: string;
   value?: any;
   formControlClassName?: string;
+  renderValue?: (value: any) => JSX.Element;
 }
 
 export default function FormInputControl({
@@ -40,6 +41,7 @@ export default function FormInputControl({
   errMessage = "",
   value,
   formControlClassName,
+  renderValue,
 }: FormInputControlProps) {
   let inputEle = (
     <FormControl className={`w-full ${formControlClassName}`} >
@@ -69,6 +71,27 @@ export default function FormInputControl({
           onBlur={(e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onBlur(e.target.value)}
           onChange={(e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange(e.target.value)}
         />
+      );
+      break;
+    case 'select':
+      inputEle = (
+        <FormControl className={`w-full ${formControlClassName}`} >
+         <Select
+         id ={name}
+         variant={variant}
+         renderValue = {renderValue}
+         className={className}
+         onChange={(e) => onChange(e.target.value)}
+         >
+           {value.map((name) => (
+            <MenuItem
+              key={name}
+              value={name}
+            >
+              {name}
+            </MenuItem>))}
+         </Select>
+        </FormControl>
       );
       break;
     default:
