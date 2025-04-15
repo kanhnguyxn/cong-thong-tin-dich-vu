@@ -1,33 +1,52 @@
-import FormMui from "@components/form/Form";
-
-import ICONS from "@components/icons";
-import { IconButton, InputAdornment, InputLabel } from "@mui/material";
 import React from "react";
-import { PopUp } from "./popUp";
+import { Icon, InputLabel } from "@mui/material";
+
+
+
+import FormMui from "@components/form/Form";
+import ICONS from "@components/icons";
+import BasicModal from "@components/Modal";
 import { labelStyles } from "@styles/style_component";
+import zIndex from "@mui/material/styles/zIndex";
 
 const newPasswordId = "matKhauMoi";
 
 export default function ResetPassword(props: any) {
-  const [open, setOpen] = React.useState(false);
   const inputSchema = [
     {
       name: newPasswordId,
       type: "text",
       required: true,
       lableRender: () => (
+        <div className="flex items-center">
         <InputLabel sx={{ ...labelStyles, color: "black", padding: "0px 0px 4px 4px" , }}>
           {"Nhập mật khẩu mới"}
-          <IconButton
-            sx={{
-              color: "var(--color-blue)",
-              fontSize: "1.5rem",
-            }}
-            onClick={() => setOpen(true)}
-          >
-            {ICONS.INFO}
-          </IconButton>
         </InputLabel>
+        <BasicModal 
+        button={ICONS.INFO}
+        buttonClassName={{
+          color: "var(--color-blue)",
+          fontSize: "1.5rem",
+        }}
+        children={
+          <>
+          <p className="flex font-bold justify-center pb-2 text-sm md:text-base lg:text-lg items-end">
+            <Icon>{ICONS.INFO}</Icon>
+            <span className="ml-1">Quy định đặt mật khẩu</span>
+          </p>
+          <ol className="list-disc pl-5">
+            <li>Phải có ít nhất một chữ cái viết hoa</li>
+            <li>Phải có ít nhất một chữ cái viết thường</li>
+            <li>Phải chứa ký tự đặc biệt (!, @, #, %)</li>
+            <li>Phải có ít nhất một số</li>
+            <li>Độ dài tối thiểu: 8 ký tự</li>
+          </ol>
+        </>
+
+        }
+
+        />
+        </div>
       ),
     },
     {
@@ -66,7 +85,7 @@ export default function ResetPassword(props: any) {
 
 
   return (
-    <FormMui
+     <FormMui
       inputSchema={inputSchema}
       onSubmit={() => {}}
       className="w-full max-w-sm flex flex-col gap-2 md:gap-3"
@@ -74,5 +93,7 @@ export default function ResetPassword(props: any) {
       buttonClassName="flex flex-row justify-around"
       {...props}
     />
+       
+
   )
 }
