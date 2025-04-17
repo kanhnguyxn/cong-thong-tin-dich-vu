@@ -25,6 +25,7 @@ interface FormInputControlProps {
   value?: any;
   formControlClassName?: string;
   renderValue?: (value: any) => JSX.Element;
+  IconComponent?: React.ElementType;
 }
 
 export default function FormInputControl({
@@ -42,6 +43,7 @@ export default function FormInputControl({
   value,
   formControlClassName,
   renderValue,
+  IconComponent,
 }: FormInputControlProps) {
   let inputEle = (
     <FormControl className={`w-full ${formControlClassName}`} >
@@ -77,11 +79,13 @@ export default function FormInputControl({
       inputEle = (
         <FormControl className={`w-full ${formControlClassName}`} >
          <Select
-         id ={name}
-         variant={variant}
-         renderValue = {renderValue}
-         className={className}
-         onChange={(e) => onChange(e.target.value)}
+          id ={name}
+          variant={variant}
+          renderValue = {renderValue}
+          className={className}
+          onChange={(e) => onChange(e.target.value)}
+          displayEmpty
+          IconComponent={IconComponent}
          >
            {value.map((name) => (
             <MenuItem
