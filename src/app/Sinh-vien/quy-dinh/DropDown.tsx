@@ -4,11 +4,6 @@ import DropDownLists from "@components/DropDownList";
 import { useState } from "react";
 import ICONS from "@components/icons";
 
-type SelectedItem = {
-  department: string;
-  option: string | null;
-};
-
 // Danh sách phòng ban và options cố định
 const departments = [
   "Đào tạo",
@@ -27,33 +22,35 @@ const options = [
 const dropDownStyle = {
   border: "1px solid var(--color-blue)",
   paddingLeft: "3px",
+  fontSize:{
+    xs:'14px',
+    sm:'16px',
+    md:'18px'
+  },
+  textAlign: "left",
 };
 
 const classNameOption =
-  "w-full hover:bg-[var(--color-gray-stroke)] hover:border-y hover:border-black cursor-pointer p-1 text-[var(--color-blue)] p-2";
+  "w-full hover:bg-[var(--color-gray-stroke)] hover:border-y hover:border-black cursor-pointer p-1 text-left";
 
-const departmentStyle = "font-bold text-black pl-2";
+const departmentStyle = "font-bold text-black pl-2 ";
 const optionsStyle = "text-[var(--color-blue)] pl-2";
 
 export default function Navbar() {
-  const [selectedValues, setSelectedValues] = useState<SelectedItem[]>(
-    departments.map((dept) => ({
-      department: dept,
-      option: null, 
-    }))
-  );
+  const [selectedValues, setSelectedValues] = useState<string[]>([...departments]);
 
-  const handleSelect = (index: number, newOption: string) => {
-    const updated = [...selectedValues];
-    updated[index].option = newOption;
+  const handleSelect = (index: number, value: string) => {
+    const updated = departments.map((item, i) => (i === index ? value : item));
     setSelectedValues(updated);
-    console.log("Đã chọn:", updated); // In ra để kiểm tra
+
+  console.log("Phòng ban:", departments[index]);
+  console.log("Option được chọn:", value);
   };
 
   return (
     <Box>
       {departments.map((department, index) => {
-        const isDefault = selectedValues[index].department === department;
+        const isDefault = selectedValues[index] === department;
         const currentChildrenStyle = isDefault ? departmentStyle : optionsStyle;
 
         return (
@@ -61,7 +58,7 @@ export default function Navbar() {
             key={index}
             name={department}
             options={options}
-            value={selectedValues[index].option || ''}
+            value={selectedValues[index]}
             onChange={(value) => handleSelect(index, value)}
             button={ICONS.SELECT}
             dropDownStyle={dropDownStyle}
