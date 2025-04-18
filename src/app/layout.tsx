@@ -15,10 +15,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // useEffect(() => {
+  //   // Check for authentication token in localStorage
+  //   const authToken = localStorage.getItem('authToken');
+  //   setIsLoggedIn(!!authToken);
+  //   setIsLoaded(true);
+  // }, []);
   useEffect(() => {
-    // Check for authentication token in localStorage
-    const authToken = localStorage.getItem('authToken');
-    setIsLoggedIn(!!authToken);
+    setIsLoggedIn(true); // tạm set login = true để test
     setIsLoaded(true);
   }, []);
 
