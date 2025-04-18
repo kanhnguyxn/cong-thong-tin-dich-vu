@@ -4,6 +4,10 @@ import DropDownLists from "@components/DropDownList";
 import { useState } from "react";
 import ICONS from "@components/icons";
 
+interface DropDownProps {
+  onSelectionsChange?: ( department: string, option: string ) => void;
+}
+
 // Danh sách phòng ban và options cố định
 const departments = [
   "Đào tạo",
@@ -36,15 +40,16 @@ const classNameOption =
 const departmentStyle = "font-bold text-black pl-2 ";
 const optionsStyle = "text-[var(--color-blue)] pl-2";
 
-export default function Navbar() {
+export default function DropDown({ onSelectionsChange }: DropDownProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>([...departments]);
 
   const handleSelect = (index: number, value: string) => {
     const updated = departments.map((item, i) => (i === index ? value : item));
     setSelectedValues(updated);
-
-  console.log("Phòng ban:", departments[index]);
-  console.log("Option được chọn:", value);
+    
+    if (onSelectionsChange) {
+      onSelectionsChange(departments[index], value);
+    }
   };
 
   return (
