@@ -50,7 +50,7 @@ export default function CustomTable ({columns, data,tableCellStyles}: CustomTabl
     return(
         <ThemeProvider theme={theme}>
             <TableContainer sx={{
-                width:'90%', 
+                width:'100%', 
                 overflowX: { xs: 'auto', md: 'hidden' }
             }}>
                 <Table sx={{ minWidth: { xs: '650px', md: '100%' } }}>
