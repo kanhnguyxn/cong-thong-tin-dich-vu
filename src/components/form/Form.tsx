@@ -131,7 +131,7 @@ export default function FormMui({
             onBlur={(value: any) => handleBlur(field, value)}
             errMessage={errors[name]}
             name={name}
-            className={`${COMMON_STYLES.input} ${className} ${inputClassName}`}
+            className={`${COMMON_STYLES.input} ${inputClassName} ${className} `}
             label={label}
             {...rest}
           />
