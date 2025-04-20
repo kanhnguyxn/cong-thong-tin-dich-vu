@@ -6,7 +6,7 @@ export const StyledTextField = styled(TextField)({
     width: "100%", // w-full
     border: "1px solid #e5e7eb", // border-gray-200
     transition: "all 0.2s", // transition-all duration-200
-    borderRadius: "1rem", // rounded-2xl
+    // borderRadius: "1rem", // rounded-2xl
     fontSize: "12px", // default: text-sm
     "@media (min-width: 600px)": {
       fontSize: "14px", // sm
