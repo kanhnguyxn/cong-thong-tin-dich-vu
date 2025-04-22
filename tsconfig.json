@@ -33,7 +33,10 @@
       ],
       "public/*": [
         "public/*"
-      ]
+      ],
+      "@context/*": [
+        "src/context/*"
+      ],
     },
     "lib": [
       "dom",

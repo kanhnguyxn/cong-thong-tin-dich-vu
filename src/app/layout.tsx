@@ -1,46 +1,45 @@
 "use client";
 
-import React, { createContext, useEffect, useState } from "react";
-import "../styles/globals.css";
+import React, { useEffect, useState } from "react";
+import "@styles/globals.css";
 import Footer from "@components/Footer";
 import Header from "@components/header/Header";
-
+import { AuthContext } from "@context/AuthContext";
 
 const background = "/assets/images/background.svg";
 
-const AuthContext = createContext({ isLoggedIn: false });
-
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  // useEffect(() => {
-  //   // Check for authentication token in localStorage
-  //   const authToken = localStorage.getItem('authToken');
-  //   setIsLoggedIn(!!authToken);
-  //   setIsLoaded(true);
-  // }, []);
   useEffect(() => {
-    setIsLoggedIn(true); // tạm set login = true để test
-    setIsLoaded(true);
-  }, []);
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
+    setIsLoggedIn(true);
+    setAccessToken(token);
+  }, [setIsLoggedIn, setAccessToken]);
 
   return (
     <html lang="vi">
-      <body 
-        className={`flex flex-col min-h-screen max-w-full ${!isLoggedIn ? 'bg-auto bg-center' : ''}`}
+      <body
+        className={`flex flex-col min-h-screen max-w-full ${
+          !isLoggedIn ? "bg-auto bg-center" : ""
+        }`}
         style={!isLoggedIn ? { backgroundImage: `url(${background})` } : {}}
       >
-          <AuthContext.Provider value={{ isLoggedIn }}>
-            <div className="sticky top-0 z-50 w-full">
-              <Header isLoggedIn={isLoggedIn} />
-            </div>
-            <main className="flex-1 flex w-full">
-              {children}
-            </main>
-            <Footer />
-          </AuthContext.Provider>
+        <AuthContext.Provider
+          value={{ isLoggedIn, setIsLoggedIn, accessToken, setAccessToken }}
+        >
+          <div className="sticky top-0 z-50 w-full">
+            <Header isLoggedIn={isLoggedIn} />
+          </div>
+          <main className="flex-1 flex w-full">{children}</main>
+          <Footer />
+        </AuthContext.Provider>
       </body>
     </html>
   );
