@@ -1,18 +1,23 @@
 "use client";
-import React from "react";
 
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { AuthContext } from "@context/AuthContext";
 import FormMui from "@components/form/Form";
-import { loginUser } from "src/app/services/auth";
+import { login } from "../authApi";
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const [error, setError] = React.useState<string | null>(null);
+  const { setIsLoggedIn, setAccessToken } = useContext(AuthContext);
+
   const inputSchema = [
     {
       name: "username",
       type: "text",
       placeholder: "username",
       required: true,
-      
     },
     {
       name: "password",
@@ -28,45 +33,56 @@ export default function LoginForm() {
       type: "button",
       variants: "text",
       size: "small",
-      disabled: false,
       href: "tai-khoan/quen-mat-khau",
-      onClick: () => {
-        console.log("Quên mật khẩu");
-      },
-      sx:{
+      onClick: () => console.log("Quên mật khẩu"),
+      sx: {
         textAlign: "start",
         textTransform: "capitalize",
         placeSelf: "start",
         color: "var(--color-blue)",
-        fontWeight:'500',
-      }
+        fontWeight: 500,
+      },
     },
     {
       label: "Đăng nhập",
       type: "submit",
       variants: "contained",
       size: "large",
-      disabled: false,
-      sx:{
-        backgroundColor: 'var(--color-blue)',
-        color: 'white',
-      }
+      sx: {
+        backgroundColor: "var(--color-blue)",
+        color: "white",
+      },
     },
   ];
 
-  const handleSubmit = (formData:any) => {
-    loginUser(formData.username, formData.password)
-    .then ((response) => {
-      if (response.status === 200){
-        // Xử lý khi đăng nhập thành công
-        console.log("Đăng nhập thành công:", response.message);
-      }
-      else {
-        setError(response.message);
-      }
-    })
+  const handleSubmit = async (formData: Record<string, string>) => {
+    setError(null);
+    const { username, password } = formData;
 
-    console.log("Form submitted with data:", formData);
+    try {
+      const user = await login({ email: username, password });
+      // Lưu token
+      localStorage.setItem("access_token", user.accessToken);
+      setAccessToken(user.accessToken);
+      setIsLoggedIn(true);
+
+      const userType = user.userType?.trim().toLowerCase();
+
+      const redirectMap: Record<string, string> = {
+        student: "/sinh-vien/gioi-thieu",
+        staff: "/can-bo/gioi-thieu",
+        manager: "/admin/gioi-thieu",
+      };
+
+      if (userType && redirectMap[userType]) {
+        navigate(redirectMap[userType]);
+      } else {
+        setError("Vai trò người dùng không hợp lệ.");
+      }
+    } catch (err: any) {
+      console.error("Lỗi khi gọi API login:", err);
+      setError(err.message || "Lỗi kết nối đến máy chủ");
+    }
   };
 
   return (
@@ -76,8 +92,8 @@ export default function LoginForm() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm flex flex-col gap-2 md:gap-3"
         buttons={buttons}
-        buttonClassName='flex flex-col w-full justify-center items-center mt-[-10px]'
-        formErrMsg={error} 
+        buttonClassName="flex flex-col w-full justify-center items-center mt-[-10px]"
+        formErrMsg={error}
       />
     </div>
   );
