@@ -1,14 +1,19 @@
 "use client";
+import React from "react";
+import { Modal, Box } from "@mui/material";
+
 import FormMui from "@components/form/Form";
 import ICONS from "@components/icons";
 import BasicModal from "@components/Modal";
-import { colors, formControlClasses, Icon, InputLabel } from "@mui/material";
-import { labelStyles } from "@styles/style_component";
-import React from "react";
+import { Icon } from "@mui/material";
+
 import ChangePasswordService from "../services/changePassword";
 
 export default function ChangePasswordForm(props: any) {
   const [error, setError] = React.useState<string | null>(null);
+  const [open, setOpen] = React.useState(true);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const newPasswordId = "matKhauMoi";
   const formControlClassame = {
     // width: "100%",
@@ -112,17 +117,67 @@ export default function ChangePasswordForm(props: any) {
     console.log("formData", formData);
   };
   return (
-    <div className="flex flex-row items-center justify-center">
-      <FormMui
-        inputSchema={inputSchema}
-        onSubmit={handleSubmit}
-        className="w-full flex flex-col gap-2 md:gap-3 items-center max-w-xl justify-between"
-        buttons={buttons}
-        buttonClassName="flex flex-row justify-around "
-        formErrMsg={error}
-        {...props}
-      />
-      {IconComponent}
-    </div>
+    <>
+      <div className="flex flex-row items-center justify-center">
+        <FormMui
+          inputSchema={inputSchema}
+          onSubmit={handleSubmit}
+          className="w-full flex flex-col gap-2 md:gap-3 items-center max-w-xl justify-between"
+          buttons={buttons}
+          buttonClassName="flex flex-row justify-around "
+          {...props}
+        />
+        {IconComponent}
+      </div>
+      {open && (
+        <Modal
+          open={open}
+          onClose={handleClose}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "white",
+              borderRadius: "10px",
+              width: "fit-content",
+              padding: "20px 20px 10px 20px",
+              fontSize: {
+                xs: "20px",
+                sm: "22px",
+                md: "24px",
+              },
+            }}
+          >
+            <p className="text-center uppercase font-bold">
+              Đổi mật khẩu thành công
+            </p>
+            <Icon
+              sx={{
+                width: {
+                  xs: "25px",
+                  sm: "30px",
+                  md: "40px",
+                },
+                height: {
+                  xs: "25px",
+                  sm: "30px",
+                  md: "40px",
+                },
+              }}
+            >
+              {ICONS.SUCCESS}
+            </Icon>
+          </Box>
+        </Modal>
+      )}
+    </>
   );
 }
