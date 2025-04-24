@@ -5,12 +5,14 @@ interface SelectCheckboxInputProps {
   values?: any[]; // selected values
   onChange: (value: any[]) => void; // function to handle change
   options?: any[]; // options to select from
+  className?: string; // class name for styling
 }
 
 export default function SelectCheckboxInput({
   values,
   onChange,
   options = [],
+  className = "",
   ...props
 }: SelectCheckboxInputProps) {
   const [selectedValues, setSelectedValues] = useState(values || []);
@@ -25,7 +27,8 @@ export default function SelectCheckboxInput({
       {options.map((option: any, index: number) => (
         <div key={index} className="flex items-center gap-2">
           <input
-            className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] rounded-md checked:appearance-auto"
+            // className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] rounded-md checked:appearance-auto"
+            className={className}
             type="checkbox"
             value={option}
             checked={selectedValues.includes(option)}

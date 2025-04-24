@@ -6,7 +6,7 @@ export default function DonDangKyForm() {
     {
       name: "field1",
       label: "Học kỳ",
-      type: "radio",
+      type: "select",
       selectOptions: ["Học kỳ 1", "Học kỳ 2", "Toàn khóa"],
     },
   ];
