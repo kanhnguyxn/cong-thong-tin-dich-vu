@@ -76,6 +76,7 @@ export default function FormMui({
 
   const handleChange = (name: string, value: any) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    // console.log("formData", formData);
   };
 
   const handleSubmit = (e) => {
