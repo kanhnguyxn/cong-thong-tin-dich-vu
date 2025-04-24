@@ -107,21 +107,22 @@ export default function FormInputControl({
     case "select":
       inputEle = (
         <FormControl className={`w-full ${formControlClassName}`}>
-          <Select
-            id={name}
-            variant={variant}
-            renderValue={renderValue}
-            className={className}
+          {lableRender ? (
+            lableRender()
+          ) : (
+            <InputLabel sx={{ ...labelStyles, ...sxLabel }}>{label}</InputLabel>
+          )}
+          <select
+            name={name}
             onChange={(e) => onChange(e.target.value)}
-            displayEmpty
-            IconComponent={IconComponent}
+            className={className}
           >
-            {value.map((name) => (
-              <MenuItem key={name} value={name}>
-                {name}
-              </MenuItem>
+            {selectOptions.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
             ))}
-          </Select>
+          </select>
         </FormControl>
       );
       break;
@@ -159,6 +160,7 @@ export default function FormInputControl({
             options={selectOptions}
             values={value}
             onChange={onChange}
+            className={className}
           />
         </FormControl>
       );
@@ -174,7 +176,8 @@ export default function FormInputControl({
           {selectOptions.map((option, index) => (
             <div key={index} className="flex items-center gap-2">
               <input
-                className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] checked:appearance-auto rounded-full"
+                // className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] checked:appearance-auto rounded-full"
+                className={className}
                 name={name}
                 type="radio"
                 value={option}
