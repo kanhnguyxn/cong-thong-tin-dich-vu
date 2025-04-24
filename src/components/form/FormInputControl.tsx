@@ -163,6 +163,29 @@ export default function FormInputControl({
         </FormControl>
       );
       break;
+    case "radio":
+      inputEle = (
+        <FormControl className={`w-full ${formControlClassName}`}>
+          {lableRender ? (
+            lableRender()
+          ) : (
+            <InputLabel sx={{ ...labelStyles, ...sxLabel }}>{label}</InputLabel>
+          )}
+          {selectOptions.map((option, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <input
+                className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] checked:appearance-auto rounded-full"
+                name={name}
+                type="radio"
+                value={option}
+                onChange={(e) => onChange(e.target.value)}
+              />
+              <label>{option}</label>
+            </div>
+          ))}
+        </FormControl>
+      );
+
     default:
       break;
   }
