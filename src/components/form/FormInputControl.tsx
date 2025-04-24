@@ -1,24 +1,16 @@
 "use client";
 
 import React from "react";
-import styled from "styled-components";
-
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { StyledTextField, labelStyles } from "@styles/style_component";
 import PasswordInput from "./input/PasswordInput";
+import SelectCheckboxInput from "./input/SelectCheckBox";
 
 type TextFieldVariant = "filled" | "outlined" | "standard";
 
 interface FormInputControlProps {
   // Define the type of field based on your schema
-  onChange: (value: string) => void;
+  onChange: (value: string | any[]) => void;
   placeholder?: string;
   type?: string;
   className?: string;
@@ -31,9 +23,10 @@ interface FormInputControlProps {
   onBlur: (value: any) => void;
   errMessage?: string;
   value?: any;
-  formControlClassName?: object;
+  formControlClassName?: string;
   renderValue?: (value: any) => JSX.Element;
   IconComponent?: React.ElementType;
+  selectOptions?: any[];
 }
 
 export default function FormInputControl({
@@ -49,8 +42,9 @@ export default function FormInputControl({
   onBlur,
   errMessage = "",
   value,
-  formControlClassName = {},
+  formControlClassName = "",
   renderValue,
+  selectOptions,
   IconComponent,
 }: FormInputControlProps) {
   const error = errMessage.length > 0 && (
@@ -60,12 +54,7 @@ export default function FormInputControl({
   );
 
   let inputEle = (
-    <FormControl
-      sx={{
-        width: "100%",
-        ...formControlClassName,
-      }}
-    >
+    <FormControl className={`w-full ${formControlClassName}`}>
       {lableRender ? (
         lableRender()
       ) : (
@@ -133,6 +122,44 @@ export default function FormInputControl({
               </MenuItem>
             ))}
           </Select>
+        </FormControl>
+      );
+      break;
+    // case "checkbox": {
+    //   inputEle = (
+    //     <FormControl className={`w-full ${formControlClassName}`}>
+    //       <label>
+    //         <input
+    //           type="checkbox"
+    //           className={className}
+    //           name={name}
+    //           value={value}
+    //           onChange={(e) => {
+    //             const checkboxValue = e.target.value;
+    //             const checked = e.target.checked;
+    //             if (checked) {
+    //               onChange(checkboxValue);
+    //             }
+    //           }}
+    //         />
+    //         {value}
+    //       </label>
+    //     </FormControl>
+    //   );
+    // }
+    case "checkbox-group":
+      inputEle = (
+        <FormControl className={`w-full ${formControlClassName}`}>
+          {lableRender ? (
+            lableRender()
+          ) : (
+            <InputLabel sx={{ ...labelStyles, ...sxLabel }}>{label}</InputLabel>
+          )}
+          <SelectCheckboxInput
+            options={selectOptions}
+            values={value}
+            onChange={onChange}
+          />
         </FormControl>
       );
       break;
