@@ -1,10 +1,9 @@
-'use client'
+"use client";
 import React from "react";
 import FormMui from "@components/form/Form";
-import { validateOtp } from '../../services/otpService'
+import { validateOtp } from "../../services/otpService";
 
-
-export default function OTPForm({onNext, onBack}) {
+export default function OTPForm({ onNext, onBack }) {
   const [error, setError] = React.useState<string | null>(null);
   const inputSchema = [
     {
@@ -12,7 +11,7 @@ export default function OTPForm({onNext, onBack}) {
       type: "text",
       placeholder: "Mã OTP",
       label: "Nhập OTP",
-      sxLabel: { color: "black", padding: "0px 0px 4px 4px" },
+      customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
       required: true,
     },
   ];
@@ -33,7 +32,7 @@ export default function OTPForm({onNext, onBack}) {
       onClick: () => {
         setError(null);
         onBack();
-      }
+      },
     },
     {
       label: "Xác nhận",
@@ -51,12 +50,11 @@ export default function OTPForm({onNext, onBack}) {
     setError(null);
     try {
       const { otp } = data;
-      const flag = validateOtp(otp,'123456');
+      const flag = validateOtp(otp, "123456");
       if (!flag) {
         setError("OTP không hợp lệ");
         return;
-      }
-      else{
+      } else {
         onNext();
       }
     } catch (err) {

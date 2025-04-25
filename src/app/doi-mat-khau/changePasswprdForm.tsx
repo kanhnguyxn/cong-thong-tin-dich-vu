@@ -15,7 +15,7 @@ export default function ChangePasswordForm(props: any) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const newPasswordId = "matKhauMoi";
-  const formControlClassame = {
+  const formControlStyle = {
     // width: "100%",
     display: "flex",
     flexDirection: "row",
@@ -23,7 +23,7 @@ export default function ChangePasswordForm(props: any) {
     alignItems: "center",
     gap: "0.5rem",
   };
-  const sxLabel = {
+  const customeLabelStyle = {
     color: "black",
     display: "contents",
     maxWidth: "60%",
@@ -35,16 +35,16 @@ export default function ChangePasswordForm(props: any) {
       label: "Mật khẩu hiện tại:",
       placeholder: "Nhập mật khẩu hiện tại",
       required: true,
-      formControlClassName: { ...formControlClassame },
-      sxLabel: { ...sxLabel },
+      formControlStyle: { ...formControlStyle },
+      customeLabelStyle: { ...customeLabelStyle },
     },
     {
       name: newPasswordId,
       type: "text",
       placeholder: "Nhập mật khẩu mới",
       required: true,
-      formControlClassName: { ...formControlClassame },
-      sxLabel: { ...sxLabel },
+      formControlStyle: { ...formControlStyle },
+      customeLabelStyle: { ...customeLabelStyle },
       label: "Mật khẩu mới:",
     },
     {
@@ -53,8 +53,8 @@ export default function ChangePasswordForm(props: any) {
       label: "Nhập lại mật khẩu:",
       placeholder: "Xác nhận mật khẩu mới",
       required: true,
-      formControlClassName: { ...formControlClassame },
-      sxLabel: { ...sxLabel },
+      formControlStyle: { ...formControlStyle },
+      customeLabelStyle: { ...customeLabelStyle },
       validations: [
         {
           rule: (value: string, formData: any) =>
