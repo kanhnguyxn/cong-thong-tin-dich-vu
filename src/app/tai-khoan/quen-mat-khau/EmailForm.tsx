@@ -4,7 +4,7 @@ import React from "react";
 import FormMui from "@components/form/Form";
 import { isEmailExisted } from "src/app/services/otpService";
 
-export default function EmailForm({onNext}) {
+export default function EmailForm({ onNext }) {
   const [error, setError] = React.useState<string | null>(null);
   const inputSchema = [
     {
@@ -12,7 +12,7 @@ export default function EmailForm({onNext}) {
       type: "text",
       placeholder: "email",
       label: "Nhập email",
-      sxLabel: { color: "black", padding: "0px 0px 4px 4px" },
+      customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
       required: true,
       validations: [
         {
@@ -59,35 +59,33 @@ export default function EmailForm({onNext}) {
       },
     },
   ];
- const handleSubmit = (formData: any) => {
-      setError(null);
-     try{
-       const { email } = formData;
-       console.log("email", email);
-       const isExisted = isEmailExisted(email);
-       if (isExisted) {
-          onNext();
-       }
-       else{
-         setError('Email không tồn tại');
-       }
-     }
-     catch (error) {
-       console.log("error", error);
-       setError("Có lỗi xảy ra, vui lòng thử lại sau");
-     }
-   };
+  const handleSubmit = (formData: any) => {
+    setError(null);
+    try {
+      const { email } = formData;
+      console.log("email", email);
+      const isExisted = isEmailExisted(email);
+      if (isExisted) {
+        onNext();
+      } else {
+        setError("Email không tồn tại");
+      }
+    } catch (error) {
+      console.log("error", error);
+      setError("Có lỗi xảy ra, vui lòng thử lại sau");
+    }
+  };
 
   return (
     <div className="flex flex-col items-center gap-2">
-        <FormMui
-          inputSchema={inputSchema}
-          onSubmit={handleSubmit}
-          className="w-full max-w-sm flex flex-col gap-2 md:gap-3"
-          buttons={buttons}
-          buttonClassName="flex flex-row justify-around"
-          formErrMsg={error}
-        />
+      <FormMui
+        inputSchema={inputSchema}
+        onSubmit={handleSubmit}
+        className="w-full max-w-sm flex flex-col gap-2 md:gap-3"
+        buttons={buttons}
+        buttonClassName="flex flex-row justify-around"
+        formErrMsg={error}
+      />
     </div>
   );
 }
