@@ -13,6 +13,8 @@ export default function LoaiDonForm() {
         "Đơn xin thôi học",
         "Đơn đăng ký xác nhận sinh viên",
       ],
+      // giá trị mặc định
+      value: "Đơn xin nghỉ học",
       required: true,
       formControlStyle: {
         display: "flex ",
@@ -26,7 +28,7 @@ export default function LoaiDonForm() {
         display: "contents",
         fontWeight: 500,
       },
-      className: "rounded-none mb-0 !px-2 !py-2 ",
+      className: "rounded-none !mb-0 !px-2 !py-2 border-[var(--color-blue)] ",
     },
   ];
   const buttons = [
@@ -38,7 +40,8 @@ export default function LoaiDonForm() {
       sx: {
         backgroundColor: "var(--color-blue)",
         color: "white",
-        width: "40%",
+        width: "30%",
+        borderRadius: "15px",
       },
     },
   ];
@@ -47,7 +50,7 @@ export default function LoaiDonForm() {
       className="flex flex-col gap-4 justify-center items-center md:w-[50%] lg:w-[30%]"
       inputSchema={inputSchema}
       onSubmit={(formData) => {
-        console.log("formData", formData);
+        console.log("formData submit", formData);
       }}
       buttons={buttons}
       buttonClassName="flex flex-col w-full items-center "

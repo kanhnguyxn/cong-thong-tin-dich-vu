@@ -5,6 +5,7 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { StyledTextField, labelStyles } from "@styles/style_component";
 import PasswordInput from "./input/PasswordInput";
 import SelectCheckboxInput from "./input/SelectCheckBox";
+import SelectInput from "./input/selectInput";
 
 type TextFieldVariant = "filled" | "outlined" | "standard";
 
@@ -90,20 +91,23 @@ export default function FormInputControl({
   switch (type) {
     case "password":
       inputEle = (
-        <PasswordInput
-          id={name}
-          label={label}
-          variant={variant}
-          placeholder={placeholder}
-          value={value}
-          className={className}
-          onBlur={(
-            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-          ) => onBlur(e.target.value)}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-          ) => onChange(e.target.value)}
-        />
+        <>
+          <PasswordInput
+            id={name}
+            label={label}
+            variant={variant}
+            placeholder={placeholder}
+            value={value}
+            className={className}
+            onBlur={(
+              e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => onBlur(e.target.value)}
+            onChange={(
+              e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => onChange(e.target.value)}
+          />
+          {error}
+        </>
       );
       break;
     case "select":
@@ -116,17 +120,16 @@ export default function FormInputControl({
               {label}
             </InputLabel>
           )}
-          <select
-            name={name}
-            onChange={(e) => onChange(e.target.value)}
-            className={className}
-          >
-            {selectOptions.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+          <div className="flex flex-col">
+            <SelectInput
+              value={value}
+              className={className}
+              onChange={onChange}
+              onBlur={onBlur}
+              options={selectOptions}
+            />
+            {error}
+          </div>
         </FormControl>
       );
       break;

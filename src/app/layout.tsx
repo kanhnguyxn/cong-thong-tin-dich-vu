@@ -13,15 +13,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-    setIsLoggedIn(true);
-    setAccessToken(token);
-  }, [setIsLoggedIn, setAccessToken]);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("access_token");
+  //   if (!token) return;
+  //   setIsLoggedIn(true);
+  //   setAccessToken(token);
+  // }, [setIsLoggedIn, setAccessToken]);
 
   return (
     <html lang="vi">
