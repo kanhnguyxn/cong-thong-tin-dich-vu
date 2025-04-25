@@ -6,7 +6,7 @@ export const COMMON_STYLES = {
     subtitle: "text-[var(--color-blue)] uppercase font-bold mb-4 text-sm md:text-lg lg:text-xl",
   
     // Kiểu input chung
-    input: "w-full px-4 py-2 border mb-4 outline-none text-sm md:text-lg flex rounded-2xl",
+    input: "w-full px-4 py-2 border mb-4 outline-none text-sx sm:text-sm md:text-lg flex rounded-2xl",
     inputError: "outline outline-2 outline-red-500 border-red-500 border-white",
     inputFilled: " outline outline-2 outline-[var(--color-blue)] border-white",
     errorPlaceholder: "placeholder:text-red-500 placeholder: italic",
