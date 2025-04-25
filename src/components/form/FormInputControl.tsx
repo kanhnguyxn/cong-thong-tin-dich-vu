@@ -17,13 +17,13 @@ interface FormInputControlProps {
   name: string;
   label: string;
   lableRender?: () => JSX.Element;
-  sxLabel?: object;
+  customeLabelStyle?: object;
   variant?: TextFieldVariant;
   sx?: object;
   onBlur: (value: any) => void;
   errMessage?: string;
   value?: any;
-  formControlClassName?: string;
+  formControlStyle?: object;
   renderValue?: (value: any) => JSX.Element;
   IconComponent?: React.ElementType;
   selectOptions?: any[];
@@ -37,12 +37,12 @@ export default function FormInputControl({
   name,
   label,
   lableRender,
-  sxLabel,
+  customeLabelStyle,
   variant,
   onBlur,
   errMessage = "",
   value,
-  formControlClassName = "",
+  formControlStyle = {},
   renderValue,
   selectOptions,
   IconComponent,
@@ -54,11 +54,13 @@ export default function FormInputControl({
   );
 
   let inputEle = (
-    <FormControl className={`w-full ${formControlClassName}`}>
+    <FormControl sx={{ width: "100%", ...formControlStyle }}>
       {lableRender ? (
         lableRender()
       ) : (
-        <InputLabel sx={{ ...labelStyles, ...sxLabel }}>{label}</InputLabel>
+        <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
+          {label}
+        </InputLabel>
       )}
       <div className="flex flex-col w-full">
         <StyledTextField
@@ -106,11 +108,13 @@ export default function FormInputControl({
       break;
     case "select":
       inputEle = (
-        <FormControl className={`w-full ${formControlClassName}`}>
+        <FormControl sx={{ width: "100%", ...formControlStyle }}>
           {lableRender ? (
             lableRender()
           ) : (
-            <InputLabel sx={{ ...labelStyles, ...sxLabel }}>{label}</InputLabel>
+            <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
+              {label}
+            </InputLabel>
           )}
           <select
             name={name}
@@ -150,11 +154,13 @@ export default function FormInputControl({
     // }
     case "checkbox-group":
       inputEle = (
-        <FormControl className={`w-full ${formControlClassName}`}>
+        <FormControl sx={{ width: "100%", ...formControlStyle }}>
           {lableRender ? (
             lableRender()
           ) : (
-            <InputLabel sx={{ ...labelStyles, ...sxLabel }}>{label}</InputLabel>
+            <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
+              {label}
+            </InputLabel>
           )}
           <SelectCheckboxInput
             options={selectOptions}
@@ -167,11 +173,13 @@ export default function FormInputControl({
       break;
     case "radio":
       inputEle = (
-        <FormControl className={`w-full ${formControlClassName}`}>
+        <FormControl sx={{ width: "100%", ...formControlStyle }}>
           {lableRender ? (
             lableRender()
           ) : (
-            <InputLabel sx={{ ...labelStyles, ...sxLabel }}>{label}</InputLabel>
+            <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
+              {label}
+            </InputLabel>
           )}
           {selectOptions.map((option, index) => (
             <div key={index} className="flex items-center gap-2">
