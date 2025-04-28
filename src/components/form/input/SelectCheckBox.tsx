@@ -25,10 +25,9 @@ export default function SelectCheckboxInput({
   return (
     <>
       {options.map((option: any, index: number) => (
-        <div key={index} className="flex items-center gap-2">
+        <div key={index} className={`flex items-center gap-2 ${className}`}>
           <input
-            // className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] rounded-md checked:appearance-auto"
-            className={className}
+            className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] rounded-md checked:appearance-auto"
             type="checkbox"
             value={option}
             checked={selectedValues.includes(option)}

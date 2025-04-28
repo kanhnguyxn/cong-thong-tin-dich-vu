@@ -1,10 +1,10 @@
-import { TextField, Theme } from "@mui/material";
+import { TextField } from "@mui/material";
 import styled from "styled-components";
 
 export const StyledTextField = styled(TextField)({
   "& .MuiInputBase-root": {
     width: "100%", // w-full
-    border: "1px solid #e5e7eb", // border-gray-200
+    // border: "1px solid #e5e7eb", // border-gray-200
     transition: "all 0.2s", // transition-all duration-200
     // borderRadius: "1rem", // rounded-2xl
     fontSize: "12px", // default: text-sm

@@ -1,23 +1,28 @@
 "use client";
 import FormMui from "@components/form/Form";
+import { dataDonDangKy } from "src/app/services/dataDonDangKy";
 
-export default function LoaiDonForm() {
+interface LoaiDonFormProps {
+  onSubmitMaDon: (maDon: string) => void;
+}
+export default function LoaiDonForm({ onSubmitMaDon }: LoaiDonFormProps) {
+  // Chuẩn bị dữ liệu đơn đăng ký
+  const donDangKy = dataDonDangKy.map((item) => ({
+    maDon: item.maDon,
+    tenDDK: item.tenDDK,
+  }));
+
+  // Khai báo input schema
   const inputSchema = [
     {
       name: "loaiDon",
       label: "Loại đơn:",
       type: "select",
-      selectOptions: [
-        "Đơn xin nghỉ học",
-        "Đơn xin bảo lưu",
-        "Đơn xin thôi học",
-        "Đơn đăng ký xác nhận sinh viên",
-      ],
-      // giá trị mặc định
-      value: "Đơn xin nghỉ học",
+      selectOptions: donDangKy.map((item) => item.tenDDK),
+      value: donDangKy[0]?.tenDDK || "",
       required: true,
       formControlStyle: {
-        display: "flex ",
+        display: "flex",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
@@ -28,9 +33,11 @@ export default function LoaiDonForm() {
         display: "contents",
         fontWeight: 500,
       },
-      className: "rounded-none !mb-0 !px-2 !py-2 border-[var(--color-blue)] ",
+      className: "rounded-none !mb-0 !px-2 !py-2 border-[var(--color-blue)]",
     },
   ];
+
+  // Button schema
   const buttons = [
     {
       label: "Tiếp tục",
@@ -45,15 +52,26 @@ export default function LoaiDonForm() {
       },
     },
   ];
+
+  // Xử lý submit form
+  const handleSubmit = (formData: any) => {
+    const selectedDon = donDangKy.find(
+      (item) => item.tenDDK === formData.loaiDon
+    );
+    if (!selectedDon) {
+      console.error("Không tìm thấy đơn đăng ký tương ứng.");
+      return;
+    }
+    onSubmitMaDon(selectedDon.maDon);
+  };
+
   return (
     <FormMui
       className="flex flex-col gap-4 justify-center items-center md:w-[50%] lg:w-[30%]"
       inputSchema={inputSchema}
-      onSubmit={(formData) => {
-        console.log("formData submit", formData);
-      }}
+      onSubmit={handleSubmit}
       buttons={buttons}
-      buttonClassName="flex flex-col w-full items-center "
-    ></FormMui>
+      buttonClassName="flex flex-col w-full items-center"
+    />
   );
 }
