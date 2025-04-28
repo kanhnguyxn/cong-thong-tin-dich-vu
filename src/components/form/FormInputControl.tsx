@@ -185,10 +185,9 @@ export default function FormInputControl({
             </InputLabel>
           )}
           {selectOptions.map((option, index) => (
-            <div key={index} className="flex items-center gap-2">
+            <div key={index} className={`flex items-center gap-2 ${className}`}>
               <input
-                // className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] checked:appearance-auto rounded-full"
-                className={className}
+                className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] checked:appearance-auto rounded-full"
                 name={name}
                 type="radio"
                 value={option}
