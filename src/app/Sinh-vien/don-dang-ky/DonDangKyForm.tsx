@@ -10,6 +10,7 @@ import {
   customeLabelStyle,
   formControlStyle,
   typeClassNameMap,
+  buttonStyles,
 } from "./styles";
 
 interface DonDangKyFormProps {
@@ -57,18 +58,13 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
       type: "submit",
       variants: "contained",
       size: "large",
-      sx: {
-        backgroundColor: "var(--color-blue)",
-        color: "white",
-        width: "30%",
-        borderRadius: "15px",
-      },
+      sx: { ...buttonStyles },
     },
   ];
 
   return (
     <Container
-      className="w-full flex flex-col justify-center items-center gap-2 border-2"
+      className="size-fit px-8 py-6 mx-4 my-5 md:mx-0 md:min-w-[60%] lg:min-w-[50%] md:max-w-[80%]"
       shadow
     >
       <h6 className="w-full text-lg md:text-xl lg:text-2xl font-bold uppercase">
@@ -81,6 +77,7 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
           console.log("formData", formData);
         }}
         buttons={buttons}
+        buttonClassName="w-full"
       />
     </Container>
   );

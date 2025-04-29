@@ -52,6 +52,23 @@ export const dataDonDangKy = [
         ],
         selectOptions: ["Mồ côi", "Không mồ coi"],
       },
+      {
+        name: "field3",
+        type: "radio",
+        label: [
+          "Muc dich xin cap",
+          "Nếu ngoài các mục đích dưới đây, SV phải đến trực tiếp tại Phòng Công tác sinh viên để đăng ký.",
+        ],
+        selectOptions: [
+          "Giảm lệ phí thi Tin học/Ngoại ngữ",
+          "Xin tạm hoãn nghĩa vụ quân sự tại địa phương",
+          "Mẫu 01/TDSV - Làm hồ sơ vay vốn",
+          "Mẫu 41 - Làm hồ sơ hưởng ưu đãi cho người có công cách mạng",
+          "Giảm trừ thuế thu nhập cá nhân cho phụ huynh; Ứng tuyển học bổng của Hội khuyến học, học bổng bậc Sau Đại học; Đăng ký ở Ký túc xá hoặc tạm trú tại địa phương; Xin việc làm thêm.",
+          "Hoàn thiện hồ sơ đăng ký Hiệp hội Kế toán Công chứng Anh quốc (ACCA)",
+          "Nộp cho cơ quan quản lý (Đối với Sinh viên hệ Vừa làm Vừa học)",
+        ],
+      },
     ],
   },
 ];
