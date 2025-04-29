@@ -157,47 +157,59 @@ export default function FormInputControl({
     // }
     case "checkbox-group":
       inputEle = (
-        <FormControl sx={{ width: "100%", ...formControlStyle }}>
-          {lableRender ? (
-            lableRender()
-          ) : (
-            <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
-              {label}
-            </InputLabel>
-          )}
-          <SelectCheckboxInput
-            options={selectOptions}
-            values={value}
-            onChange={onChange}
-            className={className}
-          />
-        </FormControl>
+        <>
+          <FormControl sx={{ width: "100%", ...formControlStyle }}>
+            {lableRender ? (
+              lableRender()
+            ) : (
+              <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
+                {label}
+              </InputLabel>
+            )}
+            <SelectCheckboxInput
+              options={selectOptions}
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+              className={className}
+            />
+          </FormControl>
+          {error}
+        </>
       );
       break;
     case "radio":
       inputEle = (
-        <FormControl sx={{ width: "100%", ...formControlStyle }}>
-          {lableRender ? (
-            lableRender()
-          ) : (
-            <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
-              {label}
-            </InputLabel>
-          )}
-          {selectOptions.map((option, index) => (
-            <div key={index} className={`flex items-center gap-2 ${className}`}>
-              <input
-                className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] checked:appearance-auto rounded-full"
-                name={name}
-                type="radio"
-                value={option}
-                onChange={(e) => onChange(e.target.value)}
-              />
-              <label>{option}</label>
-            </div>
-          ))}
-        </FormControl>
+        <>
+          <FormControl sx={{ width: "100%", ...formControlStyle }}>
+            {lableRender ? (
+              lableRender()
+            ) : (
+              <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
+                {label}
+              </InputLabel>
+            )}
+            {selectOptions.map((option, index) => (
+              <div
+                key={index}
+                className={`flex items-center gap-2 ${className}`}
+              >
+                <input
+                  className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] checked:appearance-auto rounded-full"
+                  name={name}
+                  type="radio"
+                  value={option}
+                  onChange={(e) => onChange(e.target.value)}
+                  onBlur={(e) => onChange(e.target.value)}
+                />
+                <label>{option}</label>
+              </div>
+            ))}
+          </FormControl>
+          {error}
+        </>
       );
+      break;
 
     default:
       break;

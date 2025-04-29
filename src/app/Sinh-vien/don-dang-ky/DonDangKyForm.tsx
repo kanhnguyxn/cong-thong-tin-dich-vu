@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { use, useEffect } from "react";
 import FormMui from "@components/form/Form";
 import { InputLabel } from "@mui/material";
 import { dataDonDangKy } from "src/app/services/dataDonDangKy";
@@ -38,11 +38,12 @@ const labelRebder = (label: string | string[]) => {
 };
 
 export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
+  const [formData, setFormData] = React.useState<any>([]);
   const donDangKy = dataDonDangKy.find(
     (item) => item.maDon.toString().trim() === maDonDangKy.trim()
   );
 
-  const inputSchema = (donDangKy?.thongtinChitiet || []).map((item) => ({
+  const inputSchema = (donDangKy?.thongtinChitiet || []).map((item: any) => ({
     ...item,
     label: labelRebder(item.label),
     formControlStyle,
@@ -50,7 +51,6 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
     className: typeClassNameMap[item.type] || "",
     variant: "standard",
   }));
-  // console.log("inputSchema", inputSchema);
 
   const buttons = [
     {

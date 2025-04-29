@@ -11,6 +11,7 @@ export const dataDonDangKy = [
         type: "checkbox-group",
         label: "Học kỳ:",
         selectOptions: ["Học kỳ 1", "Học kỳ 2", "Toàn khóa"],
+        required: true,
       },
       // kiểu input
       {
@@ -18,6 +19,7 @@ export const dataDonDangKy = [
         type: "text",
         label: "Năm học:",
         placeholder: "Ví dụ: 2024-2024",
+        required: true,
       },
       // checkbox
       {
@@ -25,6 +27,7 @@ export const dataDonDangKy = [
         type: "checkbox-group",
         label: "Ngôn ngữ:",
         selectOptions: ["Tiếng Việt", "Tiếng Anh"],
+        required: true,
       },
     ],
   },
