@@ -1,4 +1,9 @@
+'use client'
+import KtraDonDangKyForm from "./ktraDonDangKyForm";
 export default function TrangCaNhanPage() {
+  const handleChange = (maDon: string) => {
+    console.log("Mã đơn đã chọn:", maDon);
+  };
   return (
     <div className="flex flex-col w-full items-center">
       <div className="border-b-2 border-b-[var(--color-gray-fill)] w-full p-3 flex justify-between sticky  top-[234px] md:top-[121px] bg-white z-40">
@@ -6,6 +11,7 @@ export default function TrangCaNhanPage() {
           Trang cá nhân
         </h3>
       </div>
+      <KtraDonDangKyForm onChange={handleChange} />
     </div>
   );
 }
