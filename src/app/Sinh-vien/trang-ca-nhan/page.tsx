@@ -1,8 +1,12 @@
-'use client'
+"use client";
 import KtraDonDangKyForm from "./ktraDonDangKyForm";
+import DonDaDangKyTable from "./donDaDangKyTable";
+import React from "react";
 export default function TrangCaNhanPage() {
+  const [madon, setMadon] = React.useState<string>("");
   const handleChange = (maDon: string) => {
-    console.log("Mã đơn đã chọn:", maDon);
+    setMadon(maDon);
+    console.log(maDon);
   };
   return (
     <div className="flex flex-col w-full items-center">
@@ -12,6 +16,7 @@ export default function TrangCaNhanPage() {
         </h3>
       </div>
       <KtraDonDangKyForm onChange={handleChange} />
+      <DonDaDangKyTable madon={madon} />
     </div>
   );
 }

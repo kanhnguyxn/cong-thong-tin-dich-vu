@@ -11,12 +11,17 @@ export default function KtraDonDangKyForm({ onChange }) {
   }));
 
   const handleChange = (e: any) => {
-    const selectedDon = donDangKy.find((item) => item.maDon === e.target.value);
-    if (selectedDon) onChange(selectedDon.maDon);
+    const value = e.target.value;
+    if (value === "all") {
+      onChange("all");
+    } else {
+      const selectedDon = donDangKy.find((item) => item.maDon === value);
+      if (selectedDon) onChange(selectedDon.maDon);
+    }
   };
 
   return (
-    <Container className="mt-6 mx-6" shadow>
+    <Container className="w-full md: max-w-[80%] my-6 " shadow>
       <h6 className="uppercase text-[var(--color-blue)] w-full text-lg md:text-xl lg:text-2xl font-bold mb-4">
         Đơn Đăng ký
       </h6>
@@ -34,9 +39,10 @@ export default function KtraDonDangKyForm({ onChange }) {
             Loại đơn:
           </InputLabel>
           <select
-            onChange={handleChange}
+            onClick={handleChange}
             className="w-full max-w-[60%] h-10 border border-[var(--color-blue)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
+            <option value="all">Tất cả</option>
             {donDangKy.map((item) => (
               <option
                 key={item.maDon}
