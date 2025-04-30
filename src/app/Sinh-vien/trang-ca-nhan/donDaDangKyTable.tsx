@@ -1,14 +1,15 @@
 import CustomTable from "@components/Table";
 import { dataDonDangKyCT } from "src/app/services/dataDonDangKyCT";
 import { Container } from "@components/Container";
+import { text } from "stream/consumers";
 
 export default function DonDaDangKyTable({ madon }: { madon: string }) {
   const columns = [
     { id: "stt", label: "STT", width: "5ch" },
     { id: "tenDon", label: "Tên đơn" },
     { id: "thoiGian", label: "Thời gian", width: "12ch" },
-    { id: "donViThucHien", label: "Đơn vị thực hiện", width: "16ch" },
-    { id: "trangThai", label: "Trạng thái", width: "12ch" },
+    { id: "donViThucHien", label: "Đơn vị thực hiện", width: "20ch" },
+    { id: "trangThai", label: "Trạng thái", width: "15ch" },
     { id: "ghiChu", label: "Ghi chú", width: "20ch" },
   ];
   //   neu dataDonDangKyCT khong co se hien trong
@@ -20,7 +21,14 @@ export default function DonDaDangKyTable({ madon }: { madon: string }) {
       return {
         textAlign: "center",
         color: row.trangThai === "Đã xử lý" ? "green" : "red",
+        textTransform: "uppercase",
       };
+    }
+    if (columnId === "donViThucHien") {
+      return { textAlign: "center", textTransform: "uppercase" };
+    }
+    if (columnId === "tenDon") {
+      return { textAlign: "left" };
     }
 
     return { textAlign: "center" };
