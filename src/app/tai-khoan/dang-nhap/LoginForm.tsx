@@ -1,16 +1,18 @@
 "use client";
 
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { login } from "@features/authSlide";
+import type { AppDispatch } from "@features/store";
 
-import { AuthContext } from "@context/AuthContext";
 import FormMui from "@components/form/Form";
-import { login } from "../authApi";
+import { loginRequest } from "../../services/auth";
 
 export default function LoginForm() {
-  const navigate = useNavigate();
+  const navigate = useRouter().push;
+  const dispatch = useDispatch<AppDispatch>();
   const [error, setError] = React.useState<string | null>(null);
-  const { setIsLoggedIn, setAccessToken } = useContext(AuthContext);
 
   const inputSchema = [
     {
@@ -60,13 +62,11 @@ export default function LoginForm() {
     const { username, password } = formData;
 
     try {
-      const user = await login({ email: username, password });
-      // Lưu token
-      localStorage.setItem("access_token", user.accessToken);
-      setAccessToken(user.accessToken);
-      setIsLoggedIn(true);
+      const data = await loginRequest(username, password);
 
-      const userType = user.userType?.trim().toLowerCase();
+      dispatch(login(data.accessToken));
+
+      const userType = data.userType?.trim().toLowerCase();
 
       const redirectMap: Record<string, string> = {
         student: "/sinh-vien/gioi-thieu",

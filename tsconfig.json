@@ -37,6 +37,9 @@
       "@context/*": [
         "src/context/*"
       ],
+      "@features/*": [
+        "src/features/*"
+      ],
     },
     "lib": [
       "dom",
