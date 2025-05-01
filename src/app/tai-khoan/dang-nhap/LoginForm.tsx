@@ -5,9 +5,12 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { login } from "@features/authSlide";
 import type { AppDispatch } from "@features/store";
+import Link from "next/link";
+import { ThemeProvider } from "@mui/material/styles";
 
 import FormMui from "@components/form/Form";
 import { loginRequest } from "../../services/auth";
+import { customTheme } from "@styles/style_component";
 
 export default function LoginForm() {
   const navigate = useRouter().push;
@@ -31,21 +34,6 @@ export default function LoginForm() {
 
   const buttons = [
     {
-      label: "Quên mật khẩu?",
-      type: "button",
-      variants: "text",
-      size: "small",
-      href: "tai-khoan/quen-mat-khau",
-      onClick: () => console.log("Quên mật khẩu"),
-      sx: {
-        textAlign: "start",
-        textTransform: "capitalize",
-        placeSelf: "start",
-        color: "var(--color-blue)",
-        fontWeight: 500,
-      },
-    },
-    {
       label: "Đăng nhập",
       type: "submit",
       variants: "contained",
@@ -53,6 +41,8 @@ export default function LoginForm() {
       sx: {
         backgroundColor: "var(--color-blue)",
         color: "white",
+        width: "40%",
+        paddingTop: "5px",
       },
     },
   ];
@@ -84,9 +74,17 @@ export default function LoginForm() {
       setError(err.message || "Lỗi kết nối đến máy chủ");
     }
   };
+  const link = () => (
+    <Link
+      href="./quen-mat-khau"
+      className="text-left text-[var(--color-blue)] text-xs md:text-sm"
+    >
+      Quên mật khẩu?
+    </Link>
+  );
 
   return (
-    <div className="flex flex-col items-center">
+    <ThemeProvider theme={customTheme()}>
       <FormMui
         inputSchema={inputSchema}
         onSubmit={handleSubmit}
@@ -94,7 +92,8 @@ export default function LoginForm() {
         buttons={buttons}
         buttonClassName="flex flex-col w-full justify-center items-center mt-[-10px]"
         formErrMsg={error}
+        renderLink={link}
       />
-    </div>
+    </ThemeProvider>
   );
 }

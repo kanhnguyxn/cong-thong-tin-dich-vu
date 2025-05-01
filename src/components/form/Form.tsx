@@ -9,20 +9,20 @@ interface FormProps {
   className?: string;
   inputSchema: Array<any>;
   onSubmit: (formData: Object) => void;
-  inputClassName?: string;
   formErrMsg?: string;
   buttons?: Array<any>;
   buttonClassName?: string;
+  renderLink?: () => JSX.Element;
 }
 
 export default function FormMui({
   inputSchema,
   onSubmit,
   className,
-  inputClassName = "",
   formErrMsg = "",
   buttons = [],
   buttonClassName = "",
+  renderLink = () => <></>,
   ...rest
 }: FormProps) {
   const [formData, setFormData] = useState({});
@@ -132,12 +132,13 @@ export default function FormMui({
             onBlur={(value: any) => handleBlur(field, value)}
             errMessage={errors[name]}
             name={name}
-            className={`${COMMON_STYLES.input} ${inputClassName} ${className} `}
+            className={`${COMMON_STYLES.input} ${className} `}
             label={label}
             {...rest}
           />
         );
       })}
+      {renderLink && <>{renderLink()}</>}
 
       {/* có nhiều button hoặc 1 */}
       {buttons.length > 0 && (
