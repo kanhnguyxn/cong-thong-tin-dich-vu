@@ -9,7 +9,7 @@ import Link from "next/link";
 import { ThemeProvider } from "@mui/material/styles";
 
 import FormMui from "@components/form/Form";
-import { loginRequest } from "../../services/auth";
+import { loginRequest } from "../../api/authAPI";
 import { customTheme } from "@styles/style_component";
 
 export default function LoginForm() {
@@ -50,6 +50,7 @@ export default function LoginForm() {
   const handleSubmit = async (formData: Record<string, string>) => {
     setError(null);
     const { username, password } = formData;
+    console.log("formData", formData);
 
     try {
       const data = await loginRequest(username, password);
