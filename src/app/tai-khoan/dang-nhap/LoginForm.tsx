@@ -9,7 +9,7 @@ import Link from "next/link";
 import { ThemeProvider } from "@mui/material/styles";
 
 import FormMui from "@components/form/Form";
-import { loginRequest } from "../../api/authAPI";
+import { loginRequest } from "../../services/auth";
 import { customTheme } from "@styles/style_component";
 
 export default function LoginForm() {
