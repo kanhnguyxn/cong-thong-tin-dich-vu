@@ -2,9 +2,9 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { login } from "@features/authSlide";
-import type { AppDispatch } from "@features/store";
+
+// import { login } from "@features/authSlide";
+
 import Link from "next/link";
 import { ThemeProvider } from "@mui/material/styles";
 
@@ -14,7 +14,7 @@ import { customTheme } from "@styles/style_component";
 
 export default function LoginForm() {
   const navigate = useRouter().push;
-  const dispatch = useDispatch<AppDispatch>();
+
   const [error, setError] = React.useState<string | null>(null);
 
   const inputSchema = [
@@ -55,7 +55,10 @@ export default function LoginForm() {
     try {
       const data = await loginRequest(username, password);
 
-      dispatch(login(data.accessToken));
+      //  luu vao cookie
+      const { accessToken, refreshToken } = data;
+      const cookie = `access=${accessToken}; refresh=${refreshToken}; path=/; max-age=3600`;
+      document.cookie = cookie;
 
       const userType = data.userType?.trim().toLowerCase();
 
