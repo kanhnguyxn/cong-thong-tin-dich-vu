@@ -1,8 +1,9 @@
-import { Button, colors } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 type ButtonProps = {
   variants?: "text" | "outlined" | "contained";
   disabled?: boolean;
+  loading?: boolean;
   size?: "small" | "medium" | "large";
   href?: string;
   className?: string;
@@ -15,6 +16,7 @@ type ButtonProps = {
 export default function CustomButton({
   variants = "contained",
   disabled = false,
+  loading = false,
   size = "medium",
   sx = {},
   href,
@@ -25,20 +27,22 @@ export default function CustomButton({
 }: ButtonProps) {
   const defaultSx = {
     fontSize: {
-      xs: "12px", // ~text-base
-      sm: "14px", // ~text-xl
-      md: "16px", // ~text-2xl
-      lg: "18px", // ~text-3xl
+      xs: "12px",
+      sm: "14px",
+      md: "16px",
+      lg: "18px",
     },
     color: "white",
-    padding: "5px 0px",
+    padding: "5px 12px",
     width: "fit-content",
     fontWeight: 600,
-    borderRadius: "9999px", // rounded-full
+    borderRadius: "9999px",
     textTransform: "none",
+    display: "flex",
+    alignItems: "center",
+
     "&:focus": {
       outline: "none",
-      boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.5)", // focus:shadow-outline
     },
     ...sx,
   };
@@ -47,7 +51,7 @@ export default function CustomButton({
     <Button
       variant={variants}
       LinkComponent={href ? "a" : undefined}
-      disabled={disabled}
+      disabled={disabled || loading}
       size={size}
       href={href}
       className={className}
@@ -56,6 +60,7 @@ export default function CustomButton({
       sx={defaultSx}
     >
       {label}
+      {loading && <CircularProgress size={16} color="inherit" />}
     </Button>
   );
 }
