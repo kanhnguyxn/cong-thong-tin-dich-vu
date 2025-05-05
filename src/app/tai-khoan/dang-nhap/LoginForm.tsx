@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 // import { login } from "@features/authSlide";
@@ -13,6 +13,7 @@ import { loginRequest } from "../../services/auth";
 import { customTheme } from "@styles/style_component";
 
 export default function LoginForm() {
+  const [loading, setLoading] = useState(false);
   const navigate = useRouter().push;
 
   const [error, setError] = React.useState<string | null>(null);
@@ -38,10 +39,11 @@ export default function LoginForm() {
       type: "submit",
       variants: "contained",
       size: "large",
+      loading: loading,
       sx: {
         backgroundColor: "var(--color-blue)",
         color: "white",
-        width: "40%",
+        width: "45%",
         paddingTop: "5px",
       },
     },
@@ -49,6 +51,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (formData: Record<string, string>) => {
     setError(null);
+    setLoading(true);
     const { username, password } = formData;
     console.log("formData", formData);
 
@@ -80,6 +83,7 @@ export default function LoginForm() {
       console.error("Lỗi khi gọi API login:", err);
       setError(err.message || "Lỗi kết nối đến máy chủ");
     }
+    setLoading(false);
   };
   const link = () => (
     <Link
