@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../features/store";
+
 import Footer from "@components/Footer";
 import Header from "@components/header/Header";
 
@@ -13,8 +12,6 @@ export default function ReduxWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-
   return (
     <div
       className={`flex flex-col min-h-screen max-w-full ${
