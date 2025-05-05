@@ -57,8 +57,11 @@ export default function LoginForm() {
 
       //  luu vao cookie
       const { accessToken, refreshToken } = data;
-      const cookie = `access=${accessToken}; refresh=${refreshToken}; path=/; max-age=3600`;
-      document.cookie = cookie;
+      // Lưu accessToken sống 2 giờ
+      document.cookie = `access=${accessToken}; path=/; max-age=7200`;
+
+      // Lưu refreshToken sống 7 ngày (604800 giây)
+      document.cookie = `refresh=${refreshToken}; path=/; max-age=604800`;
 
       const userType = data.userType?.trim().toLowerCase();
 
