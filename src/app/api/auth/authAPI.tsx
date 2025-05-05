@@ -8,11 +8,9 @@ export const loginRequest = async (username: string, password: string) => {
     },
     body: JSON.stringify({ username, password }),
   });
-  // console.log("res", res);
-  // console.log("res", res.status);
 
   const resData = await res.json();
-  // console.log("resData", resData);
+
   switch (res.status) {
     case 200:
       return resData;
