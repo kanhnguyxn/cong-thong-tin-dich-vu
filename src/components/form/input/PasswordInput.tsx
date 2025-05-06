@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { StyledTextField } from "@styles/style_component";
 import ICONS from "@components/icons";
-import { InputAdornment } from "@mui/material";
+import { IconButton, InputAdornment } from "@mui/material";
 
 export default function PasswordInput({ ...props }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,14 +14,14 @@ export default function PasswordInput({ ...props }) {
       slotProps={{
         input: {
           endAdornment: (
-            <InputAdornment
-              component={"button"}
-              onClick={() => {
-                setShowPassword(!showPassword);
-              }}
-              position="end"
-            >
-              {showPassword ? ICONS.VISUALITY_ON : ICONS.VISUALITY_OFF}
+            <InputAdornment position="end" sx={{ marginRight: "10px" }}>
+              <IconButton
+                onClick={() => setShowPassword((prev) => !prev)}
+                edge="end"
+                tabIndex={-1} // khong focus vao button
+              >
+                {showPassword ? ICONS.VISUALITY_ON : ICONS.VISUALITY_OFF}
+              </IconButton>
             </InputAdornment>
           ),
         },
