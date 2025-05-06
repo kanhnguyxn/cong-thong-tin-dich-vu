@@ -1,11 +1,5 @@
-import {Logo} from "@components/AppBar";
-import {AvatarMenu} from "@components/AppBar";
-export default function Home() {
-  return (<>
-      {/* <h1 className="text-3xl font-bold mb-6">Trang Chủ</h1>
-      <p className="mb-4">Chào mừng đến với Cổng thông tin dịch vụ</p> */}
-      {/* <Logo></Logo> */}
-      {/* <AvatarMenu></AvatarMenu> */}
-      </>
-  );
+import { redirect } from "next/navigation";
+
+export default function HomePage() {
+  redirect("/tai-khoan/dang-nhap");
 }
