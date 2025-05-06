@@ -9,8 +9,11 @@ export default async function middleware(req : NextRequest) {
   const cookiesObj = await cookies();
   const acesssToken =  (cookiesObj).get("access")?.value;
   const refreshToken = (cookiesObj).get("refresh")?.value;
+  console.log("acesssToken", acesssToken);
+  console.log("refreshToken", refreshToken);
+ 
   // 2.1. Nếu thiếu token chuyển về trang đăng nhập.
-  if(!acesssToken || !refreshToken) {
+  if(!refreshToken) {
     return NextResponse.redirect(new URL("/tai-khoan/dang-nhap", req.url));
   }
   // 2.2. Nếu có token cho phép truy cập vào trang.
@@ -19,5 +22,5 @@ export default async function middleware(req : NextRequest) {
 
 // Middleware sẽ không chạy trên các đường dẫn sau:
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|api|tai-khoan|assets).*)'],
+  matcher: ['/((?!_next/static|_next/image|api|tai-khoan|assets|styles).*)'],
 }

@@ -53,11 +53,11 @@ export default function LoginForm() {
     setError(null);
     setLoading(true);
     const { username, password } = formData;
-    console.log("formData", formData);
 
     try {
       const data = await loginRequest(username, password);
 
+      console.log("data", data);
       //  luu vao cookie
       const { accessToken, refreshToken } = data;
       // Lưu accessToken sống 2 giờ
