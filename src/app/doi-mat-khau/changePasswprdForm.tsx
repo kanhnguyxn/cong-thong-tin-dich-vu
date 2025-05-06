@@ -95,10 +95,10 @@ export default function ChangePasswordForm(props: any) {
         }}
         children={
           <>
-            <p className="flex font-bold justify-center pb-2 text-sm md:text-base lg:text-lg items-end">
+            <span className="flex font-bold justify-center pb-2 text-sm md:text-base lg:text-lg items-end">
               <Icon>{ICONS.INFO}</Icon>
               <span className="ml-1">Quy định đặt mật khẩu</span>
-            </p>
+            </span>
             <ol className="list-disc pl-5">
               <li>Phải có ít nhất một chữ cái viết hoa</li>
               <li>Phải có ít nhất một chữ cái viết thường</li>
@@ -156,9 +156,9 @@ export default function ChangePasswordForm(props: any) {
               },
             }}
           >
-            <p className="text-center uppercase font-bold">
+            <span className="text-center uppercase font-bold">
               Đổi mật khẩu thành công
-            </p>
+            </span>
             <Icon
               sx={{
                 width: {
