@@ -12,10 +12,9 @@ const infoHeader = {
   unit: "Trường Đại học Kinh Tế - Đại học Đà Nẵng",
   system: "Cổng thông tin - dich vụ",
   background_image: "/assets/images/background_header.svg",
-  avatarUrl: "/assets/icons/avatar.svg",
 };
 
-const Header = (userType: { userType: string }) => {
+const Header = () => {
   return (
     <AppBar
       position="static"
@@ -40,7 +39,7 @@ const Header = (userType: { userType: string }) => {
             className="text-md md:text-lg lg:text-2xl text-[var(--color-orange)]"
           />
           {/* nếu chưa đăng nhập sẽ không hiện avtar */}
-          <AvatarMenu avatarUrl={infoHeader.avatarUrl} />
+          <AvatarMenu />
         </Box>
         <Navbar />
       </Toolbar>

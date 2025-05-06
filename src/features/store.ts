@@ -3,7 +3,7 @@ import authReducer from './authSlide';
 
 const store = configureStore({
   reducer: {
-    auth: authReducer,
+    user: authReducer,
   },
 });
 
