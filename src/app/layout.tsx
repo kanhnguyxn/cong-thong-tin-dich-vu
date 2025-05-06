@@ -3,8 +3,6 @@ import React from "react";
 import "@styles/globals.css";
 
 import { Provider } from "react-redux";
-
-import ReduxWrapper from "../app/reduxWrapper";
 import store from "../features/store";
 
 export default function RootLayout({
