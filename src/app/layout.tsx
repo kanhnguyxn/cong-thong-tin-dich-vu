@@ -15,9 +15,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body className="flex flex-col min-h-screen max-w-full">
-        <Provider store={store}>
-          <ReduxWrapper>{children}</ReduxWrapper>
-        </Provider>
+        <Provider store={store}>{children}</Provider>
       </body>
     </html>
   );
