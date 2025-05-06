@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { TextField, Theme } from "@mui/material";
 import { createTheme, useTheme } from "@mui/material/styles";
 import styled from "styled-components";
 
@@ -23,8 +23,7 @@ export const StyledTextField = styled(TextField)({
     padding: "0.5rem 1rem", // px-4 py-2
   },
 });
-export const customTheme = () => {
-  const outerTheme = useTheme();
+export const customTheme = (outerTheme: Theme) => {
   return createTheme({
     palette: {
       mode: outerTheme.palette.mode,
