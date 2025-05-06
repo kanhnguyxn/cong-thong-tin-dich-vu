@@ -6,11 +6,9 @@ import { useRouter } from "next/navigation";
 // import { login } from "@features/authSlide";
 
 import Link from "next/link";
-import { ThemeProvider } from "@mui/material/styles";
 
 import FormMui from "@components/form/Form";
 import { loginRequest } from "../../services/auth";
-import { customTheme } from "@styles/style_component";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -95,16 +93,14 @@ export default function LoginForm() {
   );
 
   return (
-    <ThemeProvider theme={customTheme()}>
-      <FormMui
-        inputSchema={inputSchema}
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm flex flex-col gap-2 md:gap-3"
-        buttons={buttons}
-        buttonClassName="flex flex-col w-full justify-center items-center mt-[-10px]"
-        formErrMsg={error}
-        renderLink={link}
-      />
-    </ThemeProvider>
+    <FormMui
+      inputSchema={inputSchema}
+      onSubmit={handleSubmit}
+      className="w-full max-w-sm flex flex-col gap-2 md:gap-3"
+      buttons={buttons}
+      buttonClassName="flex flex-col w-full justify-center items-center mt-[-10px]"
+      formErrMsg={error}
+      renderLink={link}
+    />
   );
 }
