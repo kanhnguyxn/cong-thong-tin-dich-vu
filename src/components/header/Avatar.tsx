@@ -7,6 +7,8 @@ import { Tooltip, IconButton, Avatar, Menu, MenuItem } from "@mui/material";
 import Link from "next/link";
 import styled from "styled-components";
 
+import Logout from "./Logout";
+
 const CustomMenuItem = styled(MenuItem)`
   font-size: 16px;
   @media (max-width: 900px) {
@@ -98,7 +100,9 @@ export default function AvatarMenu() {
             <CustomMenuItem>{item.name}</CustomMenuItem>
           </Link>
         ))}
-        <CustomMenuItem>Đăng xuất</CustomMenuItem>
+        <CustomMenuItem>
+          <Logout />
+        </CustomMenuItem>
       </Menu>
     </Box>
   );
