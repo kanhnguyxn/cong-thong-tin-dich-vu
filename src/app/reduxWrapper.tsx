@@ -12,6 +12,8 @@ export default function ReduxWrapper({
 }: {
   children: React.ReactNode;
 }) {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
   return (
     <div
       className={`flex flex-col min-h-screen max-w-full ${

@@ -1,16 +1,8 @@
-"use client";
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@features/store";
 import { Box } from "@mui/material";
-import {
-  Tooltip,
-  IconButton,
-  Avatar,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Tooltip, IconButton, Avatar, Menu, MenuItem } from "@mui/material";
 import Link from "next/link";
 import styled from "styled-components";
 
