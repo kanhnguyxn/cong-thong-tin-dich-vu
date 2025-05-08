@@ -6,7 +6,7 @@ export async function checkOtpRequest(email: string, otp: string) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email: email, otp: otp }),
+    body: JSON.stringify({ email: email, token: otp }),
   });
   switch (res.status) {
     case 200:
