@@ -2,6 +2,7 @@
 import React from "react";
 
 import FormMui from "@components/form/Form";
+import { emailRequest } from "src/app/api/auth/emailAPI";
 import { isEmailExisted } from "src/app/services/otpService";
 
 export default function EmailForm({ onNext }) {
@@ -59,20 +60,30 @@ export default function EmailForm({ onNext }) {
       },
     },
   ];
-  const handleSubmit = (formData: any) => {
+  const handleSubmit = async (formData: any) => {
     setError(null);
+    // try {
+    //   const { email } = formData;
+    //   console.log("email", email);
+    //   const isExisted = isEmailExisted(email);
+    //   if (isExisted) {
+    //     onNext();
+    //   } else {
+    //     setError("Email không tồn tại");
+    //   }
+    // } catch (error) {
+    //   console.log("error", error);
+    //   setError("Có lỗi xảy ra, vui lòng thử lại sau");
+    // }
     try {
       const { email } = formData;
-      console.log("email", email);
-      const isExisted = isEmailExisted(email);
-      if (isExisted) {
+      const status = await emailRequest(email);
+      if (status === true) {
         onNext();
-      } else {
-        setError("Email không tồn tại");
       }
     } catch (error) {
       console.log("error", error);
-      setError("Có lỗi xảy ra, vui lòng thử lại sau");
+      setError(error.message);
     }
   };
 
