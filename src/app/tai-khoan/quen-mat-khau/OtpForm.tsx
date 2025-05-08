@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import FormMui from "@components/form/Form";
-import { validateOtp } from "../../services/otpService";
+import { checkOtpRequest } from "src/app/api/auth/checkOtpAPI";
 
-export default function OTPForm({ onNext, onBack }) {
+export default function OTPForm({ onNext, onBack, email }) {
   const [error, setError] = React.useState<string | null>(null);
   const inputSchema = [
     {
@@ -48,17 +48,29 @@ export default function OTPForm({ onNext, onBack }) {
   ];
   const handleSubmit = async (data: any) => {
     setError(null);
+    // try {
+    //   const { otp } = data;
+    //   const flag = validateOtp(otp, "123456");
+    //   if (!flag) {
+    //     setError("OTP không hợp lệ");
+    //     return;
+    //   } else {
+    //     onNext();
+    //   }
+    // } catch (err) {
+    //   setError("Xác thực OTP không thành công");
+    // }
     try {
       const { otp } = data;
-      const flag = validateOtp(otp, "123456");
-      if (!flag) {
-        setError("OTP không hợp lệ");
-        return;
-      } else {
+      const res = await checkOtpRequest(email, otp);
+      if (res) {
         onNext();
+      } else {
+        setError("Xác thực OTP không thành công");
       }
-    } catch (err) {
-      setError("Xác thực OTP không thành công");
+    } catch (error) {
+      console.log("error", error);
+      setError(error.message);
     }
   };
 

@@ -5,7 +5,7 @@ import FormMui from "@components/form/Form";
 import { emailRequest } from "src/app/api/auth/emailAPI";
 import { isEmailExisted } from "src/app/services/otpService";
 
-export default function EmailForm({ onNext }) {
+export default function EmailForm({ onNext, handleEmail }) {
   const [error, setError] = React.useState<string | null>(null);
   const inputSchema = [
     {
@@ -75,8 +75,9 @@ export default function EmailForm({ onNext }) {
     //   console.log("error", error);
     //   setError("Có lỗi xảy ra, vui lòng thử lại sau");
     // }
+    const { email } = formData;
+    handleEmail(email);
     try {
-      const { email } = formData;
       const status = await emailRequest(email);
       if (status === true) {
         onNext();
