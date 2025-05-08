@@ -1,12 +1,20 @@
 const API_BASE_URL = "https://ea8a-123-19-224-121.ngrok-free.app/api";
 
-export async function resetPasswordRequest(email: string, password: string) {
+export async function resetPasswordRequest(
+  email: string,
+  password: string,
+  confirmPassword: string
+) {
   const res = await fetch(`${API_BASE_URL}/auth/reset-password`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email: email, password: password }),
+    body: JSON.stringify({
+      email: email,
+      newPassword: password,
+      confirmPassword: confirmPassword,
+    }),
   });
   switch (res.status) {
     case 200:

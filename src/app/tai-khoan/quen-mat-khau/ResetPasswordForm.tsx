@@ -10,7 +10,7 @@ import { labelStyles } from "@styles/style_component";
 import { resetPasswordRequest } from "src/app/api/auth/resetPasswordAPI";
 
 const newPasswordId = "matKhauMoi";
-
+const confirmPassword = "nhapLaiMatKhau";
 export default function ResetPassword({
   email,
   props,
@@ -61,7 +61,7 @@ export default function ResetPassword({
       ),
     },
     {
-      name: "nhapLaiMatKhau",
+      name: confirmPassword,
       type: "text",
       label: "Nhập lại mật khẩu",
       customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
@@ -100,7 +100,11 @@ export default function ResetPassword({
 
     try {
       // gui form toi API
-      await resetPasswordRequest(email, formData[newPasswordId]);
+      await resetPasswordRequest(
+        email,
+        formData[newPasswordId],
+        formData[confirmPassword]
+      );
       console.log("doi mat khau thanh cong");
       router.push("/tai-khoan/dang-nhap");
 
