@@ -7,7 +7,7 @@ import { customTheme, titleStyles } from "@styles/style_component";
 
 import EmailForm from "./EmailForm";
 import OtpForm from "./OtpForm";
-import ResetPassword from "./ResetPasswordForm";
+import ResetPasswordForm from "./ResetPasswordForm";
 import Noti from "./noti";
 
 export default function LoginPage() {
@@ -39,7 +39,7 @@ export default function LoginPage() {
           {step === 3 && (
             <OtpForm onNext={handleNext} onBack={handleBack} email={email} />
           )}
-          {step === 4 && <ResetPassword onNext={handleNext} />}
+          {step === 4 && <ResetPasswordForm email={email} />}
         </div>
       </Box>
     </ThemeProvider>

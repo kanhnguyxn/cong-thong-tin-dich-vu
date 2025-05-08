@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Icon, InputLabel } from "@mui/material";
 
@@ -7,11 +7,19 @@ import ICONS from "@components/icons";
 import BasicModal from "@components/Modal";
 import { labelStyles } from "@styles/style_component";
 // import {changePassword} from "../../services/auth";
+import { resetPasswordRequest } from "src/app/api/auth/resetPasswordAPI";
 
 const newPasswordId = "matKhauMoi";
 
-export default function ResetPassword(props: any) {
+export default function ResetPassword({
+  email,
+  props,
+}: {
+  email: string;
+  props?: any;
+}) {
   const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const inputSchema = [
     {
@@ -79,16 +87,20 @@ export default function ResetPassword(props: any) {
       variants: "contained",
       size: "large",
       disabled: false,
+      loading: loading,
       sx: {
         backgroundColor: "var(--color-blue)",
         ...sxButton,
       },
     },
   ];
-  const handleSubmit = (formData: any) => {
+  const handleSubmit = async (formData: any) => {
     setError(null);
+    setLoading(true);
+
     try {
       // gui form toi API
+      await resetPasswordRequest(email, formData[newPasswordId]);
       console.log("doi mat khau thanh cong");
       router.push("/tai-khoan/dang-nhap");
 
