@@ -1,23 +1,26 @@
 import requestWithAuth from "@utils/requestWithAuth";
-
-export async function changePassword({
-  oldPassword,
-  newPassword,
-  confirmNewPassword,
-}: {
-  oldPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
-}) {
+type FormRequestData = {
+  madon: string;
+  maSv: string;
+  thoiGian: Date;
+  thongTinChiTiet: {};
+};
+export async function createFormRequest({
+  madon,
+  maSv,
+  thoiGian,
+  thongTinChiTiet,
+}: FormRequestData) {
   try {
-    const resData = requestWithAuth({
-      input: "auth/change-password",
+    const resData = await requestWithAuth({
+      input: "sinhVien/create-form",
       init: {
         method: "POST",
         body: {
-          oldPassword: oldPassword,
-          newPassword: newPassword,
-          confirmNewPassword: confirmNewPassword,
+          madon: madon,
+          maSv: maSv,
+          ngayTaoDonCT: thoiGian,
+          thongTinChiTiet: thongTinChiTiet,
         },
       },
     });
@@ -25,7 +28,7 @@ export async function changePassword({
       case 200:
         return true;
       case 400:
-        console.log("Mật khẩu không hợp lệ");
+        console.log("Dữ liệu không hợp lệ");
         return false;
       case 401:
         console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
@@ -38,7 +41,7 @@ export async function changePassword({
         return false;
     }
   } catch (error) {
-    console.error("Lỗi khi thay đổi mật khẩu:", error);
+    console.error("Lỗi khi tạo form:", error);
     return false;
   }
 }
