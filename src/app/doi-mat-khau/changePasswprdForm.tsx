@@ -8,10 +8,11 @@ import BasicModal from "@components/Modal";
 import { Icon } from "@mui/material";
 
 import ChangePasswordService from "../services/changePassword";
-import changePassword from "../api/auth/changePassword";
+import { changePassword } from "../api/auth/changePassword";
 
 export default function ChangePasswordForm(props: any) {
   const [error, setError] = React.useState<string | null>(null);
+  let flag = true;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -123,12 +124,13 @@ export default function ChangePasswordForm(props: any) {
         confirmNewPassword: formData.nhapLaiMatKhau,
       });
       if (success) {
-        handleOpen();
-      } else {
-        setError("Có lỗi xảy ra, vui lòng thử lại sau");
+        flag = true;
       }
+      handleOpen();
     } catch (error) {
-      console.error(error);
+      flag = false;
+      handleOpen();
+      setError(error.message);
     }
   };
   return (
@@ -173,7 +175,8 @@ export default function ChangePasswordForm(props: any) {
             }}
           >
             <span className="text-center uppercase font-bold">
-              Đổi mật khẩu thành công
+              {/* Đổi mật khẩu thành công */}
+              {flag ? "Đổi mật khẩu thành công" : "Đổi mật khẩu thất bại"}
             </span>
             <Icon
               sx={{
@@ -189,7 +192,7 @@ export default function ChangePasswordForm(props: any) {
                 },
               }}
             >
-              {ICONS.SUCCESS}
+              {flag ? ICONS.SUCCESS : ICONS.FAIL}
             </Icon>
           </Box>
         </Modal>
