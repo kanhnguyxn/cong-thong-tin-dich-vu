@@ -12,6 +12,8 @@ import {
   typeClassNameMap,
   buttonStyles,
 } from "./styles";
+import getTime from "@components/getTime";
+import { createFormRequest } from "src/app/api/sinhVien/createFormRequest";
 
 interface DonDangKyFormProps {
   maDonDangKy: string;
@@ -61,6 +63,27 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
       sx: { ...buttonStyles },
     },
   ];
+  const hanleSubmit = async (formData: any) => {
+    console.log("formData", formData);
+    const data = {
+      maDonDangKy: donDangKy?.maDon,
+      maSV: "123456789",
+      thoiGianDangKy: new Date(),
+      thongTinChiTiet: formData,
+    };
+    console.log("data", data);
+    try {
+      const response = await createFormRequest({
+        madon: data.maDonDangKy,
+        maSv: data.maSV,
+        thoiGian: data.thoiGianDangKy,
+        thongTinChiTiet: data.thongTinChiTiet,
+      });
+      console.log("response", response);
+    } catch (error) {
+      console.error("Error creating form request:", error);
+    }
+  };
 
   return (
     <Container
@@ -73,9 +96,7 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
       <FormMui
         className="w-full flex flex-col "
         inputSchema={inputSchema}
-        onSubmit={(formData) => {
-          console.log("formData", formData);
-        }}
+        onSubmit={hanleSubmit}
         buttons={buttons}
         buttonClassName="w-full"
       />
