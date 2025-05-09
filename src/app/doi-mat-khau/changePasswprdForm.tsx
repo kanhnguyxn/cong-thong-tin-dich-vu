@@ -8,10 +8,11 @@ import BasicModal from "@components/Modal";
 import { Icon } from "@mui/material";
 
 import ChangePasswordService from "../services/changePassword";
+import changePassword from "../api/auth/changePassword";
 
 export default function ChangePasswordForm(props: any) {
   const [error, setError] = React.useState<string | null>(null);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const newPasswordId = "matKhauMoi";
@@ -111,10 +112,24 @@ export default function ChangePasswordForm(props: any) {
       />
     </div>
   );
-  const handleSubmit = (formData: any) => {
-    const errorMess = ChangePasswordService(formData.matKhauHienTai);
-    setError(errorMess);
-    console.log("formData", formData);
+  const handleSubmit = async (formData: any) => {
+    // const errorMess = ChangePasswordService(formData.matKhauHienTai);
+    // setError(errorMess);
+    // console.log("formData", formData);
+    try {
+      const success = changePassword({
+        oldPassword: formData.matKhauHienTai,
+        newPassword: formData.matKhauMoi,
+        confirmNewPassword: formData.nhapLaiMatKhau,
+      });
+      if (success) {
+        handleOpen();
+      } else {
+        setError("Có lỗi xảy ra, vui lòng thử lại sau");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>
@@ -125,6 +140,7 @@ export default function ChangePasswordForm(props: any) {
           className="w-full flex flex-col gap-2 md:gap-3 items-center max-w-xl justify-between"
           buttons={buttons}
           buttonClassName="flex flex-row justify-around "
+          formErrMsg={error}
           {...props}
         />
         {IconComponent}
