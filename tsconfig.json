@@ -40,6 +40,9 @@
       "@features/*": [
         "src/features/*"
       ],
+      "@apis/*": [
+        "src/apis/*"
+      ],
     },
     "lib": [
       "dom",
