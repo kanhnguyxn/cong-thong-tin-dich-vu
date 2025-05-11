@@ -1,7 +1,7 @@
 "use client";
 
 import CustomTable from "@components/Table";
-import { text } from "stream/consumers";
+
 // import dữ liệu từ file Data-bieu-mau.tsx
 
 // thong tin các cột trong table
@@ -14,12 +14,13 @@ const columns = [
 
 const BieuMauTable = ({ data }) => {
   // Format data to match the expected structure for CustomTable
+  console.log("data", data);
   const formattedData = data.map((row, index) => ({
     stt: index + 1,
-    bieumau: row.TenBM,
-    donVi: row.TenPB,
+    bieumau: row.tenBM,
+    donVi: row.tenPB,
     taixuong: (
-      <a href={row.Lienket} download>
+      <a href={row.lienKet} download>
         <button className="color-black">
           <img
             src="/assets/icons/download.svg"

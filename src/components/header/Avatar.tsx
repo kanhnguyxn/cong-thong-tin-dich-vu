@@ -32,10 +32,13 @@ function InitUser() {
   const dispatch = useDispatch();
   const userName = useSelector((state: any) => state.user.userName);
   const userType = useSelector((state: any) => state.user.userType);
-  const { access, refresh } = getToken();
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
+    const init = async () => {
+      if (typeof document === "undefined") return;
+
+      const { access, refresh } = getToken();
+
       if ((!userName || !userType) && access && refresh) {
         try {
           const userInfo = await getUser();
@@ -53,9 +56,9 @@ function InitUser() {
       }
     };
 
-    fetchUserInfo();
-  }, [dispatch, userName, userType, access]);
-  // No need to return as values are stored in Redux
+    init();
+  }, [dispatch, userName, userType]);
+
   return null;
 }
 export default function AvatarMenu() {

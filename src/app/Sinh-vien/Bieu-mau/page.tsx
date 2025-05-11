@@ -1,18 +1,41 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SearchBar } from "@components/SearchBar";
 import BieuMauTable from "./BieuMauTable";
-import dataBieuMau from "../../services/Data-bieu-mau";
+import { getBieuMau } from "@apis/sinhVien/getBieuMau";
+// import dataBieuMau from "../../services/Data-bieu-mau";
 
 export default function BieuMauPage() {
   const [data, setData] = useState([]);
+  const [originalData, setOriginalData] = useState([]); // lưu bản gốc để reset khi không tìm kiếm
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const result = await getBieuMau();
+    if (result) {
+      setData(result);
+      setOriginalData(result);
+    } else {
+      console.log("Không có dữ liệu");
+      setData([]);
+      setOriginalData([]);
+    }
+  };
 
   const onSearch = (query: string) => {
-    if (!query || query.trim() === "") return setData(dataBieuMau); // Nếu không có từ khóa tìm kiếm, hiển thị tất cả dữ liệu
-    const filteredData = dataBieuMau.filter((item) =>
+    if (!query || query.trim() === "") {
+      setData(originalData);
+      return;
+    }
+
+    const filteredData = originalData.filter((item) =>
       item.TenBM.toLowerCase().includes(query.toLowerCase())
     );
+
     setData(filteredData);
     console.log(filteredData, query);
   };
