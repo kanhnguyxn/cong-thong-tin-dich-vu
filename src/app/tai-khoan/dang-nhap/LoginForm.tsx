@@ -57,14 +57,18 @@ export default function LoginForm() {
 
       console.log("data", data);
       //  luu vao cookie
-      const { accessToken, refreshToken } = data;
-      // Lưu accessToken sống 2 giờ
-      document.cookie = `access=${accessToken}; path=/; max-age=7200`;
+      const { accessToken, refreshToken } = data.data;
+      // Lưu accessToken
+      // Thời gian sống của accessToken là 3h (10800 giây)
+
+      document.cookie = `access=${accessToken}; path=/; max-age=10800`;
 
       // Lưu refreshToken sống 7 ngày (604800 giây)
       document.cookie = `refresh=${refreshToken}; path=/; max-age=604800`;
 
-      const userType = data.userType?.trim().toLowerCase();
+      const userType = data.data.userType?.trim().toLowerCase();
+
+      console.log("userType", userType);
 
       const redirectMap: Record<string, string> = {
         student: "/sinh-vien/gioi-thieu",
