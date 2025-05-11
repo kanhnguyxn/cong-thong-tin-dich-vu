@@ -1,4 +1,5 @@
-import requestWithAuth from "@utils/requestWithAuth";
+import { fetchWithAuth } from "src/app/utils/requestWithAuth";
+
 type FormRequestData = {
   madon: string;
   maSv: string;
@@ -12,16 +13,16 @@ export async function createFormRequest({
   thongTinChiTiet,
 }: FormRequestData) {
   try {
-    const resData = await requestWithAuth({
+    const resData = await fetchWithAuth({
       input: "sinhVien/create-form",
       init: {
         method: "POST",
-        body: {
+        body: JSON.stringify({
           madon: madon,
           maSv: maSv,
           ngayTaoDonCT: thoiGian,
           thongTinChiTiet: thongTinChiTiet,
-        },
+        }),
       },
     });
     switch (resData.status) {

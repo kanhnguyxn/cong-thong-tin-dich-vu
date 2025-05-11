@@ -1,3 +1,5 @@
+const { server } = require("typescript");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Bật Strict Mode của React cho môi trường phát triển
@@ -62,6 +64,11 @@ const nextConfig = {
   // Cấu hình webpack nếu cần
   webpack: (config, { isServer }) => {
     // Cấu hình webpack tùy chỉnh
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false,
+      };
+    }
     return config;
   },
 };
