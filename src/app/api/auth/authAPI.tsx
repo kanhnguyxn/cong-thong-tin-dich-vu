@@ -1,7 +1,6 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const loginRequest = async (username: string, password: string) => {
-  console.log("API_BASE_URL", API_BASE_URL);
   const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
     headers: {

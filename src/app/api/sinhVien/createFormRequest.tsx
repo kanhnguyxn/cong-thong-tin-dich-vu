@@ -1,4 +1,4 @@
-import { fetchWithAuth } from "src/app/utils/requestWithAuth";
+import { fetchWithAuth } from "src/utils/requestWithAuth";
 
 type FormRequestData = {
   madon: string;

@@ -1,4 +1,4 @@
-import { fetchWithAuth } from "src/app/utils/requestWithAuth";
+import { fetchWithAuth } from "src/utils/requestWithAuth";
 
 export async function changePassword({
   oldPassword,
@@ -21,24 +21,32 @@ export async function changePassword({
         }),
       },
     });
+
+    if (!resData) {
+      console.log("Không nhận được phản hồi");
+      return false;
+    }
+    const Data = await resData.json();
     switch (resData.status) {
       case 200:
-        return true;
+        return { status: true, message: Data.message };
       case 400:
         console.log("Mật khẩu không hợp lệ");
-        return false;
+        return { status: false, message: Data.message };
       case 401:
         console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
-        return false;
+        return { status: false, message: Data.message };
+
       case 500:
-        console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-        return false;
+        console.log(Data.message || "Có lỗi xảy ra, vui lòng thử lại sau");
+        return { status: false, message: Data.message };
+
       default:
         console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-        return false;
+        return { status: false, message: Data.message };
     }
   } catch (error) {
     console.error("Lỗi khi thay đổi mật khẩu:", error);
-    return false;
+    return { status: false, message: "Có lỗi xảy ra, vui lòng thử lại sau" };
   }
 }

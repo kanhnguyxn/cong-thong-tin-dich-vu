@@ -12,7 +12,7 @@ import { changePassword } from "../api/auth/changePassword";
 
 export default function ChangePasswordForm(props: any) {
   const [error, setError] = React.useState<string | null>(null);
-  let flag = true;
+  const [flag, setFlag] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -117,21 +117,26 @@ export default function ChangePasswordForm(props: any) {
     // const errorMess = ChangePasswordService(formData.matKhauHienTai);
     // setError(errorMess);
     // console.log("formData", formData);
-    try {
-      const success = changePassword({
-        oldPassword: formData.matKhauHienTai,
-        newPassword: formData.matKhauMoi,
-        confirmNewPassword: formData.nhapLaiMatKhau,
-      });
-      if (success) {
-        flag = true;
-      }
-      handleOpen();
-    } catch (error) {
-      flag = false;
-      handleOpen();
-      setError(error.message);
+    const response = await changePassword({
+      oldPassword: formData.matKhauHienTai,
+      newPassword: formData.matKhauMoi,
+      confirmNewPassword: formData.nhapLaiMatKhau,
+    });
+
+    console.log("response", response);
+    if (response !== false && response.status) {
+      setFlag(true);
+      setError(null);
+    } else {
+      setFlag(false);
+      setError(response !== false ? response.message : "An error occurred");
     }
+    handleOpen();
+
+    // if (typeof data === 'object' && data.status === 200) {
+    //   flag = true;
+    // }
+    // handleOpen();
   };
   return (
     <>
