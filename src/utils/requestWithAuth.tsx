@@ -1,7 +1,7 @@
 import getToken from "./getToken";
 import { refreshToken } from "./refreshToken";
 
-const API_BASE_URL = "https://3522-123-19-224-121.ngrok-free.app/";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 interface fetchOptions {
   input: RequestInfo;
@@ -24,7 +24,7 @@ export async function fetchWithAuth({
 
   const headers = {
     ...init.headers,
-    // "Content-Type": "application/json",
+    "Content-Type": "application/json",
     Authorization: `Bearer ${access}`,
   };
 

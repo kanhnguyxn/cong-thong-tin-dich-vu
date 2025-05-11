@@ -6,20 +6,13 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "../features/store";
 import { setUser } from "@features/authSlide"; // Adjust the path based on your actual file structure
 
-import { getUser } from "../app/api/auth/getUser";
+import { getUser } from "@apis/auth/getUser";
 import getToken from "@utils/getToken";
 
 function InitUser() {
   const dispatch = useDispatch();
   const userName = useSelector((state: any) => state.userName);
   const userType = useSelector((state: any) => state.userType);
-
-  const getCookie = (name: string) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(";").shift();
-    return null;
-  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {

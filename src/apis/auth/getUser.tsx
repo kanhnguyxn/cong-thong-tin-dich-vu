@@ -3,15 +3,12 @@ import { fetchWithAuth } from "@utils/requestWithAuth";
 export async function getUser() {
   try {
     const resData = await fetchWithAuth({
-      input: "api/auth/user-info",
+      input: "/auth/user-info",
       init: {
         method: "GET",
       },
     });
-    if (!resData) {
-      console.log("Không nhận được phản hồi");
-      return null;
-    }
+    console.log("resData", resData);
     switch (resData.status) {
       case 200:
         const data = await resData.json();
