@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import FormMui from "@components/form/Form";
-import { loginRequest } from "../../services/auth";
+import { loginRequest } from "src/app/api/auth/authAPI";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);

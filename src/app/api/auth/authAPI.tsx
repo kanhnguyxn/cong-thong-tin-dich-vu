@@ -1,15 +1,14 @@
-const API_BASE_URL = "https://ea8a-123-19-224-121.ngrok-free.app/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const loginRequest = async (username: string, password: string) => {
-  const res = await fetch(`${API_BASE_URL}/auth/login`, {
+  console.log("API_BASE_URL", API_BASE_URL);
+  const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ username, password }),
   });
-
- 
 
   switch (res.status) {
     case 200:
