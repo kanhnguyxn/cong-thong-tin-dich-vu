@@ -3,37 +3,70 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "./Navbar";
 import QuyDinhTable from "./QuyDinhTable";
-import dataQuyDinh from "../../services/dataQuyDinh";
 import { SearchBar } from "@components/SearchBar";
+import { getQuyDinh } from "@apis/sinhVien/getQuyDinh";
 
 export default function QuyDinhPage() {
   const [department, setDepartment] = useState("");
   const [option, setOption] = useState("");
-  const [data, setData] = useState(dataQuyDinh);
+  const [data, setData] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    let filtered = dataQuyDinh;
+    const fetchData = async () => {
+      if (!department || !option) {
+        setData([]);
+        setOriginalData([]);
+        return;
+      }
 
-    if (searchQuery.trim()) {
-      filtered = filtered.filter((item) =>
-        item.quydinh.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
+      const result = await getQuyDinh({
+        tenPB: department,
+        loaiVanBan: option,
+      });
 
-    setData(filtered);
-  }, [searchQuery]);
+      if (result) {
+        setData(result);
+        setOriginalData(result);
+      } else {
+        console.log("Không có dữ liệu");
+        setData([]);
+        setOriginalData([]);
+      }
+    };
+
+    fetchData();
+  }, [department, option]);
 
   const onSearch = (query: string) => {
     setSearchQuery(query);
+
+    if (!query.trim()) {
+      setData(originalData);
+      return;
+    }
+
+    const filteredData = originalData.filter((item) =>
+      item.TenBM.toLowerCase().includes(query.toLowerCase())
+    );
+
+    setData(filteredData);
+    console.log(filteredData, query);
   };
 
-  const handleSelectionsChange = (selectedDepartment: string, selectedOption: string) => {
+  const handleSelectionsChange = (
+    selectedDepartment: string,
+    selectedOption: string
+  ) => {
     setDepartment(selectedDepartment);
     setOption(selectedOption);
+    console.log("Selected Department:", selectedDepartment);
+    console.log("Selected Option:", selectedOption);
   };
 
-  const isEmpty = (!department && !option && !searchQuery.trim()) || data.length === 0;
+  const isEmpty =
+    (!department && !option && !searchQuery.trim()) || data.length === 0;
 
   return (
     <div className="flex flex-col w-full relative">
@@ -67,7 +100,7 @@ export default function QuyDinhPage() {
           )}
           {isEmpty ? (
             <div className="flex justify-center items-center w-full h-full">
-              <p className="uppercase font-light text-lg md:text-2xl text-[var(--color-gray)] text-center ">
+              <p className="uppercase font-light text-lg md:text-2xl text-[var(--color-gray)] text-center">
                 Trống
               </p>
             </div>
