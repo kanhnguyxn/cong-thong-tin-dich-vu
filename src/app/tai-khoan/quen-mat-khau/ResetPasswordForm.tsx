@@ -7,7 +7,7 @@ import ICONS from "@components/icons";
 import BasicModal from "@components/Modal";
 import { labelStyles } from "@styles/style_component";
 // import {changePassword} from "../../services/auth";
-import { resetPasswordRequest } from "src/app/api/auth/resetPasswordAPI";
+import { resetPasswordRequest } from "@apis/auth/resetPasswordAPI";
 
 const newPasswordId = "matKhauMoi";
 const confirmPassword = "nhapLaiMatKhau";

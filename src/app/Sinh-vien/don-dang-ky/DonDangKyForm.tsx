@@ -13,7 +13,7 @@ import {
   buttonStyles,
 } from "./styles";
 import getTime from "@components/getTime";
-import { createFormRequest } from "src/app/api/sinhVien/createFormRequest";
+import { createFormRequest } from "@apis/sinhVien/createFormRequest";
 
 interface DonDangKyFormProps {
   maDonDangKy: string;

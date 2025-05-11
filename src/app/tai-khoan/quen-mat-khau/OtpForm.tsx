@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import FormMui from "@components/form/Form";
-import { checkOtpRequest } from "src/app/api/auth/checkOtpAPI";
+import { checkOtpRequest } from "@apis/auth/checkOtpAPI";
 
 export default function OTPForm({ onNext, onBack, email }) {
   const [error, setError] = React.useState<string | null>(null);
