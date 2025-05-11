@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@features/store";
 import { Box } from "@mui/material";
 import { Tooltip, IconButton, Avatar, Menu, MenuItem } from "@mui/material";
@@ -8,6 +8,9 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import Logout from "./Logout";
+import getToken from "@utils/getToken";
+import { getUser } from "@apis/auth/getUser";
+import { setUser } from "@features/authSlide";
 
 const CustomMenuItem = styled(MenuItem)`
   font-size: 16px;
@@ -25,7 +28,36 @@ const CustomMenuItem = styled(MenuItem)`
     background-color: var(--color-gray-stroke);
   }
 `;
+function InitUser() {
+  const dispatch = useDispatch();
+  const userName = useSelector((state: any) => state.user.userName);
+  const userType = useSelector((state: any) => state.user.userType);
+  const { access, refresh } = getToken();
 
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if ((!userName || !userType) && access && refresh) {
+        try {
+          const userInfo = await getUser();
+          if (userInfo) {
+            dispatch(
+              setUser({
+                userName: userInfo.userName,
+                userType: userInfo.userType,
+              })
+            );
+          }
+        } catch (err) {
+          console.error("Lỗi khi lấy thông tin người dùng:", err);
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, [dispatch, userName, userType, access]);
+  // No need to return as values are stored in Redux
+  return null;
+}
 export default function AvatarMenu() {
   const avatarImage = "/assets/icons/avatar.svg";
   // lay tu redux
@@ -60,6 +92,7 @@ export default function AvatarMenu() {
 
   return (
     <Box className="mr-3">
+      <InitUser />
       <Tooltip title={userName}>
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           {/* ở kích thước nhỏ hơm thì hình avatar đạt 70%w */}
