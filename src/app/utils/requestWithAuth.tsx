@@ -35,7 +35,7 @@ export async function fetchWithAuth({
   let res = await fetch(`${API_BASE_URL}${input}`, infor);
   if (res.status === 401) {
     // goi refresh token
-    const success = await refreshToken({ refreshToken: refresh });
+    const success = await refreshToken();
     if (!success) {
       window.location.href = "/tai-khoan/dang-nhap";
       alert("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
