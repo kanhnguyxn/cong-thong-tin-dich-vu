@@ -1,4 +1,4 @@
-import { fetchWithAuth } from "src/utils/requestWithAuth";
+import { fetchWithAuth } from "@utils/requestWithAuth";
 
 export async function changePassword({
   oldPassword,
@@ -11,7 +11,7 @@ export async function changePassword({
 }) {
   try {
     const resData = await fetchWithAuth({
-      input: "auth/change-password",
+      input: "/auth/change-password",
       init: {
         method: "POST",
         body: JSON.stringify({

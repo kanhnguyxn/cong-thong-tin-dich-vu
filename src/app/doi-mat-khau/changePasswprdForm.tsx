@@ -8,7 +8,7 @@ import BasicModal from "@components/Modal";
 import { Icon } from "@mui/material";
 
 import ChangePasswordService from "../services/changePassword";
-import { changePassword } from "../api/auth/changePassword";
+import { changePassword } from "@apis/auth/changePassword";
 
 export default function ChangePasswordForm(props: any) {
   const [error, setError] = React.useState<string | null>(null);
