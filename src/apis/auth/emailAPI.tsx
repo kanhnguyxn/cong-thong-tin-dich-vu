@@ -10,7 +10,7 @@ export async function emailRequest(email: string) {
     body: JSON.stringify({ email: email }),
   });
 
-  console.log("res", res);
+  // console.log("res", res);
 
   switch (res.status) {
     case 200:

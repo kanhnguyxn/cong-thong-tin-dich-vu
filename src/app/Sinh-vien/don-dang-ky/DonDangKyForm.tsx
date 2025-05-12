@@ -64,14 +64,14 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
     },
   ];
   const hanleSubmit = async (formData: any) => {
-    console.log("formData", formData);
+    // console.log("formData", formData);
     const data = {
       maDonDangKy: donDangKy?.maDon,
       maSV: "123456789",
       thoiGianDangKy: new Date(),
       thongTinChiTiet: formData,
     };
-    console.log("data", data);
+    // console.log("data", data);
     try {
       const response = await createFormRequest({
         madon: data.maDonDangKy,
@@ -79,7 +79,7 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
         thoiGian: data.thoiGianDangKy,
         thongTinChiTiet: data.thongTinChiTiet,
       });
-      console.log("response", response);
+      // console.log("response", response);
     } catch (error) {
       console.error("Error creating form request:", error);
     }
