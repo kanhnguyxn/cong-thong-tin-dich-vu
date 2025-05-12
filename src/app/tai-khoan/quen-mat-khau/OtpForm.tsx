@@ -69,7 +69,7 @@ export default function OTPForm({ onNext, onBack, email }) {
         setError("Xác thực OTP không thành công");
       }
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       setError(error.message);
     }
   };

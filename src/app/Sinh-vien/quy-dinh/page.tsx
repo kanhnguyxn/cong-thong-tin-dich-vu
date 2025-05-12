@@ -30,7 +30,7 @@ export default function QuyDinhPage() {
         setData(result);
         setOriginalData(result);
       } else {
-        console.log("Không có dữ liệu");
+        // console.log("Không có dữ liệu");
         setData([]);
         setOriginalData([]);
       }
@@ -52,7 +52,7 @@ export default function QuyDinhPage() {
     );
 
     setData(filteredData);
-    console.log(filteredData, query);
+    // console.log(filteredData, query);
   };
 
   const handleSelectionsChange = (

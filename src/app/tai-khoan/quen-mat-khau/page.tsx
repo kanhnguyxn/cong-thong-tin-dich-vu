@@ -22,7 +22,7 @@ export default function LoginPage() {
 
   const handleEmail = (email: string) => {
     setEmail(email); // Lưu email vào state để sử dụng trong các bước tiếp theo
-    console.log("email", email);
+    // console.log("email", email);
   };
 
   return (

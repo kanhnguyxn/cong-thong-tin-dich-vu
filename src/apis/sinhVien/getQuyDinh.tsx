@@ -20,7 +20,7 @@ export async function getQuyDinh({ tenPB, loaiVanBan }: BieuMauDataResquest) {
         const data = await resData.json();
         return data;
       case 401:
-        console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
+        // console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
         return null;
       case 500:
         console.log("Có lỗi xảy ra, vui lòng thử lại sau");

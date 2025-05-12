@@ -55,7 +55,7 @@ export default function LoginForm() {
     try {
       const data = await loginRequest(username, password);
 
-      console.log("data", data);
+      // console.log("data", data);
       //  luu vao cookie
       const { accessToken, refreshToken } = data.data;
       // Lưu accessToken
@@ -68,7 +68,7 @@ export default function LoginForm() {
 
       const userType = data.data.userType?.trim().toLowerCase();
 
-      console.log("userType", userType);
+      // console.log("userType", userType);
 
       const redirectMap: Record<string, string> = {
         student: "/sinh-vien/gioi-thieu",
@@ -82,7 +82,7 @@ export default function LoginForm() {
         setError("Vai trò người dùng không hợp lệ.");
       }
     } catch (err: any) {
-      console.error("Lỗi khi gọi API login:", err);
+      // console.error("Lỗi khi gọi API login:", err);
       setError(err.message || "Lỗi kết nối đến máy chủ");
     }
     setLoading(false);

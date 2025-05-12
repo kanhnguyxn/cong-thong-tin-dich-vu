@@ -29,10 +29,10 @@ export async function createFormRequest({
       case 200:
         return true;
       case 400:
-        console.log("Dữ liệu không hợp lệ");
+        // console.log("Dữ liệu không hợp lệ");
         return false;
       case 401:
-        console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
+        // console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
         return false;
       case 500:
         console.log("Có lỗi xảy ra, vui lòng thử lại sau");

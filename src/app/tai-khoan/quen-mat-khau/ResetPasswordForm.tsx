@@ -105,7 +105,7 @@ export default function ResetPassword({
         formData[newPasswordId],
         formData[confirmPassword]
       );
-      console.log("doi mat khau thanh cong");
+      // console.log("doi mat khau thanh cong");
       router.push("/tai-khoan/dang-nhap");
 
       setError(null);

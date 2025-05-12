@@ -4,8 +4,8 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 import getToken from "./getToken";
 export async function refreshToken() {
   const { access, refresh } = getToken();
-  console.log("access", access);
-  console.log("refresh", refresh);
+  // console.log("access", access);
+  // console.log("refresh", refresh);
   try {
     const res = await fetch(`${API_BASE_URL}/auth/refresh-token`, {
       method: "POST",
@@ -15,6 +15,7 @@ export async function refreshToken() {
       },
       body: JSON.stringify({ refreshToken: refresh }),
     });
+    // console.log("res", res);
 
     if (!res.ok) {
       return false;

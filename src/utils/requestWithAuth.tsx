@@ -38,8 +38,8 @@ export async function fetchWithAuth({
     fetchOptions.body = init.body;
   }
 
-  console.log("fetchOptions", fetchOptions);
-  console.log("input", input);
+  // console.log("fetchOptions", fetchOptions);
+  // console.log("input", input);
   let res = await fetch(`${API_BASE_URL}${input}`, fetchOptions);
 
   if (res.status === 401) {
@@ -52,7 +52,7 @@ export async function fetchWithAuth({
 
     // Gọi lại fetch lần nữa sau khi đã refresh token
     const newAccess = getToken().access;
-    console.log("newAccess", newAccess);
+    // console.log("newAccess", newAccess);
     fetchOptions.headers = {
       ...headers,
       Authorization: `Bearer ${newAccess}`,

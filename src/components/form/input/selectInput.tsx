@@ -17,11 +17,11 @@ export default function SelectInput({
   ...props
 }: SelectInputProps) {
   const [selectedValue, setSelectedValue] = useState(value || "");
-  console.log("value", value);
+  // console.log("value", value);
 
   useEffect(() => {
     // Khi giá trị được chọn thay đổi, gọi hàm onChange với giá trị mới
-    console.log("selectedValues", selectedValue);
+    // console.log("selectedValues", selectedValue);
     onChange(selectedValue);
   }, [selectedValue]);
   return (

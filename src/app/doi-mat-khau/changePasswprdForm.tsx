@@ -123,7 +123,7 @@ export default function ChangePasswordForm(props: any) {
       confirmNewPassword: formData.nhapLaiMatKhau,
     });
 
-    console.log("response", response);
+    // console.log("response", response);
     if (response !== false && response.status) {
       setFlag(true);
       setError(null);

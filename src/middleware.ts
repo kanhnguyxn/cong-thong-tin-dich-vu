@@ -9,8 +9,8 @@ export default async function middleware(req : NextRequest) {
   const cookiesObj = await cookies();
   const acesssToken =  (cookiesObj).get("access")?.value;
   const refreshToken = (cookiesObj).get("refresh")?.value;
-  console.log("acesssToken", acesssToken);
-  console.log("refreshToken", refreshToken);
+  // console.log("acesssToken", acesssToken);
+  // console.log("refreshToken", refreshToken);
  
   // 2.1. Nếu thiếu token chuyển về trang đăng nhập.
   if(!refreshToken) {

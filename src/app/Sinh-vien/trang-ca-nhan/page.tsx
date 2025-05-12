@@ -6,7 +6,7 @@ export default function TrangCaNhanPage() {
   const [madon, setMadon] = React.useState<string>("");
   const handleChange = (maDon: string) => {
     setMadon(maDon);
-    console.log(maDon);
+    // console.log(maDon);
   };
   return (
     <div className="flex flex-col w-full items-center">

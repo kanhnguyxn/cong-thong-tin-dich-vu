@@ -20,7 +20,7 @@ export default function BieuMauPage() {
       setData(result);
       setOriginalData(result);
     } else {
-      console.log("Không có dữ liệu");
+      // console.log("Không có dữ liệu");
       setData([]);
       setOriginalData([]);
     }
@@ -37,7 +37,7 @@ export default function BieuMauPage() {
     );
 
     setData(filteredData);
-    console.log(filteredData, query);
+    // console.log(filteredData, query);
   };
 
   return (
