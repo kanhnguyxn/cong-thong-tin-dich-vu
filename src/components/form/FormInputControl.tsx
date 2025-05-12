@@ -6,12 +6,13 @@ import { StyledTextField, labelStyles } from "@styles/style_component";
 import PasswordInput from "./input/PasswordInput";
 import SelectCheckboxInput from "./input/SelectCheckBox";
 import SelectInput from "./input/selectInput";
+import FileInput from "./input/fileInput";
 
 type TextFieldVariant = "filled" | "outlined" | "standard";
 
 interface FormInputControlProps {
   // Define the type of field based on your schema
-  onChange: (value: string | any[]) => void;
+  onChange: (value: string | any[] | File | null) => void;
   placeholder?: string;
   type?: string;
   className?: string;
@@ -130,6 +131,32 @@ export default function FormInputControl({
             />
             {error}
           </div>
+        </FormControl>
+      );
+      break;
+    case "file":
+      inputEle = (
+        <FormControl sx={{ width: "100%", ...formControlStyle }}>
+          {lableRender ? (
+            lableRender()
+          ) : (
+            <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
+              {label}
+            </InputLabel>
+          )}
+          <FileInput
+            id={name}
+            variant={variant}
+            placeholder={placeholder}
+            className={className}
+            onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onBlur?.(e.target.files?.[0] || null)
+            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChange?.(e.target.files?.[0] || null)
+            }
+          />
+          {error}
         </FormControl>
       );
       break;
