@@ -1,10 +1,12 @@
-import { Table } from "@mui/material";
+"use client";
+
+import { Checkbox, Table, TableContainer } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { TableContainer } from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import React from "react";
 
 interface CustomTableProps {
   columns: Array<{ id: string; label: string; width?: string }>;
@@ -12,6 +14,7 @@ interface CustomTableProps {
   tableCellStyles?: (columnId: string, row: any) => any | any;
   tableHeaderStyles?: any | ((columnId: string) => any);
   tableBodyStyles?: any | ((row: any) => any);
+  hasSelective?: boolean;
 }
 
 export default function CustomTable({
@@ -20,6 +23,7 @@ export default function CustomTable({
   tableCellStyles,
   tableHeaderStyles,
   tableBodyStyles,
+  hasSelective = false,
 }: CustomTableProps) {
   const theme = createTheme({
     components: {
@@ -74,6 +78,18 @@ export default function CustomTable({
     return tableBodyStyles || {};
   };
 
+  const [displayData, setDisplayData] = React.useState(data);
+
+  React.useEffect(() => {
+    if (!hasSelective) {
+      return;
+    }
+    let _data = data?.map((row) => {
+      return { ...row, selected: false };
+    });
+    setDisplayData(_data);
+  }, [data]);
+
   return (
     <ThemeProvider theme={theme}>
       <TableContainer
@@ -85,6 +101,17 @@ export default function CustomTable({
         <Table sx={{ minWidth: { xs: "650px", md: "100%" } }}>
           <TableHead>
             <TableRow>
+              {hasSelective && (
+                <SelectiveCell
+                  onChange={(checked) => {
+                    const _data = displayData?.map((row) => {
+                      row.selected = checked;
+                      return row;
+                    });
+                    setDisplayData(_data);
+                  }}
+                />
+              )}
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
@@ -101,8 +128,22 @@ export default function CustomTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.map((row, index) => (
+            {displayData?.map((row, index) => (
               <TableRow key={row.id || index} sx={getTableBodyStyles(row)}>
+                {hasSelective && (
+                  <SelectiveCell
+                    checked={row?.selected || false}
+                    onChange={() => {
+                      const _data = displayData?.map((item) => {
+                        if (item.stt === row.stt) {
+                          item.selected = !item.selected;
+                        }
+                        return item;
+                      });
+                      setDisplayData(_data);
+                    }}
+                  />
+                )}
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
@@ -119,3 +160,38 @@ export default function CustomTable({
     </ThemeProvider>
   );
 }
+interface SelectiveCellProps {
+  onChange?: (check: boolean) => void;
+  checked?: boolean;
+}
+export const SelectiveCell = ({
+  onChange,
+  checked = false,
+  ...props
+}: SelectiveCellProps) => {
+  const [isChecked, setIsChecked] = React.useState(checked);
+  const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(!isChecked);
+    onChange && onChange(!isChecked);
+  };
+
+  React.useEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
+
+  return (
+    <TableCell
+      key="selective"
+      align="center"
+      sx={{
+        width: "5ch",
+      }}
+    >
+      <Checkbox
+        checked={isChecked}
+        sx={{ color: "var(--color-blue)" }}
+        onChange={handleOnchange}
+      />
+    </TableCell>
+  );
+};
