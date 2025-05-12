@@ -4,6 +4,7 @@ const info = "/assets/icons/info.svg";
 const select = "/assets/icons/select.svg";
 const success = "/assets/icons/success.svg";
 const fail = "/assets/icons/fail.svg";
+const warning = "/assets/icons/warning.svg";
 
 const VisualityOn = ({ ...props }) => {
   return <img src={visualityOnUrl} alt="" {...props} />;
@@ -27,7 +28,9 @@ const Success = ({ ...props }) => {
 const Fail = ({ ...props }) => {
   return <img src={fail} alt="" {...props} />;
 };
-
+const Warning = ({ ...props }) => {
+  return <img src={warning} alt="" {...props} />;
+};
 const ICONS = {
   VISUALITY_ON: <VisualityOn />,
   VISUALITY_OFF: <VisualityOff />,
@@ -35,6 +38,7 @@ const ICONS = {
   SELECT: <SelectIcon />,
   SUCCESS: <Success />,
   FAIL: <Fail />,
+  WARNING: <Warning />,
   // Add more icons here as needed
 };
 
