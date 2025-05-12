@@ -15,6 +15,7 @@ interface CustomTableProps {
   tableHeaderStyles?: any | ((columnId: string) => any);
   tableBodyStyles?: any | ((row: any) => any);
   hasSelective?: boolean;
+  handeleChange?: (data: any[]) => void;
 }
 
 export default function CustomTable({
@@ -24,6 +25,7 @@ export default function CustomTable({
   tableHeaderStyles,
   tableBodyStyles,
   hasSelective = false,
+  handeleChange,
 }: CustomTableProps) {
   const theme = createTheme({
     components: {
@@ -48,15 +50,14 @@ export default function CustomTable({
       },
       MuiTableContainer: {
         styleOverrides: {
-          root: ({ theme }) => ({
+          root: {
             padding: "10px 0px",
-          }),
+          },
         },
       },
     },
   });
 
-  // Handle dynamic styles for table cell, header, and body
   const getTableCellStyles = (columnId: string, row: any) => {
     if (typeof tableCellStyles === "function") {
       return tableCellStyles(columnId, row);
@@ -78,17 +79,19 @@ export default function CustomTable({
     return tableBodyStyles || {};
   };
 
-  const [displayData, setDisplayData] = React.useState(data);
+  const [displayData, setDisplayData] = React.useState(
+    hasSelective
+      ? data?.map((row) => ({ ...row, selected: false })) || []
+      : data || []
+  );
 
+  // Gọi handeleChange khi displayData thay đổi
   React.useEffect(() => {
-    if (!hasSelective) {
-      return;
+    if (hasSelective && handeleChange) {
+      const selectedRows = displayData?.filter((row) => row.selected);
+      handeleChange(selectedRows);
     }
-    let _data = data?.map((row) => {
-      return { ...row, selected: false };
-    });
-    setDisplayData(_data);
-  }, [data]);
+  }, [displayData]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -103,11 +106,15 @@ export default function CustomTable({
             <TableRow>
               {hasSelective && (
                 <SelectiveCell
+                  checked={
+                    displayData.length > 0 &&
+                    displayData.every((row) => row.selected)
+                  }
                   onChange={(checked) => {
-                    const _data = displayData?.map((row) => {
-                      row.selected = checked;
-                      return row;
-                    });
+                    const _data = displayData.map((row) => ({
+                      ...row,
+                      selected: checked,
+                    }));
                     setDisplayData(_data);
                   }}
                 />
@@ -134,9 +141,9 @@ export default function CustomTable({
                   <SelectiveCell
                     checked={row?.selected || false}
                     onChange={() => {
-                      const _data = displayData?.map((item) => {
+                      const _data = displayData.map((item) => {
                         if (item.stt === row.stt) {
-                          item.selected = !item.selected;
+                          return { ...item, selected: !item.selected };
                         }
                         return item;
                       });
@@ -160,24 +167,19 @@ export default function CustomTable({
     </ThemeProvider>
   );
 }
+
 interface SelectiveCellProps {
   onChange?: (check: boolean) => void;
   checked?: boolean;
 }
+
 export const SelectiveCell = ({
   onChange,
   checked = false,
-  ...props
 }: SelectiveCellProps) => {
-  const [isChecked, setIsChecked] = React.useState(checked);
   const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(!isChecked);
-    onChange && onChange(!isChecked);
+    onChange?.(e.target.checked);
   };
-
-  React.useEffect(() => {
-    setIsChecked(checked);
-  }, [checked]);
 
   return (
     <TableCell
@@ -188,7 +190,7 @@ export const SelectiveCell = ({
       }}
     >
       <Checkbox
-        checked={isChecked}
+        checked={checked}
         sx={{ color: "var(--color-blue)" }}
         onChange={handleOnchange}
       />

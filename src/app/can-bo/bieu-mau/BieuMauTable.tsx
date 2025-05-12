@@ -33,12 +33,16 @@ export const BieuMauTable = ({ data }) => {
     }
     return { textAlign: "center" };
   };
+  const handleChange = (data) => {
+    console.log("data", data);
+  };
   return (
     <CustomTable
       columns={columns}
       data={formattedData}
       tableCellStyles={tableCellStyles}
       hasSelective={true}
+      handeleChange={handleChange}
     />
   );
 };
