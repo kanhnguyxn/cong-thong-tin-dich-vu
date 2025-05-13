@@ -3,7 +3,7 @@ import React from "react";
 import "@styles/globals.css";
 
 import { Provider } from "react-redux";
-import store from "../features/store";
+import store from "../lib/store";
 
 export default function RootLayout({
   children,

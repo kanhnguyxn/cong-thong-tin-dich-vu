@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@features/store";
+import { RootState } from "src/lib/store";
 import { Box } from "@mui/material";
 import { Tooltip, IconButton, Avatar, Menu, MenuItem } from "@mui/material";
 import Link from "next/link";
@@ -10,7 +10,7 @@ import styled from "styled-components";
 import Logout from "./Logout";
 import getToken from "@utils/getToken";
 import { getUser } from "@apis/auth/getUser";
-import { setUser } from "@features/authSlide";
+import { setUser } from "src/lib/features/auth/authSlide";
 
 const CustomMenuItem = styled(MenuItem)`
   font-size: 16px;

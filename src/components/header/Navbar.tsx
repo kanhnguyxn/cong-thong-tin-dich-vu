@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
-import { RootState } from "@features/store";
+import { RootState } from "src/lib/store";
 
 export default function Navbar() {
   const pathname = usePathname();
