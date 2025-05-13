@@ -1,8 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CustomButton from "./button";
-import { Box, Icon, Modal, Typography } from "@mui/material";
+import { Icon, Typography } from "@mui/material";
 import { titleStyles } from "@styles/style_component";
+import { Notification } from "./Notification";
 import ICONS from "./icons";
 import { Container } from "./Container";
 
@@ -126,75 +127,20 @@ export default function DeleteButton({
           </Container>
         </div>
       )}
-      {success !== null && <Notification success={success} />}
+      {success !== null && (
+        <Notification
+          success={success}
+          message={{
+            success: "Xóa thành công",
+            fail: "Xóa thất bại",
+          }}
+          icon={{
+            success: ICONS.SUCCESS,
+            fail: ICONS.FAIL,
+          }}
+          onClose={() => setSuccess(null)}
+        />
+      )}
     </>
   );
 }
-
-interface NotificationProps {
-  success: boolean;
-}
-
-const Notification = ({ success }: NotificationProps) => {
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (success !== null) {
-      setOpen(true);
-    }
-  }, [success]);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "white",
-          borderRadius: "10px",
-          width: "fit-content",
-          padding: "20px 20px 10px 20px",
-          fontSize: {
-            xs: "20px",
-            sm: "22px",
-            md: "24px",
-          },
-        }}
-      >
-        <span className="text-center uppercase font-bold">
-          {success ? "Xóa thành công" : "Xóa thất bại"}
-        </span>
-        <Icon
-          sx={{
-            width: {
-              xs: "25px",
-              sm: "30px",
-              md: "40px",
-            },
-            height: {
-              xs: "25px",
-              sm: "30px",
-              md: "40px",
-            },
-          }}
-        >
-          {success ? ICONS.SUCCESS : ICONS.FAIL}
-        </Icon>
-      </Box>
-    </Modal>
-  );
-};
