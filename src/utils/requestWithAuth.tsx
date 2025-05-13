@@ -12,7 +12,7 @@ export async function fetchWithAuth({
   input,
   init = {},
 }: fetchOptions): Promise<Response | any> {
-  const { access, refresh } = getToken();
+  let { access, refresh } = getToken(); // ✅ Dùng let để có thể gán lại access
 
   if (!refresh) {
     alert("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
@@ -22,15 +22,15 @@ export async function fetchWithAuth({
 
   const method = init.method?.toUpperCase() || "GET";
 
-  const headers = {
+  const buildHeaders = (accessToken: string) => ({
     ...init.headers,
     "Content-Type": "application/json",
-    Authorization: `Bearer ${access}`,
-  };
+    Authorization: `Bearer ${accessToken}`,
+  });
 
   const fetchOptions: RequestInit = {
     ...init,
-    headers,
+    headers: buildHeaders(access),
   };
 
   // Chỉ gán body nếu không phải GET hoặc HEAD
@@ -38,11 +38,17 @@ export async function fetchWithAuth({
     fetchOptions.body = init.body;
   }
 
-  // console.log("fetchOptions", fetchOptions);
-  // console.log("input", input);
-  let res = await fetch(`${API_BASE_URL}${input}`, fetchOptions);
+  const loopLimit = 3;
+  let loopCount = 0;
+  let res: Response;
 
-  if (res.status === 401) {
+  while (loopCount < loopLimit) {
+    res = await fetch(`${API_BASE_URL}${input}`, fetchOptions);
+    if (res.status !== 401) {
+      return res;
+    }
+
+    loopCount++;
     const success = await refreshToken();
     if (!success) {
       alert("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
@@ -50,14 +56,8 @@ export async function fetchWithAuth({
       return;
     }
 
-    // Gọi lại fetch lần nữa sau khi đã refresh token
-    const newAccess = getToken().access;
-    // console.log("newAccess", newAccess);
-    fetchOptions.headers = {
-      ...headers,
-      Authorization: `Bearer ${newAccess}`,
-    };
-    res = await fetch(`${API_BASE_URL}${input}`, fetchOptions);
+    access = getToken().access;
+    fetchOptions.headers = buildHeaders(access); // Cập nhật header mới
   }
 
   return res;
