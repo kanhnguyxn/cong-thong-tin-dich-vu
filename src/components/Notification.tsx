@@ -21,11 +21,15 @@ export const Notification = ({
   icon,
 }: NotificationProps) => {
   const [open, setOpen] = useState(true);
+  const handleClose = () => {
+    setOpen(false);
+    onClose?.();
+  };
 
   return (
     <Modal
       open={open}
-      onClose={onClose || (() => setOpen(false))}
+      onClose={handleClose}
       sx={{
         display: "flex",
         alignItems: "center",
@@ -50,10 +54,11 @@ export const Notification = ({
         }}
       >
         <span className="text-center uppercase font-bold">
-          {success ? message.success : message.fail}
+          {success ? message?.success : message?.fail}
         </span>
-        <Icon
+        <Box
           sx={{
+            mt: 2,
             width: {
               xs: "25px",
               sm: "30px",
@@ -66,8 +71,8 @@ export const Notification = ({
             },
           }}
         >
-          {success ? icon.success : icon.fail}
-        </Icon>
+          {success ? icon?.success : icon?.fail}
+        </Box>
       </Box>
     </Modal>
   );

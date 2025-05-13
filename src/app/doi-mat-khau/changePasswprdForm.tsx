@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Modal, Box } from "@mui/material";
 
 import FormMui from "@components/form/Form";
 import ICONS from "@components/icons";
@@ -9,13 +8,13 @@ import { Icon } from "@mui/material";
 
 import ChangePasswordService from "../services/changePassword";
 import { changePassword } from "@apis/auth/changePassword";
+import { Notification } from "@components/Notification";
 
 export default function ChangePasswordForm(props: any) {
   const [error, setError] = React.useState<string | null>(null);
-  const [flag, setFlag] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState<boolean | null>(null);
+
   const newPasswordId = "matKhauMoi";
   const formControlStyle = {
     // width: "100%",
@@ -83,6 +82,7 @@ export default function ChangePasswordForm(props: any) {
         borderRadius: "5px",
         // width: "40%",
       },
+      loading: loading,
     },
   ];
   const IconComponent = (
@@ -117,26 +117,32 @@ export default function ChangePasswordForm(props: any) {
     // const errorMess = ChangePasswordService(formData.matKhauHienTai);
     // setError(errorMess);
     // console.log("formData", formData);
+    setLoading(true);
+    setError(null);
     const response = await changePassword({
       oldPassword: formData.matKhauHienTai,
       newPassword: formData.matKhauMoi,
       confirmNewPassword: formData.nhapLaiMatKhau,
     });
-
-    // console.log("response", response);
-    if (response !== false && response.status) {
-      setFlag(true);
-      setError(null);
+    if (response && typeof response === "object" && response.status === true) {
+      setSuccess(true);
+      setLoading(false);
     } else {
-      setFlag(false);
-      setError(response !== false ? response.message : "An error occurred");
+      setSuccess(false);
+      setError(
+        response && typeof response === "object" && "message" in response
+          ? response.message
+          : "An error occurred"
+      );
+      setLoading(false);
     }
-    handleOpen();
-
     // if (typeof data === 'object' && data.status === 200) {
     //   flag = true;
     // }
     // handleOpen();
+  };
+  const onCloseNotification = () => {
+    setSuccess(false);
   };
   return (
     <>
@@ -152,55 +158,19 @@ export default function ChangePasswordForm(props: any) {
         />
         {IconComponent}
       </div>
-      {open && (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+      {success && (
+        <Notification
+          success={success}
+          message={{
+            success: "Đổi mật khẩu thành công",
+            fail: "Đổi mật khẩu thất bại",
           }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "white",
-              borderRadius: "10px",
-              width: "fit-content",
-              padding: "20px 20px 10px 20px",
-              fontSize: {
-                xs: "20px",
-                sm: "22px",
-                md: "24px",
-              },
-            }}
-          >
-            <span className="text-center uppercase font-bold">
-              {/* Đổi mật khẩu thành công */}
-              {flag ? "Đổi mật khẩu thành công" : "Đổi mật khẩu thất bại"}
-            </span>
-            <Icon
-              sx={{
-                width: {
-                  xs: "25px",
-                  sm: "30px",
-                  md: "40px",
-                },
-                height: {
-                  xs: "25px",
-                  sm: "30px",
-                  md: "40px",
-                },
-              }}
-            >
-              {flag ? ICONS.SUCCESS : ICONS.FAIL}
-            </Icon>
-          </Box>
-        </Modal>
+          icon={{
+            success: ICONS.SUCCESS,
+            fail: ICONS.FAIL,
+          }}
+          onClose={onCloseNotification}
+        />
       )}
     </>
   );
