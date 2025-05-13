@@ -24,7 +24,7 @@ export default function BieuMauPage() {
         <div className="flex flex-row gap-2">
           <SearchBar onSearch={onSearch}></SearchBar>
           <div className="grid grid-cols-2 gap-2">
-            <DeleteButton />
+            <DeleteButton title="Xoá biểu mẫu" data={data} />
             <AddButton />
           </div>
         </div>
