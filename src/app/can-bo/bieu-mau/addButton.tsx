@@ -54,7 +54,7 @@ export default function AddButton() {
         onClick={() => {
           setOpen(true);
         }}
-        sx={{ backgroundColor: "var(--color-blue)" }}
+        sx={{ backgroundColor: "var(--color-blue)", width: "100%" }}
       />
       {open && (
         <div className="fixed top-0 left-0 min-w-full min-h-full bg-[var(--color-gray-light)] z-50 flex justify-center items-center">
