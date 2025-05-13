@@ -15,12 +15,12 @@ export default function BieuMauPage() {
   }, []);
 
   const fetchData = async () => {
+    // result laf message erro hoacj data
     const result = await getBieuMau();
-    if (result) {
+    if (result && result.length > 0) {
       setData(result);
       setOriginalData(result);
     } else {
-      // console.log("Không có dữ liệu");
       setData([]);
       setOriginalData([]);
     }

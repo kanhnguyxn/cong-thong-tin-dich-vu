@@ -8,22 +8,19 @@ export async function getBieuMau() {
         method: "GET",
       },
     });
+    const data = await resData.json();
     switch (resData.status) {
       case 200:
-        const data = await resData.json();
         return data;
       case 401:
-        // console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
-        return null;
+        throw new Error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
       case 500:
-        console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-        return null;
+        throw new Error("Có lỗi xảy ra, vui lòng thử lại sau");
+
       default:
-        console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-        return null;
+        throw new Error("Có lỗi xảy ra, vui lòng thử lại sau");
     }
   } catch (error) {
-    console.error("Lỗi:", error);
-    return null;
+    throw new Error("Có lỗi xảy ra, vui lòng thử lại sau");
   }
 }
