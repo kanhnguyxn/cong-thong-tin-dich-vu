@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { logout } from "@features/authSlide";
+import { logout } from "src/lib/features/auth/authSlide";
 
 export default function Logout() {
   const dispatch = useDispatch();

@@ -37,8 +37,8 @@
       "@context/*": [
         "src/context/*"
       ],
-      "@features/*": [
-        "src/features/*"
+      "@lib/*": [
+        "src/lib/*"
       ],
       "@apis/*": [
         "src/apis/*"
