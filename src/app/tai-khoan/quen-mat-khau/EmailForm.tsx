@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 
-import FormMui from "@components/form/Form";
 import { emailRequest } from "@apis/auth/emailAPI";
-import { isEmailExisted } from "src/app/services/otpService";
+import FormMui from "@components/form/Form";
 
 export default function EmailForm({ onNext, handleEmail }) {
   const [error, setError] = React.useState<string | null>(null);

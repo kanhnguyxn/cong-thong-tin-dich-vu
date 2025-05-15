@@ -6,7 +6,6 @@ import ICONS from "@components/icons";
 import BasicModal from "@components/Modal";
 import { Icon } from "@mui/material";
 
-import ChangePasswordService from "../services/changePassword";
 import { changePassword } from "@apis/auth/changePassword";
 import { Notification } from "@components/Notification";
 
@@ -58,10 +57,7 @@ export default function ChangePasswordForm(props: any) {
       customeLabelStyle: { ...customeLabelStyle },
       validations: [
         {
-          rule: (value: string, formData: any) =>
-            value &&
-            formData[newPasswordId] &&
-            value === formData[newPasswordId],
+          rule: (value: string, formData: any) => value && formData[newPasswordId] && value === formData[newPasswordId],
           errMessage: "Mật khẩu không khớp",
         },
       ],
@@ -129,11 +125,7 @@ export default function ChangePasswordForm(props: any) {
       setLoading(false);
     } else {
       setSuccess(false);
-      setError(
-        response && typeof response === "object" && "message" in response
-          ? response.message
-          : "An error occurred"
-      );
+      setError(response && typeof response === "object" && "message" in response ? response.message : "An error occurred");
       setLoading(false);
     }
     // if (typeof data === 'object' && data.status === 200) {

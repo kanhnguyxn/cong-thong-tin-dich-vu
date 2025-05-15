@@ -1,7 +1,6 @@
-import CustomTable from "@components/Table";
-import { dataDonDangKyCT } from "src/app/services/dataDonDangKyCT";
 import { Container } from "@components/Container";
-import { text } from "stream/consumers";
+import CustomTable from "@components/Table";
+import { dataDonDangKyCT } from "@services/dataDonDangKyCT";
 
 export default function DonDaDangKyTable({ madon }: { madon: string }) {
   const columns = [
@@ -13,9 +12,7 @@ export default function DonDaDangKyTable({ madon }: { madon: string }) {
     { id: "ghiChu", label: "Ghi chú", width: "20ch" },
   ];
   //   neu dataDonDangKyCT khong co se hien trong
-  const formattedData = Array.isArray(dataDonDangKyCT)
-    ? dataDonDangKyCT.map((item, index) => ({ stt: index + 1, ...item }))
-    : [];
+  const formattedData = Array.isArray(dataDonDangKyCT) ? dataDonDangKyCT.map((item, index) => ({ stt: index + 1, ...item })) : [];
   const getTableCellStyles = (columnId: string, row: any) => {
     if (columnId === "trangThai") {
       return {
@@ -50,10 +47,7 @@ export default function DonDaDangKyTable({ madon }: { madon: string }) {
     };
   };
   //   hien data theo madon
-  const filteredData =
-    madon && madon !== "all"
-      ? formattedData.filter((item) => item.maDon === madon)
-      : formattedData;
+  const filteredData = madon && madon !== "all" ? formattedData.filter((item) => item.maDon === madon) : formattedData;
 
   return filteredData.length === 0 ? (
     <></>

@@ -1,18 +1,16 @@
 "use client";
 import { useState } from "react";
 
+import DeleteButton from "@components/DeleteButton";
 import { SearchBar } from "@components/SearchBar";
+import dataBieuMau from "../../../services/dataBieuMauCanBo";
 import { BieuMauTable } from "./BieuMauTable";
 import AddButton from "./addButton";
-import DeleteButton from "@components/DeleteButton";
-import dataBieuMau from "../../services/dataBieuMauCanBo";
 
 export default function BieuMauPage() {
   const [data, setData] = useState(dataBieuMau);
   const onSearch = (query: string) => {
-    const filteredData = dataBieuMau.filter((item) =>
-      item.tenBM.toLowerCase().includes(query.toLowerCase())
-    );
+    const filteredData = dataBieuMau.filter((item) => item.tenBM.toLowerCase().includes(query.toLowerCase()));
 
     setData(filteredData);
     // console.log(filteredData, query);

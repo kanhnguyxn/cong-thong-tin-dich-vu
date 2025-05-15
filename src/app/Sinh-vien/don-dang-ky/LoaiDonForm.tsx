@@ -1,7 +1,7 @@
 "use client";
 import FormMui from "@components/form/Form";
+import { dataDonDangKy } from "@services/dataDonDangKy";
 import React from "react";
-import { dataDonDangKy } from "src/app/services/dataDonDangKy";
 
 interface LoaiDonFormProps {
   onSubmitMaDon: (maDon: string) => void;
@@ -57,9 +57,7 @@ export default function LoaiDonForm({ onSubmitMaDon }: LoaiDonFormProps) {
 
   // Xử lý submit form
   const handleSubmit = (formData: any) => {
-    const selectedDon = donDangKy.find(
-      (item) => item.tenDDK === formData.loaiDon
-    );
+    const selectedDon = donDangKy.find((item) => item.tenDDK === formData.loaiDon);
     if (!selectedDon) {
       // console.error("Không tìm thấy đơn đăng ký tương ứng.");
       setError("Không tìm thấy đơn đăng ký tương ứng.");
