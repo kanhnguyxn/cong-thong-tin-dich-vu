@@ -1,19 +1,15 @@
 "use client";
-import React from "react";
+
 import "@styles/globals.css";
+import React from "react";
 
-import { Provider } from "react-redux";
-import store from "../lib/store";
+import StoreProvider from "./StoreProvider";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi">
       <body className="flex flex-col min-h-screen max-w-full">
-        <Provider store={store}>{children}</Provider>
+        <StoreProvider>{children}</StoreProvider>
       </body>
     </html>
   );

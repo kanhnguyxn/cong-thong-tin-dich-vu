@@ -1,11 +1,9 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Logo from "./Logo";
-import AvatarMenu from "./Avatar";
-import Navbar from "./Navbar";
-import "@styles/globals.css";
 import "@styles/colors.css";
+import "@styles/globals.css";
+import Logo from "./Logo";
 
 const infoHeader = {
   logo: "/assets/icons/logo_truong.svg",
@@ -16,14 +14,8 @@ const infoHeader = {
 
 const Header = () => {
   return (
-    <AppBar
-      position="static"
-      sx={{ backgroundColor: "transparent", boxShadow: "none" }}
-    >
-      <Toolbar
-        disableGutters
-        className="flex flex-col text-sm md:text-md lg:text-lg xl:text-xl"
-      >
+    <AppBar position="static" sx={{ backgroundColor: "transparent", boxShadow: "none" }}>
+      <Toolbar disableGutters className="flex flex-col text-sm md:text-md lg:text-lg xl:text-xl">
         <Box
           className="flex w-full justify-between items-center py-3 md:py-0"
           sx={{
@@ -39,9 +31,9 @@ const Header = () => {
             className="text-md md:text-lg lg:text-2xl text-[var(--color-orange)]"
           />
           {/* nếu chưa đăng nhập sẽ không hiện avtar */}
-          <AvatarMenu />
+          {/* <AvatarMenu /> */}
         </Box>
-        <Navbar />
+        {/* <Navbar /> */}
       </Toolbar>
     </AppBar>
   );
