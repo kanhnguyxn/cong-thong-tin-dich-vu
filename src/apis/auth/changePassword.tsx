@@ -1,4 +1,5 @@
-import { fetchWithAuth } from "@utils/requestWithAuth";
+import { methods } from "@apis/config";
+import { fetchWithAuth } from "../fetchWithAuth";
 
 export async function changePassword({
   oldPassword,
@@ -10,55 +11,51 @@ export async function changePassword({
   confirmNewPassword: string;
 }) {
   try {
-    const resData = await fetchWithAuth({
-      input: "/auth/change-password",
-      init: {
-        method: "POST",
-        body: JSON.stringify({
-          oldPassword: oldPassword,
-          newPassword: newPassword,
-          confirmNewPassword: confirmNewPassword,
-        }),
-      },
-    });
+    const resData = (await fetchWithAuth({
+      url: "/auth/change-password",
+      method: methods.POST,
+      data: JSON.stringify({
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+        confirmNewPassword: confirmNewPassword,
+      }),
+    })) as Response;
+    const data = await resData.json();
+    console.log("resData", resData);
+    console.log("data", data);
 
-    if (!resData) {
-      console.log("Không nhận được phản hồi");
-      return false;
-    }
-    const Data = await resData.json();
-    switch (resData.status) {
-      case 200:
-        return { status: true, message: Data.message };
-      case 400:
-        // console.log("Mật khẩu không hợp lệ");
-        return {
-          status: false,
-          message: Data.message || "Mật khẩu không hợp lệ",
-        };
-      case 401:
-        // console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
-        return {
-          status: false,
-          message:
-            Data.message ||
-            "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!",
-        };
+    // switch (resData.status) {
+    //   case 200:
+    //     return { status: true, message: data.message };
+    //   case 400:
+    //     // console.log("Mật khẩu không hợp lệ");
+    //     return {
+    //       status: false,
+    //       message: resData.message || "Mật khẩu không hợp lệ",
+    //     };
+    //   case 401:
+    //     // console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
+    //     return {
+    //       status: false,
+    //       message:
+    //         resData.message ||
+    //         "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!",
+    //     };
 
-      case 500:
-        // console.log(Data.message || "Có lỗi xảy ra, vui lòng thử lại sau");
-        return {
-          status: false,
-          message: Data.message || "Có lỗi xảy ra, vui lòng thử lại sau",
-        };
+    //   case 500:
+    //     // console.log(Data.message || "Có lỗi xảy ra, vui lòng thử lại sau");
+    //     return {
+    //       status: false,
+    //       message: resData.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+    //     };
 
-      default:
-        // console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-        return {
-          status: false,
-          message: Data.message || "Có lỗi xảy ra, vui lòng thử lại sau",
-        };
-    }
+    //   default:
+    //     // console.log("Có lỗi xảy ra, vui lòng thử lại sau");
+    //     return {
+    //       status: false,
+    //       message: data.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+    //     };
+    // }
   } catch (error) {
     console.error("Lỗi khi thay đổi mật khẩu:", error);
     return { status: false, message: "Có lỗi xảy ra, vui lòng thử lại sau" };

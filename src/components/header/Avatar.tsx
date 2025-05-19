@@ -30,8 +30,8 @@ const CustomMenuItem = styled(MenuItem)`
 `;
 function InitUser() {
   const dispatch = useDispatch();
-  const userName = useSelector((state: any) => state.user.userName);
-  const userType = useSelector((state: any) => state.user.userType);
+  const userName = useSelector((state: any) => state.auth.userName);
+  const userType = useSelector((state: any) => state.auth.userType);
 
   useEffect(() => {
     const init = async () => {
@@ -64,7 +64,7 @@ function InitUser() {
 export default function AvatarMenu() {
   const avatarImage = "/assets/icons/avatar.svg";
   // lay tu redux
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.auth);
   const userName = user.userName;
   const userType = user.userType?.toLowerCase() || "student";
   const setting = {
