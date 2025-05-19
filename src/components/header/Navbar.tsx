@@ -10,7 +10,7 @@ import { RootState } from "src/lib/store";
 export default function Navbar() {
   const pathname = usePathname();
   const useType =
-    useSelector((state: RootState) => state.user.userType)?.toLowerCase() ||
+    useSelector((state: RootState) => state.auth.userType)?.toLowerCase() ||
     "student";
   const navItems = {
     student: [
