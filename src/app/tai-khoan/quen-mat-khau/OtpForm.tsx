@@ -5,6 +5,7 @@ import { checkOtpRequest } from "@apis/auth/checkOtpAPI";
 
 export default function OTPForm({ onNext, onBack, email }) {
   const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
   const inputSchema = [
     {
       name: "otp",
@@ -40,6 +41,7 @@ export default function OTPForm({ onNext, onBack, email }) {
       variants: "contained",
       size: "large",
       disabled: false,
+      loading: loading,
       sx: {
         backgroundColor: "var(--color-blue)",
         ...sxButton,
@@ -62,6 +64,7 @@ export default function OTPForm({ onNext, onBack, email }) {
     // }
     try {
       const { otp } = data;
+      setLoading(true);
       const res = await checkOtpRequest(email, otp);
       if (res) {
         onNext();
@@ -72,6 +75,7 @@ export default function OTPForm({ onNext, onBack, email }) {
       // console.log("error", error);
       setError(error.message);
     }
+    setLoading(false);
   };
 
   return (
