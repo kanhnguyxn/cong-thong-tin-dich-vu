@@ -1,9 +1,9 @@
 // const API_BASE_URL = "https://3522-123-19-224-121.ngrok-free.app/api";
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { API_BASE_URL, methods } from "../config";
 
 export async function checkOtpRequest(email: string, otp: string) {
   const res = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
-    method: "POST",
+    method: methods.POST,
     headers: {
       "Content-Type": "application/json",
     },
