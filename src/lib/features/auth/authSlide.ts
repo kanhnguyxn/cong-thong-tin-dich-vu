@@ -1,31 +1,65 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getUser as getUserAPI } from "@apis/auth/getUser";
 
+// dinh nghia state
 interface AuthState {
- userName: string | null;
- userType: string | null;
+  user: {
+    username: string;
+    userType: string;
+  };
+  loading: boolean;
+  error: string | null;
 }
+// dihn nghia userResponse
 
 const initialState: AuthState = {
-  userName: null,
-  userType: null,
-  
+  user: null,
+  loading: false,
+  error: null,
 };
 
+export const fetchUser = createAsyncThunk("auth/getUser", async () => {
+  const response = await getUserAPI();
+  console.log("fetchuser", response);
+  return response;
+});
+
 const authSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<{ userName: string; userType: string }>) => {
-      state.userName = action.payload.userName;
-      state.userType = action.payload.userType;
+    getUser(state, action) {
+      console.log("action getUser", action.payload);
+      state.user = action.payload;
     },
-    logout: (state) => {
-      state.userName = null;
-      state.userType = null;
+    deleteUser(state) {
+      console.log("action deleteUser", state.user);
+      state.user = null;
     },
+  },
+  extraReducers: (builder) => {
+    // handle fetch user
+    builder.addCase(fetchUser.pending, (state, action) => {
+      console.log("action getUser", action.payload);
+      state.loading = true;
+    });
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
+      console.log("action getUser", action.payload);
+      state.loading = false;
+      state.user = action.payload;
+    });
+    builder.addCase(fetchUser.rejected, (state, action) => {
+      console.log("action getUser", action.payload);
+      state.loading = false;
+      state.error = action.error.message || "Lỗi không xác định";
+      state.user = null;
+    });
   },
 });
 
 
-export const { logout,setUser  } = authSlice.actions;
+// export action va reducer
+export const { getUser, deleteUser } = authSlice.actions;
+
+// export selectors
 export default authSlice.reducer;

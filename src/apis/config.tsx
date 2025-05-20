@@ -13,14 +13,11 @@ export const GetStatusCode = (status: number): string | null => {
     case 200:
       return null;
     case 401:
-      console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
-      return null;
+      throw new Error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
     case 500:
-      console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-      return null;
+      throw new Error("Lỗi máy chủ, vui lòng thử lại sau");
     default:
-      console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-      return null;
+      throw new Error("Có lỗi xảy ra, vui lòng thử lại sau");
   }
 };
 

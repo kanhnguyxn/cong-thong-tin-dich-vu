@@ -1,11 +1,15 @@
+"use client";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import { fetchUser } from "@lib/features/auth/authSlide";
 import Logo from "./Logo";
 import AvatarMenu from "./Avatar";
 import Navbar from "./Navbar";
 import "@styles/globals.css";
 import "@styles/colors.css";
+import { useAppDispatch } from "@lib/hook";
+import { useEffect } from "react";
 
 const infoHeader = {
   logo: "/assets/icons/logo_truong.svg",
@@ -15,6 +19,11 @@ const infoHeader = {
 };
 
 const Header = () => {
+   // lay tu redux
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+      dispatch(fetchUser());
+    }, []);
   return (
     <AppBar
       position="static"

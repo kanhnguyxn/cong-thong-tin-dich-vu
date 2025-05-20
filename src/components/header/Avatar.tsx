@@ -1,16 +1,12 @@
-"use client";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "src/lib/store";
+import React from "react";
 import { Box } from "@mui/material";
 import { Tooltip, IconButton, Avatar, Menu, MenuItem } from "@mui/material";
 import Link from "next/link";
 import styled from "styled-components";
 
+import {  useAppSelector } from "@lib/hook";
+
 import Logout from "./Logout";
-import getToken from "@utils/getToken";
-import { getUser } from "@apis/auth/getUser";
-import { setUser } from "src/lib/features/auth/authSlide";
 
 const CustomMenuItem = styled(MenuItem)`
   font-size: 16px;
@@ -28,45 +24,16 @@ const CustomMenuItem = styled(MenuItem)`
     background-color: var(--color-gray-stroke);
   }
 `;
-function InitUser() {
-  const dispatch = useDispatch();
-  const userName = useSelector((state: any) => state.auth.userName);
-  const userType = useSelector((state: any) => state.auth.userType);
 
-  useEffect(() => {
-    const init = async () => {
-      if (typeof document === "undefined") return;
-
-      const { access, refresh } = getToken();
-
-      if ((!userName || !userType) && access && refresh) {
-        try {
-          const userInfo = await getUser();
-          if (userInfo) {
-            dispatch(
-              setUser({
-                userName: userInfo.userName,
-                userType: userInfo.userType,
-              })
-            );
-          }
-        } catch (err) {
-          console.error("Lỗi khi lấy thông tin người dùng:", err);
-        }
-      }
-    };
-
-    init();
-  }, [dispatch, userName, userType]);
-
-  return null;
-}
 export default function AvatarMenu() {
   const avatarImage = "/assets/icons/avatar.svg";
-  // lay tu redux
-  const user = useSelector((state: RootState) => state.auth);
-  const userName = user.userName;
-  const userType = user.userType?.toLowerCase() || "student";
+ 
+
+  const { user, loading } = useAppSelector((state) => state.auth);
+  console.log("user", user);
+  const userName = loading ? "Loading..." : user?.username || "Người dùng";
+  const userType = user?.userType.toLowerCase() || "student";
+
   const setting = {
     student: [
       {
@@ -95,7 +62,6 @@ export default function AvatarMenu() {
 
   return (
     <Box className="mr-3">
-      <InitUser />
       <Tooltip title={userName}>
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           {/* ở kích thước nhỏ hơm thì hình avatar đạt 70%w */}

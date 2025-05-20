@@ -4,14 +4,13 @@ import Box from "@mui/material/Box";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@mui/material";
-import { useSelector } from "react-redux";
-import { RootState } from "src/lib/store";
+import { useAppSelector } from "@lib/hook";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const useType =
-    useSelector((state: RootState) => state.auth.userType)?.toLowerCase() ||
-    "student";
+  const user = useAppSelector((state) => state.auth.user);
+  const userType = user?.userType.toLowerCase() || "student";
+
   const navItems = {
     student: [
       { label: "Giới thiệu", path: "/sinh-vien/gioi-thieu" },
@@ -36,7 +35,7 @@ export default function Navbar() {
   };
   return (
     <Box className="w-full p-4 flex flex-col gap-[2px] md:flex-row md:gap-2 md:p-0  bg-white">
-      {navItems[useType].map(({ label, path }) => (
+      {navItems[userType].map(({ label, path }) => (
         <Button
           key={path}
           component={Link}
