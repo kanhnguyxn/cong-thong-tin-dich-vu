@@ -12,6 +12,8 @@ export const GetStatusCode = (status: number): string | null => {
   switch (status) {
     case 200:
       return null;
+    case 400:
+      throw new Error("Dữ liệu không hợp lệ");
     case 401:
       throw new Error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
     case 500:
