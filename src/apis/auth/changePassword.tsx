@@ -1,5 +1,9 @@
-import { methods } from "@apis/config";
+import { methods, GetStatusCode } from "../config";
 import { fetchWithAuth } from "../fetchWithAuth";
+
+type Response = {
+  statusCode: number;
+};
 
 export async function changePassword({
   oldPassword,
@@ -14,50 +18,20 @@ export async function changePassword({
     const resData = (await fetchWithAuth({
       url: "/auth/change-password",
       method: methods.POST,
-      data: JSON.stringify({
+      // chuyen thanh text
+      data: {
         oldPassword: oldPassword,
         newPassword: newPassword,
         confirmNewPassword: confirmNewPassword,
-      }),
+      },
     })) as Response;
-    const data = await resData.json();
-    console.log("resData", resData);
-    console.log("data", data);
 
-    // switch (resData.status) {
-    //   case 200:
-    //     return { status: true, message: data.message };
-    //   case 400:
-    //     // console.log("Mật khẩu không hợp lệ");
-    //     return {
-    //       status: false,
-    //       message: resData.message || "Mật khẩu không hợp lệ",
-    //     };
-    //   case 401:
-    //     // console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
-    //     return {
-    //       status: false,
-    //       message:
-    //         resData.message ||
-    //         "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!",
-    //     };
-
-    //   case 500:
-    //     // console.log(Data.message || "Có lỗi xảy ra, vui lòng thử lại sau");
-    //     return {
-    //       status: false,
-    //       message: resData.message || "Có lỗi xảy ra, vui lòng thử lại sau",
-    //     };
-
-    //   default:
-    //     // console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-    //     return {
-    //       status: false,
-    //       message: data.message || "Có lỗi xảy ra, vui lòng thử lại sau",
-    //     };
-    // }
+    GetStatusCode(resData.statusCode);
+    return { status: true, message: "Thay đổi mật khẩu thành công" };
   } catch (error) {
-    console.error("Lỗi khi thay đổi mật khẩu:", error);
-    return { status: false, message: "Có lỗi xảy ra, vui lòng thử lại sau" };
+    return {
+      status: false,
+      message: error.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+    };
   }
 }

@@ -14,6 +14,7 @@ export default function ChangePasswordForm(props: any) {
   const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState<boolean | null>(null);
+  const [flag, setFlag] = React.useState(false);
 
   const newPasswordId = "matKhauMoi";
   const formControlStyle = {
@@ -126,7 +127,6 @@ export default function ChangePasswordForm(props: any) {
     });
     if (response && typeof response === "object" && response.status === true) {
       setSuccess(true);
-      setLoading(false);
     } else {
       setSuccess(false);
       setError(
@@ -134,15 +134,16 @@ export default function ChangePasswordForm(props: any) {
           ? response.message
           : "An error occurred"
       );
-      setLoading(false);
     }
+    setLoading(false);
+    setFlag(true);
     // if (typeof data === 'object' && data.status === 200) {
     //   flag = true;
     // }
     // handleOpen();
   };
   const onCloseNotification = () => {
-    setSuccess(false);
+    setFlag(false);
   };
   return (
     <>
@@ -158,7 +159,7 @@ export default function ChangePasswordForm(props: any) {
         />
         {IconComponent}
       </div>
-      {success && (
+      {flag && (
         <Notification
           success={success}
           message={{
