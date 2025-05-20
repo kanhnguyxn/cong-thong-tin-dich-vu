@@ -8,7 +8,7 @@ import AvatarMenu from "./Avatar";
 import Navbar from "./Navbar";
 import "@styles/globals.css";
 import "@styles/colors.css";
-import { useAppDispatch } from "@lib/hook";
+import { useAppDispatch, useAppSelector } from "@lib/hook";
 import { useEffect } from "react";
 
 const infoHeader = {
@@ -19,11 +19,14 @@ const infoHeader = {
 };
 
 const Header = () => {
-   // lay tu redux
-    const dispatch = useAppDispatch();
-    useEffect(() => {
+  // lay tu redux
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+  useEffect(() => {
+    if (!user) {
       dispatch(fetchUser());
-    }, []);
+    }
+  }, [user]);
   return (
     <AppBar
       position="static"
