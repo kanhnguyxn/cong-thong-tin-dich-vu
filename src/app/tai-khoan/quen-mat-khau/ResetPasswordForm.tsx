@@ -107,11 +107,10 @@ export default function ResetPassword({
       );
       // console.log("doi mat khau thanh cong");
       router.push("/tai-khoan/dang-nhap");
-
-      setError(null);
     } catch (err) {
       setError("Đặt lại mật khẩu không thành công");
     }
+    setLoading(false);
   };
 
   return (
