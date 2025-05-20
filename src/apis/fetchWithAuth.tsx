@@ -33,8 +33,9 @@ export async function fetchWithAuth({ method, url, data }: fetchOptions) {
       await refreshToken();
       return fetchWithAuth({ url, data, method });
     }
-    console.log("res fetch", res.text());
-    return await res.json();
+    const response = await res.json();
+    console.log("response", response);
+    return response;
   };
 
   // Nếu đang refresh → đưa vào hàng đợi
@@ -48,5 +49,5 @@ export async function fetchWithAuth({ method, url, data }: fetchOptions) {
   }
 
   // Nếu không đang refresh → chạy ngay
-  run();
+  return run();
 }

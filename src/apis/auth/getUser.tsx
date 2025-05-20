@@ -1,33 +1,23 @@
 import { methods } from "@apis/config";
 import { fetchWithAuth } from "../fetchWithAuth";
+import { GetStatusCode } from "@apis/config";
+
+type Response = {
+  data: {
+    userName: string;
+    userType: string;
+  };
+  statusCode: number;
+};
 
 export async function getUser() {
-  try {
-    const resData = await fetchWithAuth({
-      url: "/auth/user/profile",
-      method: methods.GET,
-    });
-    console.log("resData", resData);
-    // switch (resData.status) {
-    //   case 200:
-    //     const data = await resData.json();
-    //     // console.log("Thông tin người dùng:", data);
-    //     return {
-    //       userName: data.data.username,
-    //       userType: data.data.userType,
-    //     };
-    //   case 401:
-    //     // console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
-    //     return null;
-    //   case 500:
-    //     console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-    //     return null;
-    //   default:
-    //     console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-    //     return null;
-    // }
-  } catch (error) {
-    console.error("Lỗi khi lấy thông tin người dùng:", error);
-    return null;
-  }
+  const url = "/auth/user/profile";
+
+  const res = (await fetchWithAuth({
+    url,
+    method: methods.GET,
+  })) as Response;
+  GetStatusCode(res.statusCode);
+
+  return res.data;
 }
