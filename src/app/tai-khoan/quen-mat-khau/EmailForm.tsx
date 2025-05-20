@@ -7,6 +7,7 @@ import { isEmailExisted } from "src/app/services/otpService";
 
 export default function EmailForm({ onNext, handleEmail }) {
   const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
   const inputSchema = [
     {
       name: "email",
@@ -54,6 +55,7 @@ export default function EmailForm({ onNext, handleEmail }) {
       variants: "contained",
       size: "large",
       disabled: false,
+      loading: loading,
       sx: {
         backgroundColor: "var(--color-blue)",
         ...sxButton,
@@ -78,6 +80,7 @@ export default function EmailForm({ onNext, handleEmail }) {
     const { email } = formData;
     handleEmail(email);
     try {
+      setLoading(true);
       const status = await emailRequest(email);
       if (status === true) {
         onNext();
@@ -86,6 +89,7 @@ export default function EmailForm({ onNext, handleEmail }) {
       // console.log("error", error);
       setError(error.message);
     }
+    setLoading(false);
   };
 
   return (
