@@ -13,9 +13,9 @@ export default async function middleware(req : NextRequest) {
   // console.log("refreshToken", refreshToken);
  
   // 2.1. Nếu thiếu token chuyển về trang đăng nhập.
-  // if(!refreshToken) {
-  //   return NextResponse.redirect(new URL("/tai-khoan/dang-nhap", req.url));
-  // }
+  if(!refreshToken) {
+    return NextResponse.redirect(new URL("/tai-khoan/dang-nhap", req.url));
+  }
   // 2.2. Nếu có token cho phép truy cập vào trang.
   return NextResponse.next();
 }

@@ -4,7 +4,7 @@ import { Tooltip, IconButton, Avatar, Menu, MenuItem } from "@mui/material";
 import Link from "next/link";
 import styled from "styled-components";
 
-import {  useAppSelector } from "@lib/hook";
+import { useAppSelector } from "@lib/hook";
 
 import Logout from "./Logout";
 
@@ -27,10 +27,8 @@ const CustomMenuItem = styled(MenuItem)`
 
 export default function AvatarMenu() {
   const avatarImage = "/assets/icons/avatar.svg";
- 
 
   const { user, loading } = useAppSelector((state) => state.auth);
-  console.log("user", user);
   const userName = loading ? "Loading..." : user?.username || "Người dùng";
   const userType = user?.userType.toLowerCase() || "student";
 
