@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { SearchBar } from "@components/SearchBar";
 import BieuMauTable from "./BieuMauTable";
@@ -8,37 +8,44 @@ import { getBieuMau } from "@apis/sinhVien/getBieuMau";
 
 export default function BieuMauPage() {
   const [data, setData] = useState([]);
-  const [originalData, setOriginalData] = useState([]); // lưu bản gốc để reset khi không tìm kiếm
+  const [originalData, setOriginalData] = useState([]);
+  const originalRef = useRef([]);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    // result laf message erro hoacj data
     const result = await getBieuMau();
     if (result && result.length > 0) {
-      setData(result);
+      originalRef.current = result;
       setOriginalData(result);
     } else {
-      setData([]);
+      originalRef.current = [];
       setOriginalData([]);
+      setData([]);
     }
   };
 
   const onSearch = (query: string) => {
+    const baseData = originalRef.current;
     if (!query || query.trim() === "") {
-      setData(originalData);
+      setData(baseData);
+      console.log("baseData", data);
       return;
     }
 
-    const filteredData = originalData.filter((item) =>
-      item.TenBM.toLowerCase().includes(query.toLowerCase())
+    const filteredData = baseData.filter((item) =>
+      item.tenBM.toLowerCase().includes(query.toLowerCase())
     );
-
     setData(filteredData);
-    // console.log(filteredData, query);
   };
+  useEffect(() => {
+    // Sau khi originalData đã được set
+    if (originalData.length > 0) {
+      onSearch("");
+    }
+  }, [originalData]);
 
   return (
     <div className="flex flex-col w-full items-center">
