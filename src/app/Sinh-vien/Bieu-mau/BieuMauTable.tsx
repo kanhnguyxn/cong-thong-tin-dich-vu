@@ -1,6 +1,7 @@
 "use client";
 
 import CustomTable from "@components/Table";
+import { useEffect, useState } from "react";
 
 // import dữ liệu từ file Data-bieu-mau.tsx
 
@@ -15,7 +16,11 @@ const columns = [
 const BieuMauTable = ({ data }) => {
   // Format data to match the expected structure for CustomTable
   // console.log("data", data);
-  const formattedData = data.map((row, index) => ({
+  const [bieuMau, setBieuMau] = useState(data);
+  useEffect(() => {
+    setBieuMau(data);
+  }, [setBieuMau, data]);
+  const formattedData = bieuMau.map((row, index) => ({
     stt: index + 1,
     bieumau: row.tenBM,
     donVi: row.tenPB,

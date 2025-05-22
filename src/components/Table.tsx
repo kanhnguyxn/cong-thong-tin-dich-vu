@@ -79,11 +79,13 @@ export default function CustomTable({
     return tableBodyStyles || {};
   };
 
-  const [displayData, setDisplayData] = React.useState(
-    hasSelective
-      ? data?.map((row) => ({ ...row, selected: false })) || []
-      : data || []
-  );
+  const [displayData, setDisplayData] = React.useState([]);
+
+  React.useEffect(() => {
+    setDisplayData(
+      hasSelective ? data?.map((row) => ({ ...row, selected: false })) : data
+    );
+  }, [data]);
 
   // Gọi handeleChange khi displayData thay đổi
   React.useEffect(() => {
