@@ -25,6 +25,7 @@ export default function SelectCheckboxInput({
 
   return (
     <div
+      className="w-full"
       ref={containerRef}
       tabIndex={-1}
       onBlur={() => {
