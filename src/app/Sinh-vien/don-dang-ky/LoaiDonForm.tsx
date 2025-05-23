@@ -1,17 +1,22 @@
 "use client";
 import FormMui from "@components/form/Form";
 import React from "react";
-import { dataDonDangKy } from "src/app/services/dataDonDangKy";
+import { useAppSelector } from "@lib/hook";
+// import { dataDonDangKy } from "src/app/services/dataDonDangKy";
 
 interface LoaiDonFormProps {
   onSubmitMaDon: (maDon: string) => void;
 }
 export default function LoaiDonForm({ onSubmitMaDon }: LoaiDonFormProps) {
   const [error, setError] = React.useState<string | null>(null);
+
+  // Lấy maDOn va tenDon tu redux
+  const rawDonDangKy = useAppSelector((state) => state.donDangKy.donDangKy);
+
   // Chuẩn bị dữ liệu đơn đăng ký
-  const donDangKy = dataDonDangKy.map((item) => ({
+  const donDangKy = rawDonDangKy.map((item) => ({
     maDon: item.maDon,
-    tenDDK: item.tenDDK,
+    tenDDK: item.tenDon,
   }));
 
   // Khai báo input schema
@@ -21,7 +26,7 @@ export default function LoaiDonForm({ onSubmitMaDon }: LoaiDonFormProps) {
       label: "Loại đơn:",
       type: "select",
       selectOptions: donDangKy.map((item) => item.tenDDK),
-      value: donDangKy[0]?.tenDDK || "",
+      // value: donDangKy[0]?.tenDDK || "",
       required: true,
       formControlStyle: {
         display: "flex",
@@ -57,6 +62,7 @@ export default function LoaiDonForm({ onSubmitMaDon }: LoaiDonFormProps) {
 
   // Xử lý submit form
   const handleSubmit = (formData: any) => {
+    console.log("formData", formData);
     const selectedDon = donDangKy.find(
       (item) => item.tenDDK === formData.loaiDon
     );
