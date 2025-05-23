@@ -1,11 +1,19 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DonDangKyForm from "./DonDangKyForm";
 import LoaiDonForm from "./LoaiDonForm";
+import { fetchDonDangKy } from "@lib/features/donDangKySlice";
+import { useAppDispatch, useAppSelector } from "@lib/hook";
 
 export default function ĐonangKyPage() {
-  const [maDonDangKy, setMaDonDangKy] = React.useState<string>("");
-  const [openDonDangKy, setOpenDonDangKy] = React.useState(false);
+  const [maDonDangKy, setMaDonDangKy] = useState<string>("");
+  const [openDonDangKy, setOpenDonDangKy] = useState(false);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    console.log("ĐonangKyPage");
+    dispatch(fetchDonDangKy());
+  }, [dispatch]);
+
   const handleSubmitLoaiDon = (maDon: string) => {
     setMaDonDangKy(maDon);
     setOpenDonDangKy(true);
