@@ -4,7 +4,7 @@ import { Tooltip, IconButton, Avatar, Menu, MenuItem } from "@mui/material";
 import Link from "next/link";
 import styled from "styled-components";
 
-import { useAppSelector } from "@lib/hook";
+import { useAppSelector } from "@redux/hook";
 
 import Logout from "./Logout";
 

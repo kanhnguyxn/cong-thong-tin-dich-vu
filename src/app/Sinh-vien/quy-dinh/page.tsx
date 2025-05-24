@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import NavBar from "./Navbar";
 import QuyDinhTable from "./QuyDinhTable";
 import { SearchBar } from "@components/SearchBar";
-import { useAppDispatch, useAppSelector } from "@lib/hook";
-import { fetchQuyDinh } from "@lib/features/quyDinhSlice";
+import { useAppDispatch, useAppSelector } from "@redux/hook";
+import { fetchQuyDinh } from "@redux/features/quyDinhSlice";
 import Loading from "src/app/loading";
 
 export default function QuyDinhPage() {

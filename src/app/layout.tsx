@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "@styles/globals.css";
 
 import { Provider } from "react-redux";
-import { makeStore } from "../lib/store";
+import { makeStore } from "../redux/store";
 
 export default function RootLayout({
   children,

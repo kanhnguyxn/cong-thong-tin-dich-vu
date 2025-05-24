@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import DropDownLists from "@components/DropDownList";
 import ICONS from "@components/icons";
-import { useAppSelector } from "@lib/hook";
+import { useAppSelector } from "@redux/hook";
 
 interface DropDownProps {
   onSelectionsChange?: (department: string, option: string) => void;

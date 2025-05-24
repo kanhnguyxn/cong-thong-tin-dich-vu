@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import DonDangKyForm from "./DonDangKyForm";
 import LoaiDonForm from "./LoaiDonForm";
-import { fetchDonDangKy } from "@lib/features/donDangKySlice";
-import { useAppDispatch, useAppSelector } from "@lib/hook";
+import { fetchDonDangKy } from "@redux/features/donDangKySlice";
+import { useAppDispatch } from "@redux/hook";
 
 export default function ĐonangKyPage() {
   const [maDonDangKy, setMaDonDangKy] = useState<string>("");

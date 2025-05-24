@@ -1,6 +1,6 @@
-import { useAppDispatch } from "@lib/hook";
-import { deleteUser } from "@lib/features/auth/authSlide";
-import { deleteAllDonDangKy } from "@lib/features/donDangKySlice";
+import { useAppDispatch } from "@redux/hook";
+import { deleteUser } from "@redux/features/auth/authSlide";
+import { deleteAllDonDangKy } from "@redux/features/donDangKySlice";
 
 export default function Logout() {
   const dispatch = useAppDispatch();

@@ -2,13 +2,13 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { fetchUser } from "@lib/features/auth/authSlide";
+import { fetchUser } from "@redux/features/auth/authSlide";
 import Logo from "./Logo";
 import AvatarMenu from "./Avatar";
 import Navbar from "./Navbar";
 import "@styles/globals.css";
 import "@styles/colors.css";
-import { useAppDispatch, useAppSelector } from "@lib/hook";
+import { useAppDispatch, useAppSelector } from "@redux/hook";
 import { useEffect } from "react";
 
 const infoHeader = {

@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { Provider } from "react-redux";
-import { makeStore, AppStore } from "@lib/store";
+import { makeStore, AppStore } from "@redux/store";
 
 // Redux trong môi trường client-side mà không bị mất trạng thái khi re-render.
 export default function StoreProvider({
