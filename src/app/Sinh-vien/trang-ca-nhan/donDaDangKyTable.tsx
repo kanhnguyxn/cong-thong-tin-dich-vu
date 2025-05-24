@@ -1,7 +1,6 @@
 import CustomTable from "@components/Table";
-import { dataDonDangKyCT } from "src/app/services/dataDonDangKyCT";
+import { dataDonDangKyCT } from "@services/dataDonDangKyCT";
 import { Container } from "@components/Container";
-import { text } from "stream/consumers";
 
 export default function DonDaDangKyTable({ madon }: { madon: string }) {
   const columns = [

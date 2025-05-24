@@ -6,7 +6,7 @@ import ICONS from "@components/icons";
 import BasicModal from "@components/Modal";
 import { Icon } from "@mui/material";
 
-import ChangePasswordService from "../services/changePassword";
+import ChangePasswordService from "../../services/changePassword";
 import { changePassword } from "@apis/auth/changePassword";
 import { Notification } from "@components/Notification";
 

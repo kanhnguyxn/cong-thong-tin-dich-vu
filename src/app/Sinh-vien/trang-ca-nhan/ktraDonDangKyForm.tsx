@@ -1,7 +1,7 @@
 "use client";
 import { Container } from "@components/Container";
 import { InputLabel } from "@mui/material";
-import { dataDonDangKy } from "src/app/services/dataDonDangKy";
+import { dataDonDangKy } from "@services/dataDonDangKy";
 import { labelStyles } from "@styles/style_component";
 
 export default function KtraDonDangKyForm({ onChange }) {
