@@ -37,8 +37,8 @@
       "@context/*": [
         "src/context/*"
       ],
-      "@lib/*": [
-        "src/lib/*"
+      "@redux/*": [
+        "src/redux/*"
       ],
       "@apis/*": [
         "src/apis/*"

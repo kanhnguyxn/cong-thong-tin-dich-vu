@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@mui/material";
-import { useAppSelector } from "@lib/hook";
+import { useAppSelector } from "@redux/hook";
 
 export default function Navbar() {
   const pathname = usePathname();
