@@ -5,6 +5,8 @@ const select = "/assets/icons/select.svg";
 const success = "/assets/icons/success.svg";
 const fail = "/assets/icons/fail.svg";
 const warning = "/assets/icons/warning.svg";
+const phone = "/assets/icons/phone.svg";
+const email = "/assets/icons/email.svg";
 
 const VisualityOn = ({ ...props }) => {
   return <img src={visualityOnUrl} alt="" {...props} />;
@@ -31,6 +33,26 @@ const Fail = ({ ...props }) => {
 const Warning = ({ ...props }) => {
   return <img src={warning} alt="" {...props} />;
 };
+const Phone = ({ ...props }) => {
+  return (
+    <img
+      src={phone}
+      alt="phone"
+      className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"
+      {...props}
+    />
+  );
+};
+const Email = ({ ...props }) => {
+  return (
+    <img
+      src={email}
+      alt="phone"
+      className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"
+      {...props}
+    />
+  );
+};
 const ICONS = {
   VISUALITY_ON: <VisualityOn />,
   VISUALITY_OFF: <VisualityOff />,
@@ -39,6 +61,8 @@ const ICONS = {
   SUCCESS: <Success />,
   FAIL: <Fail />,
   WARNING: <Warning />,
+  PHONE: <Phone />,
+  EMAIL: <Email />,
   // Add more icons here as needed
 };
 
