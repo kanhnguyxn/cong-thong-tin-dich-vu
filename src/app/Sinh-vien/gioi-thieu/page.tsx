@@ -44,7 +44,12 @@ export default function GioiThieuPage() {
     const fetchData = async () => {
       try {
         const data = await getGioiThieu();
-        if (!data || data[0].thongTinLienHe.length === 0) {
+        if (
+          !data ||
+          data.length === 0 ||
+          !data[0]?.thongTinLienHe ||
+          data[0].thongTinLienHe.length === 0
+        ) {
           setInfoGioiThieu(null);
           return;
         }

@@ -34,7 +34,12 @@ export const fetchDonDangKy = createAsyncThunk(
 const donDangKySlice = createSlice({
     name: "donDangKy",
     initialState,
-    reducers: {},
+    reducers: {
+        // xoa tat ca don dang ky
+        deleteAllDonDangKy: (state) => {
+            state.donDangKy = [];
+        },
+    },
     extraReducers: (builder)=>{
         builder.addCase(fetchDonDangKy.pending, (state)=>{
             state.loading = true;
@@ -53,3 +58,4 @@ const donDangKySlice = createSlice({
 });
 
 export default donDangKySlice.reducer;
+export const { deleteAllDonDangKy } = donDangKySlice.actions;
