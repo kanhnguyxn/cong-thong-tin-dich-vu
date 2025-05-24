@@ -17,9 +17,10 @@ export default function BieuMauPage() {
 
   const fetchData = async () => {
     const result = await getBieuMau();
-    if (result && result.length > 0) {
-      originalRef.current = result;
-      setOriginalData(result);
+    if (result && result.status && result.data.length > 0) {
+      originalRef.current = result.data;
+      setOriginalData(result.data);
+      setData(result.data);
     } else {
       originalRef.current = [];
       setOriginalData([]);
@@ -31,7 +32,7 @@ export default function BieuMauPage() {
     const baseData = originalRef.current;
     if (!query || query.trim() === "") {
       setData(baseData);
-      console.log("baseData", data);
+      // console.log("baseData", data);
       return;
     }
 

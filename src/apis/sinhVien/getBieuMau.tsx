@@ -8,8 +8,8 @@ export async function getBieuMau() {
       method: methods.GET,
     });
     GetStatusCode(resData.statusCode);
-    return resData.data;
+    return { status: true, data: resData.data };
   } catch (error) {
-    throw new Error("Có lỗi xảy ra, vui lòng thử lại sau");
+    return { status: false, message: error || "Lỗi khi lấy biểu mẫu" };
   }
 }
