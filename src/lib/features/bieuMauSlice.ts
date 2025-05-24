@@ -1,5 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchBieuMau } from "./bieuMauThunk";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getBieuMau } from "@apis/sinhVien/getBieuMau";
+import { rejects } from "node:assert";
+
+
+export const fetchBieuMau = createAsyncThunk(
+    'bieuMau/fetchBieuMau',
+    async () => {
+      const resData = await getBieuMau();
+      return resData;
+    }
+  );
 
 const bieuMauSlice = createSlice({
   name: "bieuMau",
