@@ -1,0 +1,11 @@
+
+cai dat git bash, cai them npm len google down ve la duoc 
+<!-- cachs pull 1 nhanh du lieu ve -->
+git pull origin <tên-nhánh>
+vd: git pull origin test
+
+<!-- cach cai tat ca cac extension -->
+npm install
+
+<!-- chay du an -->
+npm run dev
