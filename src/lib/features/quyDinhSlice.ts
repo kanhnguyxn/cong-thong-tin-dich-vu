@@ -1,5 +1,5 @@
-import { getQuyDinh } from "@apis/sinhVien/getQuyDinh";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getQuyDinh } from "@apis/sinhVien/getQuyDinh";
 
 interface QuyDinhState {
     quyDinh:{
@@ -21,7 +21,7 @@ interface QuyDinhState {
 }
 
 const initialState: QuyDinhState = {
-    quyDinh: null,
+    quyDinh: [],
     loading: false,
     error: null,
 };
@@ -31,26 +31,31 @@ export const fetchQuyDinh = createAsyncThunk(
     "quyDinh/fetchQuyDinh",
     async () => {
         const resData = await getQuyDinh();
+        console.log("resData in fetchQuyDinh", resData);
         return resData;
     }
 );
 
 const quyDinhSlice = createSlice({
     name: "quyDinh",
-    initialState:{
-        quyDinh:null,
-        loading: false,
-        error: null,
+    initialState,
+    reducers: {
+        // reset quy dinh ve ban dau
+        resetQuyDinh: (state) => {
+            state.quyDinh = null;
+            state.loading = false;
+            state.error = null;
+        },
     },
-    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchQuyDinh.pending, (state) => {
                 state.loading = true;
             })
             .addCase(fetchQuyDinh.fulfilled, (state, action) => {
+                console.log("action.payload", action.payload);
                 state.loading = false;
-                state.quyDinh = action.payload.status && action.payload.data ? action.payload.data : [];
+                state.quyDinh = action.payload;
             })
             .addCase(fetchQuyDinh.rejected, (state, action) => {
                 state.loading = false;
@@ -60,3 +65,4 @@ const quyDinhSlice = createSlice({
 
 })
 export default quyDinhSlice.reducer;
+export const { resetQuyDinh } = quyDinhSlice.actions;

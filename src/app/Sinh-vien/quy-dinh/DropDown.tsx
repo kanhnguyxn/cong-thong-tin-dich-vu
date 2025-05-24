@@ -1,74 +1,79 @@
-'use client';
+"use client";
+
 import { Box } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
 import DropDownLists from "@components/DropDownList";
-import { useState } from "react";
 import ICONS from "@components/icons";
+import { useAppSelector } from "@lib/hook";
 
 interface DropDownProps {
-  onSelectionsChange?: ( department: string, option: string ) => void;
+  onSelectionsChange?: (department: string, option: string) => void;
 }
 
-// Danh sách phòng ban và options cố định
-const departments = [
-  "Đào tạo",
-  "Công tác sinh viên",
-  "Kế Hoạch - Tài Chính",
-  "Khảo thí & ĐBCLGDH",
-];
-
-const options = [
+const DROPDOWN_OPTIONS = [
   "Văn bản Quy phạm pháp luật",
   "Văn bản Quy phạm nội bộ do DHDN ban hành",
   "Văn bản Quy phạm nội bộ do DHKT ban hành",
 ];
 
-// Style cố định
-const dropDownStyle = {
+const DROPDOWN_STYLE = {
   border: "1px solid var(--color-blue)",
   paddingLeft: "3px",
-  fontSize:{
-    xs:'14px',
-    sm:'16px',
-    md:'18px'
+  fontSize: {
+    xs: "14px",
+    sm: "16px",
+    md: "18px",
   },
   textAlign: "left",
 };
 
-const classNameOption =
+const OPTION_CLASSNAME =
   "w-full hover:bg-[var(--color-gray-stroke)] hover:border-y hover:border-black cursor-pointer p-1 text-left";
 
-const departmentStyle = "font-bold text-black pl-2 ";
-const optionsStyle = "text-[var(--color-blue)] pl-2";
+const DEPT_TEXT_STYLE = "font-bold text-black pl-2";
+const OPTION_TEXT_STYLE = "text-[var(--color-blue)] pl-2";
 
 export default function DropDown({ onSelectionsChange }: DropDownProps) {
-  const [selectedValues, setSelectedValues] = useState<string[]>([...departments]);
+  const { quyDinh, loading } = useAppSelector((state) => state.quyDinh);
 
-  const handleSelect = (index: number, value: string) => {
-    const updated = departments.map((item, i) => (i === index ? value : item));
-    setSelectedValues(updated);
-    
+  const departments = useMemo(() => {
+    if (loading || !quyDinh) return [];
+    return Array.from(new Set(quyDinh.map((item) => item.maPB)));
+  }, [quyDinh, loading]);
+
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSelectedValues(departments);
+  }, [departments]);
+
+  const handleSelectChange = (index: number, newValue: string) => {
+    const updatedValues = [...selectedValues];
+    updatedValues[index] = newValue;
+    setSelectedValues(updatedValues);
+
     if (onSelectionsChange) {
-      onSelectionsChange(departments[index], value);
+      onSelectionsChange(departments[index], newValue);
     }
   };
 
   return (
     <Box>
-      {departments.map((department, index) => {
-        const isDefault = selectedValues[index] === department;
-        const currentChildrenStyle = isDefault ? departmentStyle : optionsStyle;
+      {departments.map((dept, index) => {
+        const isDefault = selectedValues[index] === dept;
+        const textStyle = isDefault ? DEPT_TEXT_STYLE : OPTION_TEXT_STYLE;
 
         return (
           <DropDownLists
-            key={index}
-            name={department}
-            options={options}
+            key={dept}
+            name={dept}
+            options={DROPDOWN_OPTIONS}
             value={selectedValues[index]}
-            onChange={(value) => handleSelect(index, value)}
+            onChange={(value) => handleSelectChange(index, value)}
             button={ICONS.SELECT}
-            dropDownStyle={dropDownStyle}
-            optionsStyle={classNameOption}
-            childrenStyle={currentChildrenStyle}
+            dropDownStyle={DROPDOWN_STYLE}
+            optionsStyle={OPTION_CLASSNAME}
+            childrenStyle={textStyle}
           />
         );
       })}
