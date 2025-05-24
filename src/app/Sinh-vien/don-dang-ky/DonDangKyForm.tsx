@@ -48,7 +48,9 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
   const rawDonDangKy = useAppSelector((state) => state.donDangKy.donDangKy);
   const donDangKy = rawDonDangKy.find((item) => item.maDon === maDonDangKy);
 
-  console.log("donDangKy", donDangKy);
+  // lấy user từ redux
+  const user = useAppSelector((state) => state.auth.user);
+  const maSV = user?.username;
 
   const parsedFields = JSON.parse(donDangKy?.thongTinChiTiet || "[]");
 
@@ -73,25 +75,21 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
     },
   ];
   const hanleSubmit = async (formData: any) => {
-    console.log("formData", formData);
-    // const data = {
-    //   maDonDangKy: donDangKy?.maDon,
-    //   maSV: "123456789",
-    //   thoiGianDangKy: new Date(),
-    //   thongTinChiTiet: formData,
-    // };
-    // // console.log("data", data);
-    // try {
-    //   const response = await createFormRequest({
-    //     madon: data.maDonDangKy,
-    //     maSv: data.maSV,
-    //     thoiGian: data.thoiGianDangKy,
-    //     thongTinChiTiet: data.thongTinChiTiet,
-    //   });
-    //   // console.log("response", response);
-    // } catch (error) {
-    //   console.error("Error creating form request:", error);
-    // }
+    // console.log("formData", formData);
+    const data = {
+      // maDCT không cần
+      maDonCT: "125",
+      maDon: donDangKy?.maDon,
+      maSV: maSV,
+      // hoc kỳ hien tai không cần
+      hocKyHienTai: "20232024",
+      ngayTaoDonCT: new Date().toISOString(),
+      thongTinChiTiet: JSON.stringify(formData),
+      // không cần
+      trangThaiXuLy: "Chờ duyệt",
+    };
+    const response = await createFormRequest(data);
+   
   };
 
   return (
