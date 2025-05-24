@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getBieuMau } from "@apis/sinhVien/getBieuMau";
-import { rejects } from "node:assert";
+
 
 
 export const fetchBieuMau = createAsyncThunk(
@@ -26,7 +26,7 @@ const bieuMauSlice = createSlice({
       })
       .addCase(fetchBieuMau.fulfilled, (state, action) => {
         state.loading = false;
-        state.bieuMau = action.payload;
+        state.bieuMau = action.payload.status && action.payload.data ? action.payload.data : [];
       })
       .addCase(fetchBieuMau.rejected, (state, action) => {
         state.loading = false;

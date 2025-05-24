@@ -29,27 +29,27 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     getUser(state, action) {
-      console.log("action getUser", action.payload);
+      // console.log("action getUser", action.payload);
       state.user = action.payload;
     },
     deleteUser(state) {
-      console.log("action deleteUser", state.user);
+      // console.log("action deleteUser", state.user);//
       state.user = null;
     },
   },
   extraReducers: (builder) => {
     // handle fetch user
     builder.addCase(fetchUser.pending, (state, action) => {
-      console.log("action getUser", action.payload);
+      // console.log("action getUser", action.payload);
       state.loading = true;
     });
     builder.addCase(fetchUser.fulfilled, (state, action) => {
-      console.log("action getUser", action.payload);
+      // console.log("action getUser", action.payload);
       state.loading = false;
       state.user = action.payload;
     });
     builder.addCase(fetchUser.rejected, (state, action) => {
-      console.log("action getUser", action.payload);
+      // console.log("action getUser", action.payload);
       state.loading = false;
       state.error = action.error.message || "Lỗi không xác định";
       state.user = null;
