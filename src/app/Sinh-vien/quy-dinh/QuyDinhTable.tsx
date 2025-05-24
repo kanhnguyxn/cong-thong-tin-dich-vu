@@ -1,4 +1,5 @@
 import CustomTable from "@components/Table";
+import { formatDate } from "@components/formatDate";
 // import dữ liệu từ file DataQuyDinh.tsx
 
 // thong tin các cột trong table
@@ -13,21 +14,22 @@ const columns = [
 
 export default function QuyDinhTable({ data }) {
   const formattedData = data.map((row, index) => ({
-    sokyhieu: row.sokyhieu,
+    sokyhieu: row.maQD,
     quydinh: (
       <a
-        href={row.lienket}
+        href={row.lienKet}
         target="_blank"
         rel="noopener noreferrer"
         className="text-[var(--color-blue)] hover:underline"
       >
-        {row.quydinh}
+        {row.tenQD}
       </a>
     ),
-    noibanhanh: row.noibanhanh,
-    ngaybanhanh: row.ngaybanhanh,
-    ngayhieuluc: row.ngayhieuluc,
-    hieuluc: row.hieuluc,
+    noibanhanh: row.noiBanHanh,
+    // chuyeenr thanhf dang dd/mm/yyyy
+    ngaybanhanh: formatDate(row.ngayBanHanh),
+    ngayhieuluc: formatDate(row.ngayCoHieuLuc),
+    hieuluc: row.hieuLuc ? "Có" : "Không",
   }));
   const tableCellStyles = (columnId, row) => {
     if (columnId === "quydinh" || columnId === "sokyhieu") {
