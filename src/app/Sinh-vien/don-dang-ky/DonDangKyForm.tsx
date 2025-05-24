@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect } from "react";
+import React, { useState } from "react";
 import FormMui from "@components/form/Form";
 import { InputLabel } from "@mui/material";
 // import { dataDonDangKy } from "src/app/services/dataDonDangKy";
@@ -14,8 +14,10 @@ import {
 } from "./styles";
 
 import { useAppSelector } from "@lib/hook";
-import getTime from "@components/getTime";
+// import getTime from "@components/getTime";
 import { createFormRequest } from "@apis/sinhVien/createFormRequest";
+import { Notification } from "@components/Notification";
+import ICONS from "@components/icons";
 
 interface DonDangKyFormProps {
   maDonDangKy: string;
@@ -42,16 +44,18 @@ const labelRebder = (label: string | string[]) => {
 };
 
 export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
-  const [formData, setFormData] = React.useState<any>([]);
-  console.log("maDonDangKy", maDonDangKy);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState<boolean | null>(null);
+  const [flag, setFlag] = useState(false);
+
   // lay du lieu tu redux
   const rawDonDangKy = useAppSelector((state) => state.donDangKy.donDangKy);
   const donDangKy = rawDonDangKy.find((item) => item.maDon === maDonDangKy);
-
   // lấy user từ redux
   const user = useAppSelector((state) => state.auth.user);
   const maSV = user?.username;
 
+  // hien thi thong tin chi tiet cua don
   const parsedFields = JSON.parse(donDangKy?.thongTinChiTiet || "[]");
 
   const inputSchema = parsedFields.map((item: any) => ({
@@ -71,11 +75,15 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
       type: "submit",
       variants: "contained",
       size: "large",
+      loading: loading,
       sx: { ...buttonStyles },
     },
   ];
+
+  // xu ly submit form
   const hanleSubmit = async (formData: any) => {
     // console.log("formData", formData);
+    setLoading(true);
     const data = {
       // maDCT không cần
       maDonCT: "125",
@@ -89,24 +97,51 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
       trangThaiXuLy: "Chờ duyệt",
     };
     const response = await createFormRequest(data);
-   
+    if (response.status === true) {
+      setSuccess(true);
+    } else {
+      setSuccess(false);
+    }
+    setLoading(false);
+    setFlag(true);
+  };
+
+  const onCloseNotification = () => {
+    setFlag(false);
+    setSuccess(null);
   };
 
   return (
-    <Container
-      className="size-fit px-8 py-6 mx-4 my-5 md:mx-0 md:min-w-[60%] lg:min-w-[50%] md:max-w-[80%]"
-      shadow
-    >
-      <h6 className="w-full text-lg md:text-xl lg:text-2xl font-bold uppercase">
-        {donDangKy.tenDon}
-      </h6>
-      <FormMui
-        className="w-full flex flex-col "
-        inputSchema={inputSchema}
-        onSubmit={hanleSubmit}
-        buttons={buttons}
-        buttonClassName="w-full flex justify-center items-center"
-      />
-    </Container>
+    <>
+      <Container
+        className="size-fit px-8 py-6 mx-4 my-5 md:mx-0 md:min-w-[60%] lg:min-w-[50%] md:max-w-[80%]"
+        shadow
+      >
+        <h6 className="w-full text-lg md:text-xl lg:text-2xl font-bold uppercase">
+          {donDangKy.tenDon}
+        </h6>
+        <FormMui
+          className="w-full flex flex-col "
+          inputSchema={inputSchema}
+          onSubmit={hanleSubmit}
+          buttons={buttons}
+          buttonClassName="w-full flex justify-center items-center"
+        />
+      </Container>
+      {flag && (
+        <Notification
+          success={success}
+          onClose={onCloseNotification}
+          message={{
+            success: "Đăng ký thành công",
+            fail: "Đăng ký thất bại",
+          }}
+          icon={{
+            success: ICONS.SUCCESS,
+            fail: ICONS.FAIL,
+          }}
+        />
+      )}
+    </>
   );
 }
