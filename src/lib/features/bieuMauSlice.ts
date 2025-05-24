@@ -26,7 +26,7 @@ const bieuMauSlice = createSlice({
       })
       .addCase(fetchBieuMau.fulfilled, (state, action) => {
         state.loading = false;
-        state.bieuMau = action.payload.status && action.payload.data ? action.payload.data : [];
+        state.bieuMau = action.payload;
       })
       .addCase(fetchBieuMau.rejected, (state, action) => {
         state.loading = false;

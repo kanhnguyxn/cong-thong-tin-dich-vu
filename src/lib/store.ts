@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/auth/authSlide';
 import donDangKyReducer from './features/donDangKySlice';
+import quyDinhReducer from './features/quyDinhSlice';
 
 export const makeStore =()=>{
   return configureStore({
     reducer: {
       auth: authReducer,
       donDangKy: donDangKyReducer,
+      quyDinh: quyDinhReducer,
     },
   })
 }
