@@ -3,7 +3,6 @@ import { useState } from "react";
 import FormInputControl from "./FormInputControl";
 import CustomButton from "@components/button";
 import { COMMON_STYLES } from "@styles/common_styles";
-import Form from "next/form";
 
 interface FormProps {
   className?: string;
@@ -81,6 +80,7 @@ export default function FormMui({
 
   const handleSubmit = (e) => {
     //  kiểm tra các validation của các trường còn lỗi không
+    e.preventDefault();
     const hasErrors = Object.keys(errors).some((key) => errors[key].length > 0);
     if (hasErrors) {
       return;
@@ -110,9 +110,9 @@ export default function FormMui({
   };
 
   return (
-    <Form
+    <form
       className={`${className} ${formErrMsg ? "mt-0" : "mt-2"}`}
-      action={handleSubmit}
+      onSubmit={handleSubmit}
     >
       {formErrMsg && (
         <div className="text-red-500 text-sm md:text-[15px] lg:text-base uppercase mt-2 md:mt-3 text-left font-semibold">
@@ -156,6 +156,6 @@ export default function FormMui({
           })}
         </div>
       )}
-    </Form>
+    </form>
   );
 }

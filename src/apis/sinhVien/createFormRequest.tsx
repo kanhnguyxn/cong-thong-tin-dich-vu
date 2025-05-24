@@ -1,49 +1,29 @@
-import { methods } from "@apis/config";
-import { fetchWithAuth } from "../fetchWithAuth";
+import { GetStatusCode, methods } from "@apis/config";
+import { fetchWithAuth } from "@apis/fetchWithAuth";
 
 type FormRequestData = {
-  madon: string;
-  maSv: string;
-  thoiGian: Date;
-  thongTinChiTiet: {};
+  maDonCT: string;
+  maDon: string;
+  maSV: string;
+  hocKyHienTai: string;
+  ngayTaoDonCT: string;
+  thongTinChiTiet: string; // dạng string JSON
+  trangThaiXuLy: string;
 };
-export async function createFormRequest({
-  madon,
-  maSv,
-  thoiGian,
-  thongTinChiTiet,
-}: FormRequestData) {
+
+export async function createFormRequest(data: FormRequestData) {
   try {
     const resData = await fetchWithAuth({
-      url: "/sinhVien/create-form",
+      url: "/students/forms/detail",
       method: methods.POST,
-      data: JSON.stringify({
-        madon: madon,
-        maSv: maSv,
-        ngayTaoDonCT: thoiGian,
-        thongTinChiTiet: thongTinChiTiet,
-      }),
+      data: data,
     });
-    console.log("resData", resData);
-
-    // switch (resData.status) {
-    //   case 200:
-    //     return true;
-    //   case 400:
-    //     // console.log("Dữ liệu không hợp lệ");
-    //     return false;
-    //   case 401:
-    //     // console.log("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
-    //     return false;
-    //   case 500:
-    //     console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-    //     return false;
-    //   default:
-    //     console.log("Có lỗi xảy ra, vui lòng thử lại sau");
-    //     return false;
-    // }
+    GetStatusCode(resData.statusCode);
+    return { status: true, message: "Tạo đơn đăng ký thành công" };
   } catch (error) {
-    console.error("Lỗi khi tạo form:", error);
-    return false;
+    return {
+      status: false,
+      message: error.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+    };
   }
 }
