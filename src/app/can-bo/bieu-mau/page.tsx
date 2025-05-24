@@ -5,7 +5,7 @@ import { SearchBar } from "@components/SearchBar";
 import { BieuMauTable } from "./BieuMauTable";
 import AddButton from "./addButton";
 import DeleteButton from "@components/DeleteButton";
-import dataBieuMau from "../../services/dataBieuMauCanBo";
+// import dataBieuMau from "../../../services/dataBieuMauCanBo";
 
 export default function BieuMauPage() {
   const [data, setData] = useState(dataBieuMau);
