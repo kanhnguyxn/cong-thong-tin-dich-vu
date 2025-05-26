@@ -85,16 +85,11 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
     // console.log("formData", formData);
     setLoading(true);
     const data = {
-      // maDCT không cần
-      maDonCT: "125",
       maDon: donDangKy?.maDon,
       maSV: maSV,
-      // hoc kỳ hien tai không cần
-      hocKyHienTai: "20232024",
+      hocKyHienTai: null,
       ngayTaoDonCT: new Date().toISOString(),
       thongTinChiTiet: JSON.stringify(formData),
-      // không cần
-      trangThaiXuLy: "Chờ duyệt",
     };
     const response = await createFormRequest(data);
     if (response.status === true) {

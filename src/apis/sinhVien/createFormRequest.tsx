@@ -2,7 +2,6 @@ import { GetStatusCode, methods } from "@apis/config";
 import { fetchWithAuth } from "@apis/fetchWithAuth";
 
 type FormRequestData = {
-  maDonCT: string;
   maDon: string;
   maSV: string;
   hocKyHienTai: string;
@@ -14,7 +13,7 @@ type FormRequestData = {
 export async function createFormRequest(data: FormRequestData) {
   try {
     const resData = await fetchWithAuth({
-      url: "/students/forms/detail",
+      url: "/students/forms",
       method: methods.POST,
       data: data,
     });
