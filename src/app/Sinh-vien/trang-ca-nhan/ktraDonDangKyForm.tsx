@@ -1,14 +1,35 @@
 "use client";
 import { Container } from "@components/Container";
 import { InputLabel } from "@mui/material";
-import { dataDonDangKy } from "@services/dataDonDangKy";
+import { useAppDispatch, useAppSelector } from "@redux/hook";
+import { fetchDonDangKy } from "@redux/features/donDangKySlice";
+
+// import { dataDonDangKy } from "@services/dataDonDangKy";
 import { labelStyles } from "@styles/style_component";
+import { useEffect, useState } from "react";
 
 export default function KtraDonDangKyForm({ onChange }) {
-  const donDangKy = dataDonDangKy.map((item) => ({
-    maDon: item.maDon,
-    tenDDK: item.tenDDK,
-  }));
+  const dispatch = useAppDispatch();
+  const donDangKyState = useAppSelector((state) => state.donDangKy.donDangKy);
+
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    dispatch(fetchDonDangKy());
+  }, []);
+
+  useEffect(() => {
+    if (donDangKyState.length > 0) {
+      setData(donDangKyState);
+    }
+  }, [donDangKyState]);
+
+  const donDangKy = data
+    ? data.map((item) => ({
+        maDon: item.maDon,
+        tenDDK: item.tenDon,
+      }))
+    : [];
 
   const handleChange = (e: any) => {
     const value = e.target.value;
@@ -43,7 +64,7 @@ export default function KtraDonDangKyForm({ onChange }) {
             className="w-full max-w-[60%] h-10 border border-[var(--color-blue)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
             <option value="all">Tất cả</option>
-            {donDangKy.map((item) => (
+            {data?.map((item) => (
               <option
                 key={item.maDon}
                 value={item.maDon}

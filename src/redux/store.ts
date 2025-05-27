@@ -3,6 +3,7 @@ import authReducer from './features/auth/authSlide';
 import donDangKyReducer from './features/donDangKySlice';
 import quyDinhReducer from './features/quyDinhSlice';
 import gioiThieuReducer from './features/gioiThieuSlice';
+import lichSuDangKyReducer from './features/lichSuDangKySlice';
 
 export const makeStore =()=>{
   return configureStore({
@@ -11,6 +12,7 @@ export const makeStore =()=>{
       donDangKy: donDangKyReducer,
       quyDinh: quyDinhReducer,
       gioiThieu: gioiThieuReducer,
+      lichSuDangKy: lichSuDangKyReducer,
     },
   })
 }

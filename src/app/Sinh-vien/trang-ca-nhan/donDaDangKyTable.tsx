@@ -1,6 +1,9 @@
 import CustomTable from "@components/Table";
-import { dataDonDangKyCT } from "@services/dataDonDangKyCT";
+// import { dataDonDangKyCT } from "@services/dataDonDangKyCT";
 import { Container } from "@components/Container";
+import { formatDate } from "@components/formatDate";
+
+import { useAppSelector } from "@redux/hook";
 
 export default function DonDaDangKyTable({ madon }: { madon: string }) {
   const columns = [
@@ -11,10 +14,22 @@ export default function DonDaDangKyTable({ madon }: { madon: string }) {
     { id: "trangThai", label: "Trạng thái", width: "15ch" },
     { id: "ghiChu", label: "Ghi chú", width: "20ch" },
   ];
+  const lichSuDangKy = useAppSelector(
+    (state) => state.lichSuDangKy.lichSuDangKy
+  );
   //   neu dataDonDangKyCT khong co se hien trong
-  const formattedData = Array.isArray(dataDonDangKyCT)
-    ? dataDonDangKyCT.map((item, index) => ({ stt: index + 1, ...item }))
+  const formattedData = Array.isArray(lichSuDangKy)
+    ? lichSuDangKy.map((item, index) => ({
+        stt: index + 1,
+        tenDon: item.tenDon,
+        thoiGian: formatDate(item.ngayTaoDonCT.toString()),
+        donViThucHien: item.donViThucHien,
+        trangThai: item.trangThai,
+        ghiChu: "",
+        madon: item.maDon,
+      }))
     : [];
+
   const getTableCellStyles = (columnId: string, row: any) => {
     if (columnId === "trangThai") {
       return {
@@ -32,6 +47,7 @@ export default function DonDaDangKyTable({ madon }: { madon: string }) {
 
     return { textAlign: "center" };
   };
+
   const getTableHeaderStyles = (columnId: string) => {
     // Kiểm tra trường hợp 'ghiChu' trước
     if (columnId === "ghiChu") {
@@ -48,10 +64,11 @@ export default function DonDaDangKyTable({ madon }: { madon: string }) {
       color: "white", // Màu chữ chung cho các cột
     };
   };
+
   //   hien data theo madon
   const filteredData =
     madon && madon !== "all"
-      ? formattedData.filter((item) => item.maDon === madon)
+      ? formattedData.filter((item) => item.madon === madon)
       : formattedData;
 
   return filteredData.length === 0 ? (
