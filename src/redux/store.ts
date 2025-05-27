@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/auth/authSlide';
 import donDangKyReducer from './features/donDangKySlice';
 import quyDinhReducer from './features/quyDinhSlice';
+import gioiThieuReducer from './features/gioiThieuSlice';
 
 export const makeStore =()=>{
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore =()=>{
       auth: authReducer,
       donDangKy: donDangKyReducer,
       quyDinh: quyDinhReducer,
+      gioiThieu: gioiThieuReducer,
     },
   })
 }
