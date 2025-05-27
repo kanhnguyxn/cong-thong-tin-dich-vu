@@ -2,14 +2,14 @@ import { Box, IconButton } from "@mui/material";
 import { useState, useRef, useEffect } from "react";
 
 interface DropDownListsProps {
-  name: string;
-  options: string[];
-  value: string;
-  button: JSX.Element;
-  dropDownStyle?:{};
-  optionsStyle?:string;
-  childrenStyle?:string;
-  onChange: (value: string) => void;
+  name: string; // Tên hiển thị cho dropdown (không dùng trực tiếp ở đây)
+  options: string[]; // Danh sách tùy chọn để hiển thị
+  value: string; // Giá trị được chọn hiện tại
+  button: JSX.Element; // Icon/Component dùng làm nút mở dropdown
+  dropDownStyle?: {}; // Style tùy chỉnh cho box chính
+  optionsStyle?: string; // Class style cho từng option
+  childrenStyle?: string; // Class style cho giá trị hiển thị hiện tại
+  onChange: (value: string) => void; // Callback khi người dùng chọn option
 }
 
 export default function DropDownLists({
@@ -22,17 +22,16 @@ export default function DropDownLists({
   optionsStyle,
   childrenStyle,
 }: DropDownListsProps) {
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false); // Kiểm soát trạng thái dropdown mở/đóng
+  const dropdownRef = useRef<HTMLDivElement>(null); // Ref để xử lý click ngoài
 
   const toggleDropdown = () => {
-
-    setOpen((prev) => !prev);
+    setOpen((prev) => !prev); // Đảo ngược trạng thái mở/đóng
   };
 
   const handleSelect = (val: string) => {
-    onChange(val);
-    setOpen(false);
+    onChange(val); // Gọi callback truyền về giá trị đã chọn
+    setOpen(false); // Đóng dropdown sau khi chọn
   };
 
   useEffect(() => {
@@ -41,7 +40,7 @@ export default function DropDownLists({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setOpen(false);
+        setOpen(false); // Đóng nếu click bên ngoài vùng dropdown
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -58,12 +57,14 @@ export default function DropDownLists({
           justifyContent: "space-between",
           alignItems: "center",
           width: "100%",
-          ...dropDownStyle
+          ...dropDownStyle,
         }}
       >
-        <span className={childrenStyle}>{value}</span>
+        <span className={childrenStyle}>
+          {value && value !== name ? value : name}
+        </span>
         <IconButton size="small" onClick={toggleDropdown}>
-         {button}
+          {button}
         </IconButton>
       </Box>
 

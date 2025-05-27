@@ -7,6 +7,7 @@ interface QuyDinhState {
         tenQD: string;
         maCB: string;
         maPB: string;
+        tenPB: string;
         lienKet: string;
         loaiVanBan: string;
         noiBanHanh: string;
