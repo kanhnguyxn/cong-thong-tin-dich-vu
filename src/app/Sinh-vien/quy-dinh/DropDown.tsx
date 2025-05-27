@@ -1,13 +1,13 @@
 "use client";
 
 import { Box } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import DropDownLists from "@components/DropDownList";
 import ICONS from "@components/icons";
 import { useAppSelector } from "@redux/hook";
 
 interface DropDownProps {
-  onSelectionsChange?: (department: string, option: string) => void;
+  onSelectionsChange?: (maPB: string, option: string) => void;
 }
 
 const DROPDOWN_OPTIONS = [
@@ -34,42 +34,51 @@ const DEPT_TEXT_STYLE = "font-bold text-black pl-2";
 const OPTION_TEXT_STYLE = "text-[var(--color-blue)] pl-2";
 
 export default function DropDown({ onSelectionsChange }: DropDownProps) {
+  // luu trữ giá trị đã chọn cho từng phòng ban
+  const [selectedValues, setSelectedValues] = useState<Record<string, string>>(
+    {}
+  );
   const { quyDinh, loading } = useAppSelector((state) => state.quyDinh);
 
   const departments = useMemo(() => {
     if (loading || !quyDinh) return [];
-    return Array.from(new Set(quyDinh.map((item) => item.maPB)));
+    const uniqueMap = new Map();
+    for (const item of quyDinh) {
+      if (!uniqueMap.has(item.maPB)) {
+        uniqueMap.set(item.maPB, item.tenPB);
+      }
+    }
+    return Array.from(uniqueMap.entries()).map(([maPB, tenPB]) => ({
+      maPB,
+      tenPB,
+    }));
   }, [quyDinh, loading]);
 
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
-
-  useEffect(() => {
-    setSelectedValues(departments);
-  }, [departments]);
-
-  const handleSelectChange = (index: number, newValue: string) => {
-    const updatedValues = [...selectedValues];
-    updatedValues[index] = newValue;
-    setSelectedValues(updatedValues);
+  const handleSelectChange = (maPB: string, newValue: string) => {
+    setSelectedValues({ [maPB]: newValue });
 
     if (onSelectionsChange) {
-      onSelectionsChange(departments[index], newValue);
+      onSelectionsChange(maPB, newValue);
     }
   };
 
   return (
     <Box>
-      {departments.map((dept, index) => {
-        const isDefault = selectedValues[index] === dept;
-        const textStyle = isDefault ? DEPT_TEXT_STYLE : OPTION_TEXT_STYLE;
+      {departments.map((dept) => {
+        // Lấy ra giá trị mà người dùng đã chọn cho maPB hiện tại từ state selectedValues
+        const selectedValue = selectedValues[dept.maPB] || "";
+        const textStyle =
+          selectedValue && selectedValue !== dept.tenPB
+            ? OPTION_TEXT_STYLE
+            : DEPT_TEXT_STYLE;
 
         return (
           <DropDownLists
-            key={dept}
-            name={dept}
+            key={dept.maPB}
+            name={dept.tenPB}
             options={DROPDOWN_OPTIONS}
-            value={selectedValues[index]}
-            onChange={(value) => handleSelectChange(index, value)}
+            value={selectedValue}
+            onChange={(value) => handleSelectChange(dept.maPB, value)}
             button={ICONS.SELECT}
             dropDownStyle={DROPDOWN_STYLE}
             optionsStyle={OPTION_CLASSNAME}
