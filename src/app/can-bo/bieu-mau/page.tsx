@@ -6,6 +6,7 @@ import { BieuMauTable } from "./BieuMauTable";
 import AddButton from "./addButton";
 import DeleteButton from "@components/DeleteButton";
 import { fetchBieuMau } from "@redux/features/bieuMauSlice";
+import { deleteBieuMau } from "@apis/canBo/deletaBieuMau";
 import { useAppDispatch, useAppSelector } from "@redux/hook";
 import Loading from "src/app/loading";
 // import dataBieuMau from "../../../services/dataBieuMauCanBo";
@@ -36,6 +37,15 @@ export default function BieuMauPage() {
     setData(filteredData);
     // console.log(filteredData, query);
   };
+  // xoa bieu mau
+  const handleDelete = async () => {
+    const response = await deleteBieuMau(selectedBieuMau as string[]);
+
+    return {
+      status: response.status,
+      message: response.message || (response.data ? "Success" : "Error"),
+    };
+  };
   return (
     <>
       {loadingRedux ? (
@@ -51,7 +61,14 @@ export default function BieuMauPage() {
             <div className="flex flex-row gap-2">
               <SearchBar onSearch={onSearch}></SearchBar>
               <div className="grid grid-cols-2 gap-2">
-                <DeleteButton title="Xoá biểu mẫu" data={selectedBieuMau} />
+                <DeleteButton
+                  title="Xoá biểu mẫu"
+                  handleDelete={handleDelete}
+                  disable={selectedBieuMau.length === 0}
+                  successEffect={() => {
+                    dispatch(fetchBieuMau());
+                  }}
+                />
                 <AddButton />
               </div>
             </div>

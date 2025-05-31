@@ -46,16 +46,9 @@ export const BieuMauTable = ({ data }) => {
   };
 
   const handleSelected = (data: any[]) => {
-    const _data: any[] = data.reduce((acc, item) => {
-      const _item = {
-        maBM: item.bieuMau,
-        tenBM: item.bieuMau,
-        tenPB: item.donVi,
-      };
-      acc.push(_item);
-
-      return acc;
-    }, []);
+    const _data: any[] = data.map((item) => {
+      return item.maBM;
+    });
 
     dispatch(addSelectedBieuMau(_data));
   };

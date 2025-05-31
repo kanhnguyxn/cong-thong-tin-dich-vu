@@ -34,22 +34,14 @@ const bieuMauSlice = createSlice({
   name: "bieuMau",
   initialState,
   reducers: {
-    // them bieu mau moi
-    addBieuMau: (state, action) => {
-      state.bieuMau.push(action.payload);
-    },
-    // xoa 1 hoặc nhiều biểu mẫu bằng maBM
-    deleteBieuMau: (state, action) => {
-      const maBM = action.payload;
-      state.bieuMau = state.bieuMau.filter((bieuMau) => bieuMau.maBM !== maBM);
-    },
     // xu ly du lieu duoc chon
     addSelectedBieuMau: (state, action) => {
-      state.selected =action.payload;
+      state.selected = action.payload;
     }
 
   },
   extraReducers: (builder) => {
+    // get bieu mau
     builder
       .addCase(fetchBieuMau.pending, (state) => {
         state.loading = true;
@@ -66,4 +58,4 @@ const bieuMauSlice = createSlice({
   },
 });
 export default bieuMauSlice.reducer;
-export const { addBieuMau, deleteBieuMau, addSelectedBieuMau } = bieuMauSlice.actions;
+export const {addSelectedBieuMau } = bieuMauSlice.actions;
