@@ -1,12 +1,43 @@
 import { useState } from "react";
+import { Box, Typography } from "@mui/material";
+
+import { useAppDispatch, useAppSelector } from "@redux/hook";
+import { fetchBieuMau } from "@redux/features/bieuMauSlice";
+
+import { addBieuMau } from "@apis/canBo/addBieuMau";
+
 import CustomButton from "@components/button";
 import { Container } from "@components/Container";
 import FormMui from "@components/form/Form";
-import { Box, Typography } from "@mui/material";
+import ICONS from "@components/icons";
+import { Notification } from "@components/Notification";
+
 import { titleStyles } from "@styles/style_component";
 
 export default function AddButton() {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState<boolean | null>(null);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+  const userName = user?.username;
+
+  const handleSubmit = async (formData: any) => {
+    setLoading(true);
+    const response = await addBieuMau({
+      maCB: userName,
+      tenBM: formData.tenBM,
+      lienKet: formData.lienKet,
+      thoiGianDang: new Date(),
+    });
+    if (response.status) {
+      setSuccess(true);
+    } else {
+      setSuccess(false);
+    }
+    setOpen(false);
+    setLoading(false);
+  };
 
   const buttons: ButtonFormItem[] = [
     {
@@ -18,6 +49,7 @@ export default function AddButton() {
         backgroundColor: "var(--color-blue)",
         width: "40%",
       },
+      loading: loading,
     },
     {
       label: "Hủy",
@@ -71,10 +103,7 @@ export default function AddButton() {
                   </Typography>
                   <FormMui
                     inputSchema={inputSchema}
-                    onSubmit={(data) => {
-                      console.log(data);
-                      setOpen(false);
-                    }}
+                    onSubmit={handleSubmit}
                     className="w-full max-w-sm flex flex-col gap-2 md:gap-3"
                     buttons={buttons}
                     buttonClassName="flex flex-row justify-around"
@@ -84,6 +113,25 @@ export default function AddButton() {
             }
           />
         </div>
+      )}
+      {success !== null && (
+        <Notification
+          success={success}
+          message={{
+            success: "Thêm biểu mẫu thành công",
+            fail: "Thêm biểu mẫu thất bại",
+          }}
+          icon={{
+            success: ICONS.SUCCESS,
+            fail: ICONS.FAIL,
+          }}
+          onClose={() => {
+            if (success) {
+              dispatch(fetchBieuMau()); // Assuming you want to refresh the data after adding
+            }
+            setSuccess(null);
+          }}
+        />
       )}
     </>
   );
