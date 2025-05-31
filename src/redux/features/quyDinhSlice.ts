@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getQuyDinh } from "@apis/sinhVien/getQuyDinh";
+import { getQuyDinh as getQuyDinhSinhVien } from "@apis/sinhVien/getQuyDinh";
+import { getQuyDinh as getQuyDinhCanBo } from "@apis/canBo/getQuyDinh";
 
 interface QuyDinhState {
     quyDinh:{
@@ -31,8 +32,18 @@ const initialState: QuyDinhState = {
 export const fetchQuyDinh = createAsyncThunk(
     "quyDinh/fetchQuyDinh",
     async () => {
-        const resData = await getQuyDinh();
+        const resData = await getQuyDinhSinhVien();
         console.log("resData in fetchQuyDinh", resData);
+        return resData;
+    }
+);
+
+// lay quy dinh cho canBo
+export const fetchQuyDinhCanBo = createAsyncThunk(
+    "quyDinh/fetchQuyDinhCanBo",
+    async () => {
+        const resData = await getQuyDinhCanBo();
+        console.log("resData in fetchQuyDinhCanBo", resData);
         return resData;
     }
 );
@@ -59,6 +70,21 @@ const quyDinhSlice = createSlice({
                 state.quyDinh = action.payload;
             })
             .addCase(fetchQuyDinh.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            });
+
+        //  xu ly getQuyDinhCanBo
+        builder
+            .addCase(fetchQuyDinhCanBo.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchQuyDinhCanBo.fulfilled, (state, action) => {
+                console.log("action.payload in fetchQuyDinhCanBo", action.payload);
+                state.loading = false;
+                state.quyDinh = action.payload;
+            })
+            .addCase(fetchQuyDinhCanBo.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });
