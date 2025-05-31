@@ -16,6 +16,7 @@ export default function BieuMauPage() {
   const { bieuMau, loading: loadingRedux } = useAppSelector(
     (state) => state.bieuMau
   );
+  const selectedBieuMau = useAppSelector((state) => state.bieuMau.selected);
 
   useEffect(() => {
     dispatch(fetchBieuMau());
@@ -50,7 +51,7 @@ export default function BieuMauPage() {
             <div className="flex flex-row gap-2">
               <SearchBar onSearch={onSearch}></SearchBar>
               <div className="grid grid-cols-2 gap-2">
-                <DeleteButton title="Xoá biểu mẫu" data={data} />
+                <DeleteButton title="Xoá biểu mẫu" data={selectedBieuMau} />
                 <AddButton />
               </div>
             </div>

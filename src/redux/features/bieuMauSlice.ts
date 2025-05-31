@@ -8,6 +8,7 @@ interface BieuMauState{
     lienKet:string;
     tenPB:string; 
   }[];
+  selected: unknown[];
   loading: boolean;
   error: string | null;
 
@@ -24,6 +25,7 @@ export const fetchBieuMau = createAsyncThunk(
 
   const initialState: BieuMauState = {
     bieuMau: [],
+    selected: [],
     loading: false,
     error: null,
   }
@@ -41,6 +43,11 @@ const bieuMauSlice = createSlice({
       const maBM = action.payload;
       state.bieuMau = state.bieuMau.filter((bieuMau) => bieuMau.maBM !== maBM);
     },
+    // xu ly du lieu duoc chon
+    addSelectedBieuMau: (state, action) => {
+      state.selected =action.payload;
+    }
+
   },
   extraReducers: (builder) => {
     builder
@@ -59,4 +66,4 @@ const bieuMauSlice = createSlice({
   },
 });
 export default bieuMauSlice.reducer;
-export const { addBieuMau, deleteBieuMau } = bieuMauSlice.actions;
+export const { addBieuMau, deleteBieuMau, addSelectedBieuMau } = bieuMauSlice.actions;

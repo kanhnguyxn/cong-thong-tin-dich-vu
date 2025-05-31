@@ -1,12 +1,17 @@
 "use client";
 
+// tuong tac voi du lieu chon ( tim trong displayData )
+// 1. xu ly du lieu duoc tick chon ( oke )
+// 2. dua du lieu len redux ( oke )
+// 3. goi du lieu tu redux de dua vo ham xu ly ( them, xoa , sua )
+
 import { Checkbox, Table, TableContainer } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface CustomTableProps {
   columns: Array<{ id: string; label: string; width?: string }>;
@@ -15,7 +20,7 @@ interface CustomTableProps {
   tableHeaderStyles?: any | ((columnId: string) => any);
   tableBodyStyles?: any | ((row: any) => any);
   hasSelective?: boolean;
-  handeleChange?: (data: any[]) => void;
+  handleSelected?: (data: any[]) => void;
 }
 
 export default function CustomTable({
@@ -25,7 +30,7 @@ export default function CustomTable({
   tableHeaderStyles,
   tableBodyStyles,
   hasSelective = false,
-  handeleChange,
+  handleSelected,
 }: CustomTableProps) {
   const theme = createTheme({
     components: {
@@ -81,18 +86,19 @@ export default function CustomTable({
 
   const [displayData, setDisplayData] = React.useState([]);
 
-  React.useEffect(() => {
+  // khoi tao du lieu displayData
+  useEffect(() => {
     setDisplayData(
       hasSelective ? data?.map((row) => ({ ...row, selected: false })) : data
     );
   }, [data]);
 
   // Gọi handeleChange khi displayData thay đổi
-  React.useEffect(() => {
-    if (hasSelective && handeleChange) {
-      const selectedRows = displayData?.filter((row) => row.selected);
-      handeleChange(selectedRows);
-    }
+  useEffect(() => {
+    if (!hasSelective || !handleSelected || !displayData) return;
+
+    const selectedRows = displayData?.filter((row) => row.selected);
+    handleSelected(selectedRows);
   }, [displayData]);
 
   return (
