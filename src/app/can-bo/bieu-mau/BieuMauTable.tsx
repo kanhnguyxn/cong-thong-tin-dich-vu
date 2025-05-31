@@ -17,23 +17,36 @@ const columns = [
 
 export const BieuMauTable = ({ data }) => {
   const formattedData = useMemo(() => {
-    return data.map((row, index) => ({
-      stt: index + 1,
-      bieuMau: row.tenBM,
-      donVi: row.tenPB,
-      taiXuong: (
-        <a href={row.lienKet} download>
-          <button className="color-black">
-            <img
-              src="/assets/icons/download.svg"
-              alt="Tải xuống"
-              width={25}
-              height={25}
-            />
-          </button>
-        </a>
-      ),
-    }));
+    const rowData = data.map((row, index) => {
+      const fileIdMatch = row.lienKet.match(/\/d\/(.*?)\//);
+      const docxDownloadLink = fileIdMatch
+        ? `https://docs.google.com/document/d/${fileIdMatch[1]}/export?format=docx`
+        : row.lienKet;
+
+      return {
+        stt: index + 1,
+        bieumau: (
+          <a href={row.lienKet} target="_blank" rel="noopener noreferrer">
+            <span>{row.tenBM}</span>
+          </a>
+        ),
+        donVi: row.tenPB,
+        taiXuong: (
+          <a href={docxDownloadLink} download>
+            <button className="color-black">
+              <img
+                src="/assets/icons/download.svg"
+                alt="Tải xuống"
+                width={25}
+                height={25}
+              />
+            </button>
+          </a>
+        ),
+      };
+    });
+
+    return rowData;
   }, [data]);
 
   const dispatch = useAppDispatch();
