@@ -9,12 +9,21 @@ import { Container } from "./Container";
 
 interface DeleteButtonProps {
   title?: string;
-  data?: any;
+  handleDelete?: () => Promise<
+    { status: boolean; message: string } | undefined
+  >;
+  successEffect?: () => void;
+  failEffect?: () => void;
+  disable?: boolean;
 }
 
 export default function DeleteButton({
   title,
-  data,
+  handleDelete,
+  successEffect,
+  failEffect,
+  disable = false,
+
   ...props
 }: DeleteButtonProps) {
   const [open, setOpen] = useState(false);
@@ -23,18 +32,15 @@ export default function DeleteButton({
 
   const handleSubmit = async () => {
     setLoading(true);
-    try {
-      // Gọi API xóa dữ liệu ở đây
-      // await deleteData(data);
-      console.log("Xóa dữ liệu:", data);
+    const response = await handleDelete?.();
+    if (response?.status) {
       setSuccess(true);
-    } catch (error) {
-      console.error("Lỗi khi xóa dữ liệu:", error);
+      // setOpen(true);
+    } else {
       setSuccess(false);
-    } finally {
-      setLoading(false);
-      setOpen(false);
     }
+    setLoading(false);
+    setOpen(true);
   };
 
   const buttons: ButtonFormItem[] = [
@@ -78,6 +84,7 @@ export default function DeleteButton({
           setOpen(true);
         }}
         sx={{ backgroundColor: "var(--color-blue)", width: "100%" }}
+        disabled={disable}
       />
       {open && (
         <div className="fixed top-0 left-0 min-w-full min-h-full bg-[var(--color-gray-light)] z-50 flex justify-center items-center">
@@ -138,7 +145,14 @@ export default function DeleteButton({
             success: ICONS.SUCCESS,
             fail: ICONS.FAIL,
           }}
-          onClose={() => setSuccess(null)}
+          onClose={() => {
+            if (success) {
+              successEffect && successEffect?.();
+            } else {
+              failEffect && failEffect?.();
+            }
+            setSuccess(null);
+          }}
         />
       )}
     </>
