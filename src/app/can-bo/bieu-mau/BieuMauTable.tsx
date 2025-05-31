@@ -1,6 +1,7 @@
-"use client";
+// "use client";
 
 import CustomTable from "@components/Table";
+// import { useEffect, useState } from "react";
 
 // thong tin cac cot trong bieumau table
 const columns = [
