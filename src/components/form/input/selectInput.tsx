@@ -38,7 +38,7 @@ export default function SelectInput({
       }}
       {...props}
     >
-      <option>---Chọn loại đơn--- </option>
+      <option>---Chọn--- </option>
       {options.map((option, index) => (
         <option key={index} value={option}>
           {option}
