@@ -21,6 +21,7 @@ interface CustomTableProps {
   tableBodyStyles?: any | ((row: any) => any);
   hasSelective?: boolean;
   handleSelected?: (data: any[]) => void;
+  idCol?: string; // Optional, used to identify rows uniquely
 }
 
 export default function CustomTable({
@@ -31,6 +32,7 @@ export default function CustomTable({
   tableBodyStyles,
   hasSelective = false,
   handleSelected,
+  idCol = "id",
 }: CustomTableProps) {
   const theme = createTheme({
     components: {
@@ -88,9 +90,7 @@ export default function CustomTable({
 
   // khoi tao du lieu displayData
   useEffect(() => {
-    setDisplayData(
-      hasSelective ? data?.map((row) => ({ ...row, selected: false })) : data
-    );
+    setDisplayData(hasSelective ? data?.map((row) => ({ ...row, selected: false })) : data);
   }, [data]);
 
   // Gọi handeleChange khi displayData thay đổi
@@ -114,10 +114,7 @@ export default function CustomTable({
             <TableRow>
               {hasSelective && (
                 <SelectiveCell
-                  checked={
-                    displayData.length > 0 &&
-                    displayData.every((row) => row.selected)
-                  }
+                  checked={displayData.length > 0 && displayData.every((row) => row.selected)}
                   onChange={(checked) => {
                     const _data = displayData.map((row) => ({
                       ...row,
@@ -144,13 +141,13 @@ export default function CustomTable({
           </TableHead>
           <TableBody>
             {displayData?.map((row, index) => (
-              <TableRow key={row.id || index} sx={getTableBodyStyles(row)}>
+              <TableRow key={idCol ? row[idCol] : index} sx={getTableBodyStyles(row)}>
                 {hasSelective && (
                   <SelectiveCell
                     checked={row?.selected || false}
                     onChange={() => {
                       const _data = displayData.map((item) => {
-                        if (item.stt === row.stt) {
+                        if (item[idCol] === row[idCol]) {
                           return { ...item, selected: !item.selected };
                         }
                         return item;
@@ -160,10 +157,7 @@ export default function CustomTable({
                   />
                 )}
                 {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    sx={getTableCellStyles(column.id, row)}
-                  >
+                  <TableCell key={column.id} sx={getTableCellStyles(column.id, row)}>
                     {row[column.id]}
                   </TableCell>
                 ))}
@@ -181,10 +175,7 @@ interface SelectiveCellProps {
   checked?: boolean;
 }
 
-export const SelectiveCell = ({
-  onChange,
-  checked = false,
-}: SelectiveCellProps) => {
+export const SelectiveCell = ({ onChange, checked = false }: SelectiveCellProps) => {
   const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.(e.target.checked);
   };
@@ -197,11 +188,7 @@ export const SelectiveCell = ({
         width: "5ch",
       }}
     >
-      <Checkbox
-        checked={checked}
-        sx={{ color: "var(--color-blue)" }}
-        onChange={handleOnchange}
-      />
+      <Checkbox checked={checked} sx={{ color: "var(--color-blue)" }} onChange={handleOnchange} />
     </TableCell>
   );
 };

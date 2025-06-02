@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CustomButton from "@components/button";
 import { COMMON_STYLES } from "@styles/common_styles";
 import FormInputControl from "./FormInputControl";
 
 interface FormProps {
+  editData?: any;
   className?: string;
   inputSchema: Array<any>;
   onSubmit: (formData: Object) => void;
@@ -16,6 +17,7 @@ interface FormProps {
 }
 
 export default function FormMui({
+  editData,
   inputSchema,
   onSubmit,
   className,
@@ -30,6 +32,22 @@ export default function FormMui({
   // lưu lại các lỗi của các trường
   const [errors, setErrors] = useState({});
 
+  /*--------------------EFFECT-----------------------*/
+  useEffect(() => {
+    if (!editData) return;
+    let _formData: any = {};
+    inputSchema.forEach((field: any) => {
+      // nếu trường có giá trị trong editData thì set giá trị đó vào formData
+
+      if (editData[field.name] === undefined || null) {
+        _formData[field.name] = null;
+      }
+
+      // nếu không có thì set giá trị mặc định là ""
+      _formData[field.name] = editData[field.name];
+    });
+    setFormData(_formData);
+  }, [editData]);
   // kiêm tra validation cua tùng trường
   const validateField = (field: any, value: string, formData: any) => {
     // Xét độ trống của trường
@@ -62,7 +80,7 @@ export default function FormMui({
     }));
     return true;
   };
-
+  /*--------------------HELPER FUNCTION-----------------------*/
   // kiểm tra dữ liệu của các trường bắt buộc
   const checkEmptyField = (field: any, value: string) => {
     if (value.length === 0 && field.required) {
@@ -77,7 +95,6 @@ export default function FormMui({
 
   const handleChange = (name: string, value: any) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    // console.log("formData", formData);
   };
 
   const handleSubmit = (e) => {
@@ -127,7 +144,7 @@ export default function FormMui({
             onChange={(value) => handleChange(name, value)}
             placeholder={placeholder}
             type={type}
-            value={formData[name] || ""}
+            value={formData[name]}
             onBlur={(value: any) => handleBlur(field, value)}
             errMessage={errors[name]}
             name={name}

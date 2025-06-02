@@ -1,7 +1,7 @@
 // "use client";
 
-import { useMemo } from "react";
 import { useAppDispatch } from "@redux/hook";
+import { useMemo } from "react";
 
 import { addSelectedBieuMau } from "@redux/features/bieuMauSlice";
 
@@ -34,12 +34,7 @@ export const BieuMauTable = ({ data }) => {
         taiXuong: (
           <a href={docxDownloadLink} download>
             <button className="color-black">
-              <img
-                src="/assets/icons/download.svg"
-                alt="Tải xuống"
-                width={25}
-                height={25}
-              />
+              <img src="/assets/icons/download.svg" alt="Tải xuống" width={25} height={25} />
             </button>
           </a>
         ),
@@ -73,6 +68,7 @@ export const BieuMauTable = ({ data }) => {
       tableCellStyles={tableCellStyles}
       hasSelective={true}
       handleSelected={handleSelected}
+      idCol="stt"
     />
   );
 };

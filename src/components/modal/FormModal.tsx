@@ -33,7 +33,9 @@ interface FormModal {
   className?: string;
   showCancelButton?: boolean; // Whether to show the cancel button
   customCancelButton?: ButtonFormItem;
-  onClose?: () => void; // Custom cancel button if needed
+  onClose?: () => void;
+  editData?: object;
+  disabled?: boolean; // Custom cancel button if needed
 }
 
 export default function FormModal({
@@ -47,8 +49,10 @@ export default function FormModal({
   handleSubmit,
   buttons = [],
   showCancelButton = true, // Whether to show the cancel button
-  customCancelButton = null,
-  onClose = () => {}, // Custom cancel button if needed
+  customCancelButton = null, // Custom cancel button if needed
+  onClose = () => {},
+  editData = {},
+  disabled = false,
 }) {
   const [open, setOpen] = useState(false);
   const handleClose = () => {
@@ -81,6 +85,7 @@ export default function FormModal({
           setOpen(true);
           // Logic to open the form or modal
         }}
+        disabled={disabled}
         sx={{ backgroundColor: "var(--color-blue)", width: "100%", ...sx }}
         className={`${className}`}
       />
@@ -94,6 +99,7 @@ export default function FormModal({
                   {title}
                 </Typography>
                 <FormMui
+                  editData={editData}
                   inputSchema={inputSchema}
                   onSubmit={handleSubmit}
                   orientation="horizontal"

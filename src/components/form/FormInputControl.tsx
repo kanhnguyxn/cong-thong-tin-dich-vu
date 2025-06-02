@@ -52,7 +52,6 @@ export default function FormInputControl({
   orientation = "vertical",
 }: FormInputControlProps) {
   const error = errMessage.length > 0 && <div className="text-red-500 text-start px-2 mt-1 italic text-xs">{errMessage}</div>;
-
   let inputEle = (
     <div className="flex flex-col w-full">
       <StyledTextField
