@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import FormInputControl from "./FormInputControl";
 import CustomButton from "@components/button";
 import { COMMON_STYLES } from "@styles/common_styles";
+import FormInputControl from "./FormInputControl";
 
 interface FormProps {
   className?: string;
@@ -12,6 +12,7 @@ interface FormProps {
   buttons?: Array<any>;
   buttonClassName?: string;
   renderLink?: () => JSX.Element;
+  orientation?: "horizontal" | "vertical";
 }
 
 export default function FormMui({
@@ -22,6 +23,7 @@ export default function FormMui({
   buttons = [],
   buttonClassName = "",
   renderLink = () => <></>,
+  orientation = "vertical",
   ...rest
 }: FormProps) {
   const [formData, setFormData] = useState({});
@@ -110,10 +112,7 @@ export default function FormMui({
   };
 
   return (
-    <form
-      className={`${className} ${formErrMsg ? "mt-0" : "mt-2"}`}
-      onSubmit={handleSubmit}
-    >
+    <form className={`${className} ${formErrMsg ? "mt-0" : "mt-2"}`} onSubmit={handleSubmit}>
       {formErrMsg && (
         <div className="text-red-500 text-sm md:text-[15px] lg:text-base uppercase mt-2 md:mt-3 text-left font-semibold">
           {formErrMsg}
@@ -134,6 +133,7 @@ export default function FormMui({
             name={name}
             className={`${COMMON_STYLES.input} ${className} `}
             label={label}
+            orientation={orientation}
             {...rest}
           />
         );
@@ -145,14 +145,7 @@ export default function FormMui({
         <div className={buttonClassName}>
           {buttons.map((button: any, index: number) => {
             const { label, className, ...rest } = button;
-            return (
-              <CustomButton
-                key={index}
-                label={label}
-                className={`${className}`}
-                {...rest}
-              />
-            );
+            return <CustomButton key={index} label={label} className={`${className}`} {...rest} />;
           })}
         </div>
       )}
