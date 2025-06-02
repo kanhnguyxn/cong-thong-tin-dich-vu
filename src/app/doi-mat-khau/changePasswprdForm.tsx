@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 
 import FormMui from "@components/form/Form";
@@ -6,7 +7,6 @@ import ICONS from "@components/icons";
 import BasicModal from "@components/Modal";
 import { Icon } from "@mui/material";
 
-import ChangePasswordService from "../../services/changePassword";
 import { changePassword } from "@apis/auth/changePassword";
 import { Notification } from "@components/Notification";
 
@@ -17,14 +17,7 @@ export default function ChangePasswordForm(props: any) {
   const [flag, setFlag] = React.useState(false);
 
   const newPasswordId = "matKhauMoi";
-  const formControlStyle = {
-    // width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: "0.5rem",
-  };
+
   const customeLabelStyle = {
     color: "black",
     display: "contents",
@@ -37,7 +30,6 @@ export default function ChangePasswordForm(props: any) {
       label: "Mật khẩu hiện tại:",
       placeholder: "Nhập mật khẩu hiện tại",
       required: true,
-      formControlStyle: { ...formControlStyle },
       customeLabelStyle: { ...customeLabelStyle },
     },
     {
@@ -45,7 +37,6 @@ export default function ChangePasswordForm(props: any) {
       type: "text",
       placeholder: "Nhập mật khẩu mới",
       required: true,
-      formControlStyle: { ...formControlStyle },
       customeLabelStyle: { ...customeLabelStyle },
       label: "Mật khẩu mới:",
     },
@@ -55,14 +46,10 @@ export default function ChangePasswordForm(props: any) {
       label: "Nhập lại mật khẩu:",
       placeholder: "Xác nhận mật khẩu mới",
       required: true,
-      formControlStyle: { ...formControlStyle },
       customeLabelStyle: { ...customeLabelStyle },
       validations: [
         {
-          rule: (value: string, formData: any) =>
-            value &&
-            formData[newPasswordId] &&
-            value === formData[newPasswordId],
+          rule: (value: string, formData: any) => value && formData[newPasswordId] && value === formData[newPasswordId],
           errMessage: "Mật khẩu không khớp",
         },
       ],
@@ -129,11 +116,7 @@ export default function ChangePasswordForm(props: any) {
       setSuccess(true);
     } else {
       setSuccess(false);
-      setError(
-        response && typeof response === "object" && "message" in response
-          ? response.message
-          : "An error occurred"
-      );
+      setError(response && typeof response === "object" && "message" in response ? response.message : "An error occurred");
     }
     setLoading(false);
     setFlag(true);
@@ -153,6 +136,7 @@ export default function ChangePasswordForm(props: any) {
           onSubmit={handleSubmit}
           className="w-full flex flex-col gap-2 md:gap-3 items-center max-w-xl justify-between"
           buttons={buttons}
+          orientation="horizontal"
           buttonClassName="flex flex-row justify-around "
           formErrMsg={error}
           {...props}
