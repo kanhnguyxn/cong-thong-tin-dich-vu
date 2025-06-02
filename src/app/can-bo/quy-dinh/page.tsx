@@ -2,22 +2,23 @@
 
 import FormModal from "@components/modal/FormModal";
 import { quyDinhForm } from "@constants/form";
-import { fetchQuyDinh } from "@redux/features/quyDinhSlice";
+import { fetchQuyDinhCanBo } from "@redux/features/quyDinhSlice";
 import { useAppDispatch, useAppSelector } from "@redux/hook";
 import { useEffect, useState } from "react";
 import NavBar from "./Navbar";
 import QuyDinhTable from "./QuyDinhTable";
-
 export default function QuyDinhPage() {
   const dispatch = useAppDispatch();
   const { quyDinh, loading: loadingRedux } = useAppSelector((state) => state.quyDinh);
+  const selected = useAppSelector((state) => state.quyDinh.selected);
+
   const [department, setDepartment] = useState("");
   const [option, setOption] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    dispatch(fetchQuyDinh());
+    dispatch(fetchQuyDinhCanBo());
     // neu loadingRedux la true thi khong can setLoading nua
     if (!loadingRedux) {
     }
@@ -25,14 +26,16 @@ export default function QuyDinhPage() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!department || !option || !quyDinh?.length) {
+    // if (!department || !option || !quyDinh?.length) {
+    //   setFilteredData([]);
+    //   return;
+    // }
+    if (!option || !quyDinh?.length) {
       setFilteredData([]);
       return;
     }
-
     // Filter quy dinh based on department and option
-    const filtered = quyDinh.filter((item) => item.maPB === department && item.loaiVanBan === option);
-
+    const filtered = quyDinh.filter((item) => item.maPB === department || item.loaiVanBan === option);
     setFilteredData(
       searchQuery ? filtered.filter((item) => item.tenQD.toLowerCase().includes(searchQuery.toLowerCase())) : filtered
     );
@@ -61,7 +64,7 @@ export default function QuyDinhPage() {
       <div className="border-b-2 border-b-[var(--color-gray-fill)] w-full p-3 flex justify-between sticky top-[234px] md:top-[121px] bg-white z-40">
         <h3 className="text-xl md:text-3xl uppercase font-bold">Tra cứu Quy định</h3>
         {/* <SearchBar onSearch={handleSearch} /> */}
-        <div className="flex flex-row grir grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           <FormModal
             title={"Thêm quy định"}
             buttonLabel="Thêm"
@@ -92,7 +95,38 @@ export default function QuyDinhPage() {
             }}
             handleSubmit={() => {}}
           />
-          <p>Sua</p>
+          <FormModal
+            editData={selected.length === 1 ? quyDinh.find((item) => item.maQD === selected[0]) : null}
+            disabled={selected.length > 1 || selected.length === 0}
+            title={"sửa quy định"}
+            buttonLabel="Chỉnh sửa"
+            variant="contained"
+            buttonSize="large"
+            inputSchema={quyDinhForm}
+            buttons={[
+              {
+                label: "Thêm",
+                type: "submit",
+                variants: "contained",
+                size: "large",
+                sx: {
+                  backgroundColor: "var(--color-blue)",
+                  width: "40%",
+                },
+              },
+            ]}
+            customCancelButton={{
+              label: "Hủy",
+              type: "button",
+              variants: "contained",
+              size: "large",
+              sx: {
+                backgroundColor: "var(--color-blue)",
+                width: "40%",
+              },
+            }}
+            handleSubmit={() => {}}
+          />
           <p>Xoa</p>
         </div>
       </div>

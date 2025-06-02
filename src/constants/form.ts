@@ -1,6 +1,6 @@
 export const quyDinhForm = [
   {
-    name: "soKyHieu",
+    name: "maQD",
     type: "text",
     label: "Số ký hiệu:",
     required: true,
@@ -8,7 +8,7 @@ export const quyDinhForm = [
     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
   },
   {
-    name: "tenQuyDinh",
+    name: "tenQD",
     type: "text",
     label: "Tên quy định:",
     required: true,
@@ -42,7 +42,10 @@ export const quyDinhForm = [
     type: "select",
     label: "Hiệu lực:",
     required: false,
-    selectOptions: ["Có", "Không"],
+    selectOptions: [
+      { display: "Còn", value: true },
+      { display: "Hết", value: false },
+    ],
     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
     className: "rounded-none !mb-0 !px-2 !py-2",
   },
