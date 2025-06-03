@@ -51,7 +51,11 @@ export default function FormInputControl({
   IconComponent,
   orientation = "vertical",
 }: FormInputControlProps) {
-  const error = errMessage.length > 0 && <div className="text-red-500 text-start px-2 mt-1 italic text-xs">{errMessage}</div>;
+  const error = errMessage.length > 0 && (
+    <div className="text-red-500 text-start px-2 mt-1 italic text-xs">
+      {errMessage}
+    </div>
+  );
   let inputEle = (
     <div className="flex flex-col w-full">
       <StyledTextField
@@ -86,15 +90,25 @@ export default function FormInputControl({
           placeholder={placeholder}
           value={value}
           className={className}
-          onBlur={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onBlur(e.target.value)}
-          onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange(e.target.value)}
+          onBlur={(
+            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+          ) => onBlur(e.target.value)}
+          onChange={(
+            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+          ) => onChange(e.target.value)}
         />
       );
       break;
     case "select":
       inputEle = (
         <div className="flex flex-col">
-          <SelectInput value={value} className={className} onChange={onChange} onBlur={onBlur} options={selectOptions} />
+          <SelectInput
+            value={value}
+            className={className}
+            onChange={onChange}
+            onBlur={onBlur}
+            options={selectOptions}
+          />
           {error}
         </div>
       );
@@ -106,8 +120,12 @@ export default function FormInputControl({
           variant={variant}
           placeholder={placeholder}
           className={className}
-          onBlur={(e: React.ChangeEvent<HTMLInputElement>) => onBlur?.(e.target.files?.[0] || null)}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange?.(e.target.files?.[0] || null)}
+          onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onBlur?.(e.target.files?.[0] || null)
+          }
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onChange?.(e.target.files?.[0] || null)
+          }
         />
       );
       break;
@@ -135,7 +153,13 @@ export default function FormInputControl({
     // }
     case "checkbox-group":
       inputEle = (
-        <SelectCheckboxInput options={selectOptions} value={value} onChange={onChange} onBlur={onBlur} className={className} />
+        <SelectCheckboxInput
+          options={selectOptions}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          className={className}
+        />
       );
       break;
     case "radio":
@@ -163,9 +187,15 @@ export default function FormInputControl({
   }
   return (
     <FormControl sx={{ width: "100%", ...formControlStyle }}>
-      <Grid container>
+      <Grid container sx={{ width: "100%" }}>
         <Grid size={orientation === "horizontal" ? 4 : 12}>
-          {lableRender ? lableRender() : <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>{label}</InputLabel>}
+          {lableRender ? (
+            lableRender()
+          ) : (
+            <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
+              {label}
+            </InputLabel>
+          )}
         </Grid>
         <Grid size={orientation === "horizontal" ? 8 : 12}>
           {inputEle} {error}
