@@ -1,27 +1,71 @@
 "use client";
+import { useMemo, useState } from "react";
+
+import { Alert, AlertColor, Collapse } from "@mui/material";
+import { useAppDispatch } from "@redux/hook";
+import { fetchDonDangKyChiTiet } from "@redux/features/donDangKyChiTietSlice";
+
+import { updateStatus } from "@apis/canBo/updateStatus";
+
 import CustomTable from "@components/Table";
 // import { donCanXuLy } from "@services/donCanXuLy";
 import FormMui from "@components/form/Form";
-import { Alert } from "@mui/material";
-import { useMemo } from "react";
 
 export default function XuLyDonTable({ data }) {
+  const dispatch = useAppDispatch();
+  const [alert, setAlert] = useState<{
+    open: boolean;
+    type: AlertColor;
+    message: string;
+  }>({
+    open: false,
+    type: "success",
+    message: "",
+  });
+
   const columns = [
     { id: "stt", label: "STT", width: "5ch" },
     { id: "mssv", label: "MSSV", width: "15ch" },
     { id: "tenDon", label: "Loại đơn" },
     { id: "trangThai", label: "Trạng thái", width: "20ch" },
   ];
-  const filteredData = data.filter((item) => item.trangThai === "Đang xử lý");
 
+  const filteredData = useMemo(() => {
+    return data.filter((item) => item.trangThai === "Đang xử lý");
+  }, [data]);
+  const alertTimer = async (time: number) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        setAlert((prev) => ({ ...prev, open: false }));
+        resolve(true);
+      }, time);
+    });
+  };
   //   thay doi trang thai se goi API cap nhat trang thai
   const handleStatusChange = async (don, newStatus) => {
-    //  goi api cap nhat trang thai don
-    console.log("Cập nhật trạng thái đơn:", don, "Trạng thái mới:", newStatus);
-    <Alert severity="success">
-      Here is a gentle confirmation that your action was successful.
-    </Alert>;
+    const data = {
+      maDonCT: don.maDonCT,
+      trangThai: newStatus,
+    };
+    const response = await updateStatus(data);
+    if (response.status) {
+      setAlert({
+        open: true,
+        type: "success",
+        message: "Cập nhật trạng thái thành công",
+      });
+    } else {
+      setAlert({
+        open: true,
+        type: "error",
+        message: "Không thể cập nhật trạng thái",
+      });
+    }
+    await alertTimer(2000); // Ẩn alert sau 3 giây
+    // console.log("Cập nhật dữ liệu");
+    dispatch(fetchDonDangKyChiTiet());
   };
+
   const formattedData = useMemo(() => {
     return filteredData.map((item, index) => ({
       stt: index + 1,
@@ -63,11 +107,18 @@ export default function XuLyDonTable({ data }) {
   };
 
   return (
-    <CustomTable
-      columns={columns}
-      data={formattedData}
-      tableCellStyles={tableCellStyles}
-      idCol="stt"
-    />
+    <div className="w-full">
+      {alert.open && (
+        <Collapse in={alert.open} className="mb-4">
+          <Alert severity={alert.type}>{alert.message}</Alert>
+        </Collapse>
+      )}
+      <CustomTable
+        columns={columns}
+        data={formattedData}
+        tableCellStyles={tableCellStyles}
+        idCol="stt"
+      />
+    </div>
   );
 }

@@ -16,7 +16,7 @@ export default function XuLyDonPage() {
 
   useEffect(() => {
     dispatch(fetchDonDangKyChiTiet());
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     if (donDangKyChiTiet.length > 0) {
       setData(donDangKyChiTiet);

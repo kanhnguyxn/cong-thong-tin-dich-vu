@@ -4,10 +4,10 @@ import { getDonDangKyCTMockup } from "@apis/canBo/getDonDangKyCT";
 
 interface DonDangKyChiTietState {
     donDangKyChiTiet: {
-        maDon: string;
+        maDonCT: string;
         tenDon: string;
         thongTinChiTiet: string;
-        trangThaiXuLy: boolean;
+        trangThaiXuLy: string;
     }[];
     loading: boolean;
     error: string | null;
@@ -54,3 +54,4 @@ const donDangKyChiTietSlice = createSlice({
 });
 
 export default donDangKyChiTietSlice.reducer;
+export const {  deleteAllDonDangKyChiTiet } = donDangKyChiTietSlice.actions;
