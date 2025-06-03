@@ -6,8 +6,10 @@ interface DonDangKyChiTietState {
     donDangKyChiTiet: {
         maDonCT: string;
         tenDon: string;
-        thongTinChiTiet: string;
-        trangThaiXuLy: string;
+        maDon?: string;
+        mssv?: string;
+        trangThai: string;
+        thongtinChitiet: any[]; // Đổi từ string thành array để khớp với dữ liệu thực tế
     }[];
     loading: boolean;
     error: string | null;

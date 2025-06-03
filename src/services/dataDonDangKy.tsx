@@ -15,7 +15,7 @@ export const dataDonDangKy = [
       },
       // kiểu input
       {
-        name: "feild2",
+        name: "field2",
         type: "text",
         label: "Năm học:",
         placeholder: "Ví dụ: 2024-2024",
@@ -47,7 +47,7 @@ export const dataDonDangKy = [
       },
       // kiểu input
       {
-        name: "feild2",
+        name: "field2",
         type: "radio",
         label: [
           "Thuộc đối tượng",

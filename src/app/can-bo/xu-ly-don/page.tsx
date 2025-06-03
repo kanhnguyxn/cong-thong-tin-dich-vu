@@ -5,6 +5,7 @@ import { SearchBar } from "@components/SearchBar";
 import XuLyDonTable from "./xuLyDonTable";
 import Loading from "src/app/loading";
 import { fetchDonDangKyChiTiet } from "@redux/features/donDangKyChiTietSlice";
+import { fetchDonDangKyMockup } from "@redux/features/donDangKySlice";
 
 export default function XuLyDonPage() {
   const dispatch = useAppDispatch();
@@ -16,6 +17,7 @@ export default function XuLyDonPage() {
 
   useEffect(() => {
     dispatch(fetchDonDangKyChiTiet());
+    dispatch(fetchDonDangKyMockup());
   }, [dispatch]);
   useEffect(() => {
     if (donDangKyChiTiet.length > 0) {
