@@ -8,7 +8,7 @@ interface FormProps {
   editData?: any;
   className?: string;
   inputSchema: Array<any>;
-  onSubmit: (formData: Object) => void;
+  onSubmit?: (formData: Object) => void;
   formErrMsg?: string;
   buttons?: Array<any>;
   buttonClassName?: string;
@@ -129,7 +129,10 @@ export default function FormMui({
   };
 
   return (
-    <form className={`${className} ${formErrMsg ? "mt-0" : "mt-2"}`} onSubmit={handleSubmit}>
+    <form
+      className={`${className} ${formErrMsg ? "mt-0" : "mt-2"}`}
+      onSubmit={handleSubmit}
+    >
       {formErrMsg && (
         <div className="text-red-500 text-sm md:text-[15px] lg:text-base uppercase mt-2 md:mt-3 text-left font-semibold">
           {formErrMsg}
@@ -162,7 +165,14 @@ export default function FormMui({
         <div className={buttonClassName}>
           {buttons.map((button: any, index: number) => {
             const { label, className, ...rest } = button;
-            return <CustomButton key={index} label={label} className={`${className}`} {...rest} />;
+            return (
+              <CustomButton
+                key={index}
+                label={label}
+                className={`${className}`}
+                {...rest}
+              />
+            );
           })}
         </div>
       )}
