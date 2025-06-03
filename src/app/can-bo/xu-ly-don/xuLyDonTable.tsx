@@ -11,6 +11,8 @@ import CustomTable from "@components/Table";
 // import { donCanXuLy } from "@services/donCanXuLy";
 import FormMui from "@components/form/Form";
 
+import FormDonDangKy from "./formDonDangKy";
+
 export default function XuLyDonTable({ data }) {
   const dispatch = useAppDispatch();
   const [alert, setAlert] = useState<{
@@ -30,9 +32,12 @@ export default function XuLyDonTable({ data }) {
     { id: "trangThai", label: "Trạng thái", width: "20ch" },
   ];
 
+  // Đảm bảo data luôn là array
+  const safeData = Array.isArray(data) ? data : [];
+
   const filteredData = useMemo(() => {
-    return data.filter((item) => item.trangThai === "Đang xử lý");
-  }, [data]);
+    return safeData.filter((item) => item.trangThai === "Đang xử lý");
+  }, [safeData]);
   const alertTimer = async (time: number) => {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -70,7 +75,8 @@ export default function XuLyDonTable({ data }) {
     return filteredData.map((item, index) => ({
       stt: index + 1,
       mssv: item.mssv,
-      tenDon: item.tenDon,
+      //   ten don laf button mo form don dang ky
+      tenDon: <FormDonDangKy maDonCT={item.maDonCT} maDon={item.maDon} />,
       trangThai: (
         <FormMui
           inputSchema={[

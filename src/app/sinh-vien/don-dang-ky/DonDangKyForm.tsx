@@ -49,7 +49,7 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
   const [flag, setFlag] = useState(false);
 
   // lay du lieu tu redux
-  const rawDonDangKy = useAppSelector((state) => state.donDangKy.donDangKy);
+  const rawDonDangKy = useAppSelector((state) => state.donDangKy.donDangKySV);
   const donDangKy = rawDonDangKy.find((item) => item.maDon === maDonDangKy);
   // lấy user từ redux
   const user = useAppSelector((state) => state.auth.user);
