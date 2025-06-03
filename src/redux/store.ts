@@ -4,6 +4,7 @@ import donDangKyReducer from './features/donDangKySlice';
 import quyDinhReducer from './features/quyDinhSlice';
 import gioiThieuReducer from './features/gioiThieuSlice';
 import bieuMauReducer from './features/bieuMauSlice';
+import donDangKyChiTietReducer from './features/donDangKyChiTietSlice';
 
 export const makeStore =()=>{
   return configureStore({
@@ -13,6 +14,7 @@ export const makeStore =()=>{
       quyDinh: quyDinhReducer,
       gioiThieu: gioiThieuReducer,
       bieuMau: bieuMauReducer,
+      donDangKyChiTiet: donDangKyChiTietReducer,
     },
   })
 }

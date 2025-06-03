@@ -13,7 +13,14 @@ interface SelectInputProps {
   onBlur?: (value: any) => void; // function to handle blur event
 }
 
-export default function SelectInput({ value, onChange, onBlur, options, className = "", ...props }: SelectInputProps) {
+export default function SelectInput({
+  value,
+  onChange,
+  onBlur,
+  options,
+  className = "",
+  ...props
+}: SelectInputProps) {
   const [selectedValue, setSelectedValue] = useState("");
 
   useEffect(() => {
@@ -36,7 +43,9 @@ export default function SelectInput({ value, onChange, onBlur, options, classNam
       value={selectedValue}
       onChange={(e) => {
         setSelectedValue(e.target.value);
-        const selectedOption = options?.find((option) => option.display === e.target.value);
+        const selectedOption = options?.find(
+          (option) => option.display === e.target.value
+        );
         onChange(selectedOption.value);
       }}
       className={className}
