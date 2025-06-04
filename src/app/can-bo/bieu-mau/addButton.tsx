@@ -19,17 +19,14 @@ export default function AddButton() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<boolean | null>(null);
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.user);
-  const userName = user?.username;
 
   const handleSubmit = async (formData: any) => {
     setLoading(true);
     const response = await addBieuMau({
-      maCB: userName,
       tenBM: formData.tenBM,
       lienKet: formData.lienKet,
-      thoiGianDang: new Date(),
     });
+
     if (response.status) {
       setSuccess(true);
     } else {
