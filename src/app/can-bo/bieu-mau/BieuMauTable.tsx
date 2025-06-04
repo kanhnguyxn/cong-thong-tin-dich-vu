@@ -25,6 +25,7 @@ export const BieuMauTable = ({ data }) => {
 
       return {
         stt: index + 1,
+        maBM: row.maBM,
         tenBM: (
           <a href={row.lienKet} target="_blank" rel="noopener noreferrer">
             <span>{row.tenBM}</span>
@@ -58,12 +59,13 @@ export const BieuMauTable = ({ data }) => {
     return { textAlign: "center" };
   };
 
-  const handleSelected = (data: any[]) => {
-    const _data: any[] = data.map((item) => {
-      return item.maBM;
+  const handleSelected = (selectedData: any[]) => {
+    const selectedIds = selectedData.map((item) => item.maBM);
+    console.log("BieuMauTable - handleSelected:", {
+      selectedData,
+      selectedIds,
     });
-
-    dispatch(addSelectedBieuMau(_data));
+    dispatch(addSelectedBieuMau(selectedIds));
   };
 
   return (

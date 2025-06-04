@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getBieuMauMockup } from "@apis/canBo/getBieuMau";
+import { getBieuMau} from "@apis/canBo/getBieuMau";
 
 interface BieuMauState{
   bieuMau:{
@@ -18,7 +18,7 @@ interface BieuMauState{
 export const fetchBieuMau = createAsyncThunk(
     'bieuMau/fetchBieuMau',
     async () => {
-      const resData = await getBieuMauMockup();
+      const resData = await getBieuMau();
       return resData;
     }
   );
