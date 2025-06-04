@@ -72,7 +72,7 @@ export default function LoginForm() {
 
       const redirectMap: Record<string, string> = {
         student: "/sinh-vien/gioi-thieu",
-        staff: "/can-bo/gioi-thieu",
+        staff: "/can-bo/xu-ly-don",
         manager: "/admin/gioi-thieu",
       };
 

@@ -116,7 +116,7 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
           {donDangKy.tenDon}
         </h6>
         <FormMui
-          className="w-full flex flex-col "
+          className="w-full flex flex-col text-left"
           inputSchema={inputSchema}
           onSubmit={hanleSubmit}
           buttons={buttons}
