@@ -10,7 +10,7 @@ import CustomTable from "@components/Table";
 
 // thong tin cac cot trong bieumau table
 const columns = [
-  { id: "bieuMau", label: "Tên biểu mẫu" },
+  { id: "tenBM", label: "Tên biểu mẫu" },
   { id: "donVi", label: "Đơn vị thực hiện", width: "18ch" },
   { id: "taiXuong", label: "Tải xuống", width: "10ch" },
 ];
@@ -25,7 +25,7 @@ export const BieuMauTable = ({ data }) => {
 
       return {
         stt: index + 1,
-        bieumau: (
+        tenBM: (
           <a href={row.lienKet} target="_blank" rel="noopener noreferrer">
             <span>{row.tenBM}</span>
           </a>
@@ -34,7 +34,12 @@ export const BieuMauTable = ({ data }) => {
         taiXuong: (
           <a href={docxDownloadLink} download>
             <button className="color-black">
-              <img src="/assets/icons/download.svg" alt="Tải xuống" width={25} height={25} />
+              <img
+                src="/assets/icons/download.svg"
+                alt="Tải xuống"
+                width={25}
+                height={25}
+              />
             </button>
           </a>
         ),
@@ -47,7 +52,7 @@ export const BieuMauTable = ({ data }) => {
   const dispatch = useAppDispatch();
 
   const tableCellStyles = (columnId, row) => {
-    if (columnId === "bieuMau") {
+    if (columnId === "tenBM") {
       return { textAlign: "left" };
     }
     return { textAlign: "center" };

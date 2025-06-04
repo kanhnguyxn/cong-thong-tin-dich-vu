@@ -6,6 +6,7 @@ interface tenQDType {
   ngayCoHieuLuc: string;
   hieuLuc: boolean | string; // true or false for active status, or a string for "Còn" or "Hết"
   loaiVanBan: string;
+  maPB?: string; // Optional property for department code
 }
 
 const datatenQD: tenQDType[] = [
@@ -17,6 +18,7 @@ const datatenQD: tenQDType[] = [
     ngayCoHieuLuc: "15/01/2023",
     hieuLuc: true,
     loaiVanBan: "văn bản quy phạm pháp luật",
+    maPB: "Dao Tao",
   },
   {
     maQD: "02/QD-DHKT",
@@ -26,6 +28,7 @@ const datatenQD: tenQDType[] = [
     ngayCoHieuLuc: "10/03/2023",
     hieuLuc: true,
     loaiVanBan: "văn bản nội bộ do DHKT ban hành",
+    maPB: "Dao Tao",
   },
   {
     maQD: "03/HD-DHDN",
@@ -35,6 +38,7 @@ const datatenQD: tenQDType[] = [
     ngayCoHieuLuc: "01/03/2022",
     hieuLuc: false,
     loaiVanBan: "văn bản nội bộ do DHDN ban hành",
+    maPB: "Dao Tao",
   },
   {
     maQD: "04/NĐ-CP",
@@ -44,6 +48,7 @@ const datatenQD: tenQDType[] = [
     ngayCoHieuLuc: "01/06/2022",
     hieuLuc: true,
     loaiVanBan: "văn bản quy phạm pháp luật",
+    maPB: "Dao Tao",
   },
   {
     maQD: "05/TT-DHKT",
@@ -53,6 +58,7 @@ const datatenQD: tenQDType[] = [
     ngayCoHieuLuc: "20/06/2023",
     hieuLuc: true,
     loaiVanBan: "văn bản nội bộ do DHKT ban hành",
+    maPB: "Dao Tao",
   },
 ];
 export default datatenQD;

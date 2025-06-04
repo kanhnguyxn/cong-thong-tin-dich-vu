@@ -11,10 +11,10 @@ export default function LoaiDonForm({ onSubmitMaDon }: LoaiDonFormProps) {
   const [error, setError] = React.useState<string | null>(null);
 
   // Lấy maDOn va tenDon tu redux
-  const rawDonDangKy = useAppSelector((state) => state.donDangKy.donDangKy);
+  const rawDonDangKy = useAppSelector((state) => state.donDangKy.donDangKySV);
 
   // Chuẩn bị dữ liệu đơn đăng ký
-  const donDangKy = rawDonDangKy.map((item) => ({
+  const donDangKy = rawDonDangKy.map((item: { maDon: any; tenDon: any }) => ({
     maDon: item.maDon,
     tenDDK: item.tenDon,
   }));

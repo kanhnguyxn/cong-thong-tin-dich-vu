@@ -38,14 +38,15 @@ export default function DropDown({ onSelectionsChange }: DropDownProps) {
   const [selectedValues, setSelectedValues] = useState<Record<string, string>>(
     {}
   );
-    const { quyDinh, loading } = useAppSelector((state) => state.quyDinh);
+  const { quyDinh, loading } = useAppSelector((state) => state.quyDinh);
 
   const departments = useMemo(() => {
     if (loading || !quyDinh) return [];
     const uniqueMap = new Map();
     for (const item of quyDinh) {
       if (!uniqueMap.has(item.maPB)) {
-        uniqueMap.set(item.maPB, item.tenPB);
+        // uniqueMap.set(item.maPB, item.tenPB);
+        uniqueMap.set("Dao Tao", "Dao Tao");
       }
     }
     return Array.from(uniqueMap.entries()).map(([maPB, tenPB]) => ({

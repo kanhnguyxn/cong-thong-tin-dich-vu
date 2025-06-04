@@ -63,6 +63,7 @@ const donDangKySlice = createSlice({
 
         })
         builder.addCase(fetchDonDangKy.fulfilled, (state, action)=>{
+            console.log("fetchDonDangKy.fulfilled", action.payload);
             state.loading = false;
             state.donDangKySV = Array.isArray(action.payload) ? action.payload : [action.payload];
         })
