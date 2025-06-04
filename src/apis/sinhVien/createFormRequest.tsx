@@ -5,9 +5,7 @@ type FormRequestData = {
   maDon: string;
   maSV: string;
   hocKyHienTai: string;
-  ngayTaoDonCT: string;
   thongTinChiTiet: string; // dạng string JSON
-  trangThaiXuLy: string;
 };
 
 export async function createFormRequest(data: FormRequestData) {

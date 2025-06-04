@@ -14,7 +14,7 @@ export default function Navbar() {
   const navItems = {
     student: [
       { label: "Giới thiệu", path: "/sinh-vien/gioi-thieu" },
-      { label: "Đơn đăng ký", path: "/sinh-vien/don-dang-ky" },
+      { label: "Đăng ký dịch vụ", path: "/sinh-vien/don-dang-ky" },
       { label: "Biểu mẫu", path: "/sinh-vien/bieu-mau" },
       { label: "Quy định", path: "/sinh-vien/quy-dinh" },
     ],

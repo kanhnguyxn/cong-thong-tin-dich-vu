@@ -11,7 +11,7 @@ import CustomTable from "@components/Table";
 // thong tin cac cot trong bieumau table
 const columns = [
   { id: "tenBM", label: "Tên biểu mẫu" },
-  { id: "donVi", label: "Đơn vị thực hiện", width: "18ch" },
+  { id: "donVi", label: "Đơn vị phụ trách", width: "18ch" },
   { id: "taiXuong", label: "Tải xuống", width: "10ch" },
 ];
 

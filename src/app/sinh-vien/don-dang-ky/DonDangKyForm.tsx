@@ -55,8 +55,31 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
   const user = useAppSelector((state) => state.auth.user);
   const maSV = user?.username;
 
+  // Kiểm tra xem donDangKy có tồn tại không
+  if (!donDangKy) {
+    return (
+      <Container
+        className="size-fit px-8 py-6 mx-4 my-5 md:mx-0 md:min-w-[60%] lg:min-w-[50%] md:max-w-[80%]"
+        shadow
+      >
+        <div className="text-center py-8">
+          <h6 className="text-lg font-bold text-red-600">
+            Không tìm thấy thông tin đơn đăng ký
+          </h6>
+          <p className="text-gray-600 mt-2">Mã đơn: {maDonDangKy}</p>
+        </div>
+      </Container>
+    );
+  }
+
   // hien thi thong tin chi tiet cua don
-  const parsedFields = JSON.parse(donDangKy?.thongTinChiTiet || "[]");
+  let parsedFields = [];
+  try {
+    parsedFields = JSON.parse(donDangKy?.thongTinChiTiet || "[]");
+  } catch (error) {
+    console.error("Error parsing thongTinChiTiet:", error);
+    parsedFields = [];
+  }
 
   const inputSchema = parsedFields.map((item: any) => ({
     ...item,
@@ -87,8 +110,7 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
     const data = {
       maDon: donDangKy?.maDon,
       maSV: maSV,
-      hocKyHienTai: null,
-      ngayTaoDonCT: new Date().toISOString(),
+      hocKyHienTai: "Hoc ky 2",
       thongTinChiTiet: JSON.stringify(formData),
     };
     const response = await createFormRequest(data);
@@ -112,16 +134,24 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
         className="size-fit px-8 py-6 mx-4 my-5 md:mx-0 md:min-w-[60%] lg:min-w-[50%] md:max-w-[80%]"
         shadow
       >
-        <h6 className="w-full text-lg md:text-xl lg:text-2xl font-bold uppercase">
-          {donDangKy.tenDon}
+        <h6 className="w-full text-lg md:text-xl lg:text-2xl font-bold uppercase mb-4">
+          {donDangKy?.tenDon || "Tên đơn chưa được cập nhật"}
         </h6>
-        <FormMui
-          className="w-full flex flex-col text-left"
-          inputSchema={inputSchema}
-          onSubmit={hanleSubmit}
-          buttons={buttons}
-          buttonClassName="w-full flex justify-center items-center"
-        />
+        {parsedFields.length > 0 ? (
+          <FormMui
+            className="w-full flex flex-col text-left"
+            inputSchema={inputSchema}
+            onSubmit={hanleSubmit}
+            buttons={buttons}
+            buttonClassName="w-full flex justify-center items-center"
+          />
+        ) : (
+          <div className="text-center py-4">
+            <p className="text-gray-600">
+              Chưa có thông tin chi tiết cho đơn này
+            </p>
+          </div>
+        )}
       </Container>
       {flag && (
         <Notification

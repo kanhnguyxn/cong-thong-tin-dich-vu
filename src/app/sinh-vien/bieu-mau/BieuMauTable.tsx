@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 const columns = [
   { id: "stt", label: "STT", width: "5ch" },
   { id: "bieumau", label: "Tên Biểu mẫu" },
-  { id: "donVi", label: "Đơn vị thực hiện", width: "18ch" },
+  { id: "donVi", label: "Đơn vị phụ trách", width: "25ch" },
   { id: "taixuong", label: "Tải xuống", width: "10ch" },
 ];
 
