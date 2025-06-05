@@ -1,20 +1,21 @@
 // "use client";
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@mui/material";
 import { useAppSelector } from "@redux/hook";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
   const userType = user?.userType.toLowerCase() || "student";
 
   const navItems = {
     student: [
       { label: "Giới thiệu", path: "/sinh-vien/gioi-thieu" },
-      { label: "Đăng ký dịch vụ", path: "/sinh-vien/don-dang-ky" },
+      { label: "Đăng ký dịch vụ", path: "/sinh-vien/dang-ky-dich-vu" },
       { label: "Biểu mẫu", path: "/sinh-vien/bieu-mau" },
       { label: "Quy định", path: "/sinh-vien/quy-dinh" },
     ],
@@ -50,6 +51,12 @@ export default function Navbar() {
             backgroundColor: "var(--color-blue)",
             borderRadius: "0px",
             width: "100%",
+          }}
+          onClick={(e) => {
+            if (pathname === path) {
+              e.preventDefault(); // chặn mặc định chuyển trang
+              window.location.reload(); // reload lại
+            }
           }}
         >
           {label}
