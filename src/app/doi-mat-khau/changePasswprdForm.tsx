@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import FormMui from "@components/form/Form";
 import ICONS from "@components/icons";
@@ -49,7 +49,10 @@ export default function ChangePasswordForm(props: any) {
       customeLabelStyle: { ...customeLabelStyle },
       validations: [
         {
-          rule: (value: string, formData: any) => value && formData[newPasswordId] && value === formData[newPasswordId],
+          rule: (value: string, formData: any) =>
+            value &&
+            formData[newPasswordId] &&
+            value === formData[newPasswordId],
           errMessage: "Mật khẩu không khớp",
         },
       ],
@@ -116,7 +119,11 @@ export default function ChangePasswordForm(props: any) {
       setSuccess(true);
     } else {
       setSuccess(false);
-      setError(response && typeof response === "object" && "message" in response ? response.message : "An error occurred");
+      setError(
+        response && typeof response === "object" && "message" in response
+          ? response.message
+          : "An error occurred"
+      );
     }
     setLoading(false);
     setFlag(true);
@@ -125,6 +132,16 @@ export default function ChangePasswordForm(props: any) {
     // }
     // handleOpen();
   };
+  // tu dong tat doi mk sau 3s
+  useEffect(() => {
+    if (flag) {
+      const timer = setTimeout(() => {
+        setFlag(false);
+      }, 3000);
+      return () => clearTimeout(timer); // Cleanup the timer on unmount
+    }
+  });
+
   const onCloseNotification = () => {
     setFlag(false);
   };
