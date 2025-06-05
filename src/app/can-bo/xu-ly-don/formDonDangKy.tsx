@@ -7,7 +7,7 @@ import {
   customeLabelStyle,
   formControlStyle,
   typeClassNameMap,
-} from "src/app/sinh-vien/don-dang-ky/styles";
+} from "src/app/sinh-vien/dang-ky-dich-vu/styles";
 import { useState } from "react";
 
 const labelRebder = (label: string | string[]) => {
