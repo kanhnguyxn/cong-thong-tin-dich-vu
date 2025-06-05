@@ -46,11 +46,18 @@ export default function KtraDonDangKyForm({ onChange }: DonDangKyFormProps) {
     thongTinChiTiet: item.thongTinChiTiet,
   }));
 
-  const handleChange = async (e: any) => {
-    const value = e.target.value;
+  const handleChange = async (value: any) => {
     setLoading(true);
 
     try {
+      if (!value || value === "") {
+        // Reset to no selection
+        setSelectedDon(null);
+        onChange({ type: "none", data: [] });
+        setLoading(false);
+        return;
+      }
+
       if (value === "all") {
         // Hiển thị tất cả đơn chi tiết
         setSelectedDon({ type: "all", data: allChiTietData });

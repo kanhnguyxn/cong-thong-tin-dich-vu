@@ -41,10 +41,19 @@ export default function SelectInput({
       value={selectedValue}
       onChange={(e) => {
         setSelectedValue(e.target.value);
+
+        // Handle the default "---Chọn---" option
+        if (e.target.value === "") {
+          onChange("");
+          return;
+        }
+
         const selectedOption = options?.find(
           (option) => option.display === e.target.value
         );
-        onChange(selectedOption.value);
+        if (selectedOption) {
+          onChange(selectedOption.value);
+        }
       }}
       className={className}
       onBlur={(e) => {
