@@ -1,15 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import "@styles/animations.css";
 import "@styles/globals.css";
+
+import React, { useState } from "react";
 
 import { Provider } from "react-redux";
 import { makeStore } from "../redux/store";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   // Create store once using useState to maintain across renders
   const [store] = useState(() => makeStore());
 
