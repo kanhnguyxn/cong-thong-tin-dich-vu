@@ -1,23 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
-import FormMui from "@components/form/Form";
+import React, { useEffect, useState } from "react";
 import { InputLabel } from "@mui/material";
-// import { dataDonDangKy } from "src/app/services/dataDonDangKy";
-import { labelStyles } from "@styles/style_component";
+
+import { useAppSelector } from "@redux/hook";
+
+import { createFormRequest } from "@apis/sinhVien/createFormRequest";
+
+import FormMui from "@components/form/Form";
 import { Container } from "@components/Container";
+import { Notification } from "@components/Notification";
+import ICONS from "@components/icons";
+
+import { labelStyles } from "@styles/style_component";
 import {
   customeLabelStyle,
   formControlStyle,
   typeClassNameMap,
   buttonStyles,
 } from "./styles";
-
-import { useAppSelector } from "@redux/hook";
-// import getTime from "@components/getTime";
-import { createFormRequest } from "@apis/sinhVien/createFormRequest";
-import { Notification } from "@components/Notification";
-import ICONS from "@components/icons";
 
 interface DonDangKyFormProps {
   maDonDangKy: string;
@@ -122,7 +123,18 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
     setLoading(false);
     setFlag(true);
   };
+  // tu dong dong
+  useEffect(() => {
+    if (flag) {
+      const timer = setTimeout(() => {
+        setFlag(false);
+        setSuccess(null);
+      }, 3000);
 
+      return () => clearTimeout(timer); // Xoá timer nếu user đóng thủ công
+    }
+  }, [flag]);
+  // nguoi dung dong
   const onCloseNotification = () => {
     setFlag(false);
     setSuccess(null);

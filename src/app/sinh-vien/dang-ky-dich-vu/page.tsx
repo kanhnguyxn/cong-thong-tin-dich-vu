@@ -34,13 +34,13 @@ export default function ĐonangKyPage() {
         {openDonDangKy && (
           <button
             onClick={handleBackToTable}
-            className="mt-2 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+            className="mt-2 px-4 py-2 bg-[var(--color-blue)] text-white rounded-lg hover:bg-gray-600 transition-colors"
           >
             ← Quay lại danh sách
           </button>
         )}
       </div>
-      <div className="w-full h-full flex justify-center items-center">
+      <div className="w-full h-full flex justify-center items-start">
         {!openDonDangKy && <DonDangKyTable onDangKy={handleDangKy} />}
         {openDonDangKy && <DonDangKyForm maDonDangKy={maDonDangKy} />}
       </div>
