@@ -28,16 +28,17 @@ export default function ĐonangKyPage() {
   return (
     <div className="flex flex-col w-full relative">
       <div className="border-b-2 border-b-[var(--color-gray-fill)] w-full p-3 sticky top-[234px] md:top-[121px] bg-white z-40">
-        <h3 className="text-xl md:text-3xl uppercase font-bold">
-          {openDonDangKy ? "Đăng Ký Đơn" : "Đơn Đăng Ký"}
-        </h3>
-        {openDonDangKy && (
+        {openDonDangKy ? (
           <button
             onClick={handleBackToTable}
             className="mt-2 px-4 py-2 bg-[var(--color-blue)] text-white rounded-lg hover:bg-gray-600 transition-colors"
           >
             ← Quay lại danh sách
           </button>
+        ) : (
+          <h3 className="text-xl md:text-3xl uppercase font-bold">
+            Đăng Ký Đơn
+          </h3>
         )}
       </div>
       <div className="w-full h-full flex justify-center items-start">
