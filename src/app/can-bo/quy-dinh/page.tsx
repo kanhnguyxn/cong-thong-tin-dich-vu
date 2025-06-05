@@ -1,17 +1,18 @@
 "use client";
 
+import CustomButton from "@components/button";
 import FormModal from "@components/modal/FormModal";
+import { showModal } from "@components/modal/RootModal";
 import { quyDinhForm } from "@constants/form";
 import { fetchQuyDinhCanBo } from "@redux/features/quyDinhSlice";
 import { useAppDispatch, useAppSelector } from "@redux/hook";
 import { useEffect, useState } from "react";
 import NavBar from "./Navbar";
 import QuyDinhTable from "./QuyDinhTable";
+
 export default function QuyDinhPage() {
   const dispatch = useAppDispatch();
-  const { quyDinh, loading: loadingRedux } = useAppSelector(
-    (state) => state.quyDinh
-  );
+  const { quyDinh, loading: loadingRedux } = useAppSelector((state) => state.quyDinh);
   const selected = useAppSelector((state) => state.quyDinh.selected);
 
   const [department, setDepartment] = useState("");
@@ -35,16 +36,10 @@ export default function QuyDinhPage() {
       return;
     }
     // Filter quy dinh based on department and option
-    const filtered = quyDinh.filter(
-      (item) => item.maPB === department || item.loaiVanBan === option
-    );
+    const filtered = quyDinh.filter((item) => item.maPB === department || item.loaiVanBan === option);
     console.log(department, option, quyDinh);
     setFilteredData(
-      searchQuery
-        ? filtered.filter((item) =>
-            item.tenQD.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-        : filtered
+      searchQuery ? filtered.filter((item) => item.tenQD.toLowerCase().includes(searchQuery.toLowerCase())) : filtered
     );
   }, [quyDinh, department, option, searchQuery]);
 
@@ -52,17 +47,12 @@ export default function QuyDinhPage() {
     setSearchQuery(query);
   };
 
-  const handleSelectionsChange = (
-    selectedDepartment: string,
-    selectedOption: string
-  ) => {
+  const handleSelectionsChange = (selectedDepartment: string, selectedOption: string) => {
     setDepartment(selectedDepartment);
     setOption(selectedOption);
   };
 
-  const isEmpty =
-    (!department && !option && !searchQuery.trim()) ||
-    filteredData.length === 0;
+  const isEmpty = (!department && !option && !searchQuery.trim()) || filteredData.length === 0;
 
   return (
     // <>
@@ -74,9 +64,7 @@ export default function QuyDinhPage() {
     <div className="flex flex-col w-full relative">
       {/* Header */}
       <div className="border-b-2 border-b-[var(--color-gray-fill)] w-full p-3 flex justify-between sticky top-[234px] md:top-[121px] bg-white z-40">
-        <h3 className="text-xl md:text-3xl uppercase font-bold">
-          Tra cứu Quy định
-        </h3>
+        <h3 className="text-xl md:text-3xl uppercase font-bold">Tra cứu Quy định</h3>
         {/* <SearchBar onSearch={handleSearch} /> */}
         <div className="grid grid-cols-3 gap-2">
           <FormModal
@@ -110,11 +98,7 @@ export default function QuyDinhPage() {
             handleSubmit={() => {}}
           />
           <FormModal
-            editData={
-              selected.length === 1
-                ? quyDinh.find((item) => item.maQD === selected[0])
-                : null
-            }
+            editData={selected.length === 1 ? quyDinh.find((item) => item.maQD === selected[0]) : null}
             disabled={selected.length > 1 || selected.length === 0}
             title={"sửa quy định"}
             buttonLabel="Chỉnh sửa"
@@ -145,14 +129,38 @@ export default function QuyDinhPage() {
             }}
             handleSubmit={() => {}}
           />
-          <p>Xoa</p>
+          <CustomButton
+            label="Xóa"
+            variants="contained"
+            size="large"
+            type="button"
+            disabled={selected.length !== 1}
+            sx={{ width: "40%", backgroundColor: "var(--color-blue)" }}
+            onClick={() => {
+              showModal({
+                title: "Xác nhận Xóa quy định",
+              }).then((res: any) => {
+                if (res.confirm) {
+                  // Handle the deletion logic here
+                  showModal({
+                    title: "Xóa thành công",
+                    icon: "success",
+                    type: "notification",
+                    showNoButton: true,
+                  });
+                }
+              });
+              // Call delete API or dispatch action to delete quy dinh
+              //
+            }}
+          ></CustomButton>
         </div>
       </div>
 
       {/* Main layout */}
       <div className="flex flex-col md:flex-row w-full md:h-full">
         {/* Sidebar */}
-        <div className="w-full md:w-[25%] lg:w-[20%] p-4 md:fixed md:top-[200px] md:left-0 md:h-[calc(100vh-250px)] bg-white z-30">
+        <div className="w-full md:w-[25%] lg:w-[20%] p-2 md:fixed md:top-[200px] md:left-0 md:h-[calc(100vh-250px)] bg-white z-30">
           <NavBar onSelectionsChange={handleSelectionsChange} />
         </div>
 
@@ -166,9 +174,7 @@ export default function QuyDinhPage() {
 
           {isEmpty ? (
             <div className="flex justify-center items-center w-full h-full">
-              <p className="uppercase font-light text-lg md:text-2xl text-[var(--color-gray)] text-center">
-                Trống
-              </p>
+              <p className="uppercase font-light text-lg md:text-2xl text-[var(--color-gray)] text-center">Trống</p>
             </div>
           ) : (
             <QuyDinhTable data={filteredData} />
