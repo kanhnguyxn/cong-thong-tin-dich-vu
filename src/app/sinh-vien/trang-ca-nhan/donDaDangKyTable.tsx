@@ -1,26 +1,65 @@
-import CustomTable from "@components/Table";
-import { dataDonDangKyCT } from "@services/dataDonDangKyCT";
-import { Container } from "@components/Container";
 
-export default function DonDaDangKyTable({ madon }: { madon: string }) {
+import CustomTable from "@components/Table";
+import { Container } from "@components/Container";
+import { formatThoiGianXuLy } from "@components/formatDate";
+
+interface DonDaDangKyTableProps {
+  data?: any[];
+  loading?: boolean;
+}
+
+export default function DonDaDangKyTable({
+  data = [],
+  loading = false,
+}: DonDaDangKyTableProps) {
   const columns = [
     { id: "stt", label: "STT", width: "5ch" },
     { id: "tenDon", label: "Tên đơn" },
     { id: "thoiGian", label: "Thời gian", width: "12ch" },
-    { id: "donViThucHien", label: "Đơn vị thực hiện", width: "20ch" },
+    { id: "donViThucHien", label: "Đơn vị phụ trách", width: "20ch" },
     { id: "trangThai", label: "Trạng thái", width: "15ch" },
     { id: "ghiChu", label: "Ghi chú", width: "20ch" },
   ];
-  //   neu dataDonDangKyCT khong co se hien trong
-  const formattedData = Array.isArray(dataDonDangKyCT)
-    ? dataDonDangKyCT.map((item, index) => ({ stt: index + 1, ...item }))
+
+  // Không cần gọi API nữa vì data được truyền qua props
+
+  // Format dữ liệu cho table
+  const formattedData = Array.isArray(data)
+    ? data.map((item, index) => ({
+        stt: index + 1,
+        ...item,
+        // Đảm bảo có đủ các trường cần thiết với giá trị mặc định
+        tenDon: item.tenDon || "Chưa có tên đơn",
+        thoiGian: formatThoiGianXuLy(
+          item.thoiGian ||
+            item.ngayTaoDonCT ||
+            item.thoiGianDang ||
+            new Date().toISOString().split("T")[0]
+        ),
+        donViThucHien: item.donViThucHien || item.donVi || "Phòng đào tạo",
+        trangThai:
+          typeof item.trangThai === "boolean"
+            ? item.trangThai
+              ? "Đã xử lý"
+              : "Chưa xử lý"
+            : item.trangThai || "Chờ xử lý",
+        ghiChu: item.ghiChu || "Không có ghi chú",
+      }))
     : [];
+
   const getTableCellStyles = (columnId: string, row: any) => {
     if (columnId === "trangThai") {
+      let color = "red"; // Mặc định màu đỏ cho "Chưa xử lý"
+      if (row.trangThai === "Đã xử lý") {
+        color = "green";
+      } else if (row.trangThai === "Đang xử lý") {
+        color = "orange";
+      }
       return {
         textAlign: "center",
-        color: row.trangThai === "Đã xử lý" ? "green" : "red",
+        color: color,
         textTransform: "uppercase",
+        fontWeight: "bold",
       };
     }
     if (columnId === "donViThucHien") {
@@ -32,6 +71,7 @@ export default function DonDaDangKyTable({ madon }: { madon: string }) {
 
     return { textAlign: "center" };
   };
+
   const getTableHeaderStyles = (columnId: string) => {
     // Kiểm tra trường hợp 'ghiChu' trước
     if (columnId === "ghiChu") {
@@ -48,19 +88,33 @@ export default function DonDaDangKyTable({ madon }: { madon: string }) {
       color: "white", // Màu chữ chung cho các cột
     };
   };
-  //   hien data theo madon
-  const filteredData =
-    madon && madon !== "all"
-      ? formattedData.filter((item) => item.maDon === madon)
-      : formattedData;
 
-  return filteredData.length === 0 ? (
-    <></>
-  ) : (
+  // Hiển thị loading hoặc empty state
+  if (loading) {
+    return (
+      <Container className="w-full md:max-w-[80%] mb-6 mx-6 mt-3 md:border-2 border-[var(--color-gray-stroke)]">
+        <div className="p-4 text-center">
+          <p className="text-gray-600">Đang tải dữ liệu...</p>
+        </div>
+      </Container>
+    );
+  }
+
+  if (formattedData.length === 0 && !loading) {
+    return (
+      <Container className="w-full md:max-w-[80%] mb-6 mx-6 mt-3 md:border-2 border-[var(--color-gray-stroke)]">
+        <div className="p-4 text-center">
+          <p className="text-gray-600">Không có dữ liệu đơn đăng ký</p>
+        </div>
+      </Container>
+    );
+  }
+
+  return (
     <Container className="w-full md:max-w-[80%] mb-6 mx-6 mt-3 md:border-2 border-[var(--color-gray-stroke)]">
       <CustomTable
         columns={columns}
-        data={filteredData}
+        data={formattedData}
         tableCellStyles={getTableCellStyles}
         tableHeaderStyles={getTableHeaderStyles}
       />

@@ -21,7 +21,7 @@ export default function DonDangKyTable({ onDangKy }: DonDangKyTableProps) {
   const formattedData = rawDonDangKy.map((item: any, index: number) => ({
     stt: index + 1,
     tenDon: item.tenDon,
-    donVi: item.donVi || "Phòng đào tạo",
+    donVi: item.tenPB || "Phòng đào tạo",
     dangKy: (
       <button
         className="px-4 py-2 bg-[var(--color-blue)] text-white rounded-lg hover:bg-blue-600 transition-colors"

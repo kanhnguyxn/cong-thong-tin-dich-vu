@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 interface SelectInputProps {
   value?: any; // có du lieu san hoac mac dich
   onChange: (value: any) => void; // function to handle change
-  options?: [
-    {
-      display: string; // label to display
-      value: any;
-    } // value to use in the select
-  ]; // options to select from
+  options?: {
+    display: string; // label to display
+    value: any;
+  }[]; // options to select from
   className?: string; // class name for styling
   onBlur?: (value: any) => void; // function to handle blur event
 }
