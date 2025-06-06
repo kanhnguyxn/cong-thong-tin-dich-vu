@@ -1,7 +1,6 @@
 "use client";
 
 import CustomButton from "@components/button";
-import FormModal from "@components/modal/FormModal";
 import { showModal } from "@components/modal/RootModal";
 import { quyDinhForm } from "@constants/form";
 import { fetchQuyDinhCanBo } from "@redux/features/quyDinhSlice";
@@ -37,7 +36,6 @@ export default function QuyDinhPage() {
     }
     // Filter quy dinh based on department and option
     const filtered = quyDinh.filter((item) => item.maPB === department || item.loaiVanBan === option);
-    console.log(department, option, quyDinh);
     setFilteredData(
       searchQuery ? filtered.filter((item) => item.tenQD.toLowerCase().includes(searchQuery.toLowerCase())) : filtered
     );
@@ -45,6 +43,56 @@ export default function QuyDinhPage() {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
+  };
+
+  const handleOpenModal = (mode: "add" | "edit" | "delete" | string, data?: any) => {
+    const editData = data ? quyDinh.find((item) => item.maQD === data) : null;
+    showModal({
+      title: mode === "add" ? "Thêm Quy Định" : mode === "edit" ? "Sửa Quy Định" : "Xoa quy dinh",
+      type: mode === "delete" ? "alert" : "form",
+      icon: mode === "delete" ? "warning" : null,
+      inputs: mode !== "delete" ? quyDinhForm : null, // Assuming you have a form schema for adding/editing
+      editData: editData || null,
+      handleAsyncSubmit:
+        mode === "delete"
+          ? null
+          : async (data: any) => {
+              // Handle the form submission logic here
+              // mode === "add" ? add api : edit api
+              console.log("Submitted data:", data);
+              return new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate an API call
+            },
+      preConfirm:
+        mode === "delete"
+          ? async () => {
+              // Simulate an API call for deletion confirmation
+              return new Promise((resolve) => setTimeout(resolve, 2000));
+            }
+          : null,
+    }).then((res: any) => {
+      if (res.confirm) {
+        // Handle the success case
+        switch (mode) {
+          case "add":
+            handleModalHelper("Thêm ", "success");
+            break;
+          case "edit":
+            handleModalHelper("Sửa ", "success");
+            break;
+          default:
+            handleModalHelper("Xóa", "success");
+            break;
+        }
+      }
+    });
+  };
+  const handleModalHelper = (title, status: "success" | "error") => {
+    showModal({
+      title: `${title} ${status === "success" ? "thành công" : "thất bại"}`,
+      icon: status,
+      type: "notification",
+      showNoButton: true,
+    });
   };
 
   const handleSelectionsChange = (selectedDepartment: string, selectedOption: string) => {
@@ -67,67 +115,26 @@ export default function QuyDinhPage() {
         <h3 className="text-xl md:text-3xl uppercase font-bold">Tra cứu Quy định</h3>
         {/* <SearchBar onSearch={handleSearch} /> */}
         <div className="grid grid-cols-3 gap-2">
-          <FormModal
-            title={"Thêm quy định"}
-            buttonLabel="Thêm"
-            variant="contained"
-            buttonSize="large"
-            inputSchema={quyDinhForm}
-            buttons={[
-              {
-                label: "Thêm",
-                type: "submit",
-                variants: "contained",
-                size: "large",
-                sx: {
-                  backgroundColor: "var(--color-blue)",
-                  width: "40%",
-                },
-              },
-            ]}
-            customCancelButton={{
-              label: "Hủy",
-              type: "button",
-              variants: "contained",
-              size: "large",
-              sx: {
-                backgroundColor: "var(--color-blue)",
-                width: "40%",
-              },
+          <CustomButton
+            label="Thêm"
+            variants="contained"
+            size="large"
+            type="button"
+            sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+            onClick={() => {
+              handleOpenModal("add");
             }}
-            handleSubmit={() => {}}
-          />
-          <FormModal
-            editData={selected.length === 1 ? quyDinh.find((item) => item.maQD === selected[0]) : null}
-            disabled={selected.length > 1 || selected.length === 0}
-            title={"sửa quy định"}
-            buttonLabel="Chỉnh sửa"
-            variant="contained"
-            buttonSize="large"
-            inputSchema={quyDinhForm}
-            buttons={[
-              {
-                label: "Thêm",
-                type: "submit",
-                variants: "contained",
-                size: "large",
-                sx: {
-                  backgroundColor: "var(--color-blue)",
-                  width: "40%",
-                },
-              },
-            ]}
-            customCancelButton={{
-              label: "Hủy",
-              type: "button",
-              variants: "contained",
-              size: "large",
-              sx: {
-                backgroundColor: "var(--color-blue)",
-                width: "40%",
-              },
+          />{" "}
+          <CustomButton
+            label="Chỉnh sửa"
+            variants="contained"
+            size="large"
+            type="button"
+            disabled={selected.length !== 1}
+            sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+            onClick={async () => {
+              handleOpenModal("edit", selected[0]);
             }}
-            handleSubmit={() => {}}
           />
           <CustomButton
             label="Xóa"
@@ -135,25 +142,14 @@ export default function QuyDinhPage() {
             size="large"
             type="button"
             disabled={selected.length !== 1}
-            sx={{ width: "40%", backgroundColor: "var(--color-blue)" }}
+            sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
             onClick={() => {
-              showModal({
-                title: "Xác nhận Xóa quy định",
-              }).then((res: any) => {
-                if (res.confirm) {
-                  // Handle the deletion logic here
-                  showModal({
-                    title: "Xóa thành công",
-                    icon: "success",
-                    type: "notification",
-                    showNoButton: true,
-                  });
-                }
-              });
+              handleOpenModal("delete", selected[0]);
+
               // Call delete API or dispatch action to delete quy dinh
               //
             }}
-          ></CustomButton>
+          />
         </div>
       </div>
 

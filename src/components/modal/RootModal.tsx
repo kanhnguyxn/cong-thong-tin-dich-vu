@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { createRoot } from "react-dom/client";
 
-import CustomButton from "@components/button";
+import CustomButton, { ButtonProps } from "@components/button";
 import { Container } from "@components/Container";
+import { inputProps } from "@components/form/Form";
 import ICONS from "@components/icons";
 import AlertModal from "./AlertModal";
+import FormModal from "./FormModal";
 import NotiModal from "./NotiModal";
 
 const icons = {
@@ -23,18 +25,27 @@ interface ModalProps {
   title?: string;
   text?: string;
   icon?: "success" | "error" | "warning" | "info" | string;
-  type?: "alert" | "notification";
+  type?: "alert" | "notification" | "form";
   buttonConfirmText?: string;
   buttonCancelText?: string;
   showCancelButton?: boolean;
   showNoButton?: boolean;
   preConfirm?: () => Promise<any>;
+  inputs?: Array<inputProps> | [];
+  editData?: object;
+  handleAsyncSubmit?: (data?: any) => Promise<any>;
+  handleSubmitForm?: (data?: any) => void;
 }
 
-interface ModalReuslt {
+interface ModalButtonProps extends ButtonProps {
+  visibility?: boolean;
+}
+
+export type ModalResult = {
   confirm: boolean;
   cancel: boolean;
-}
+  [key: string]: any;
+};
 
 export function showModal({
   title = "",
@@ -44,9 +55,13 @@ export function showModal({
   icon = "warning",
   type = "alert",
   preConfirm,
+  handleAsyncSubmit,
+  handleSubmitForm,
   showCancelButton = true,
   showNoButton = false,
-}: ModalProps) {
+  inputs,
+  editData,
+}: ModalProps): Promise<ModalResult> {
   // Close any existing modal before creating a new one
   if (modalRoot && activeModal) {
     modalRoot.unmount();
@@ -70,10 +85,22 @@ export function showModal({
     function Modal() {
       const [loading, setLoading] = useState(false);
 
+      useEffect(() => {
+        if (type !== "notification") return;
+        function autoTurnOff(ms: number) {
+          setTimeout(() => {
+            if (activeModal) {
+              handleOutsideClick();
+            }
+          }, ms);
+        }
+        autoTurnOff(3000); // Auto close after 3 seconds
+      }, []);
+
       // Called when the user clicks the button
-      const handleConfirm = () => {
+      const handleConfirm = (resData?: any) => {
         unmountModal();
-        resolve({ confirm: true, cancel: false });
+        resolve({ confirm: true, cancel: false, data: resData });
       };
 
       // Handles outside click
@@ -87,11 +114,15 @@ export function showModal({
         resolve({ confirm: false, cancel: true });
       };
 
-      const handleAsyncConfirm = async () => {
+      const handleAsyncConfirm = async (data?: any) => {
+        if (!preConfirm && !handleAsyncSubmit) {
+          handleConfirm();
+        }
         setLoading(true);
         try {
-          await preConfirm();
-          handleConfirm();
+          const resData = preConfirm && (await preConfirm());
+          handleAsyncSubmit && (await handleAsyncSubmit(data));
+          handleConfirm(resData);
         } catch (e) {
           // Optionally, handle error (stay open, show error, etc.)
           setLoading(false);
@@ -103,6 +134,33 @@ export function showModal({
         activeModal = null;
         activeResolve = null;
       };
+      const commonConfig = {
+        variants: "contained" as "contained" | "outlined" | "text",
+        size: "medium" as "small" | "medium" | "large",
+        sx: { width: "100%", backgroundColor: "var(--color-blue)" },
+      };
+      // Default type for buttons
+      const buttons: Array<ModalButtonProps> = useMemo(() => {
+        return [
+          {
+            label: buttonConfirmText,
+            type: "submit",
+            onClick: type === "form" ? null : preConfirm ? handleAsyncConfirm : handleConfirm,
+            visibility: showNoButton ? false : true,
+            loading: loading,
+            disabled: loading,
+            ...commonConfig,
+          },
+          {
+            label: buttonCancelText,
+            type: "button",
+            onClick: handleCancel,
+            disabled: loading,
+            visibility: showNoButton ? false : showCancelButton,
+            ...commonConfig,
+          },
+        ];
+      }, [loading]);
 
       return createPortal(
         <div
@@ -112,25 +170,39 @@ export function showModal({
           <Container className="z-50 zoom-in " onClick={(e) => e.stopPropagation()}>
             {type === "alert" && <AlertModal title={title} text={text} icon={icons[icon]} />}
             {type === "notification" && <NotiModal title={title} icon={icons[icon]} />}
-            {!showNoButton && (
+            {type === "form" ? (
+              <FormModal
+                handleSubmit={(data) => {
+                  if (handleAsyncSubmit) {
+                    handleAsyncConfirm(data);
+                    return;
+                  }
+                  handleSubmitForm && handleSubmitForm(data);
+                  handleConfirm();
+                }}
+                title={title}
+                inputSchema={inputs}
+                editData={editData}
+                buttons={buttons.filter((button) => button.visibility)}
+              />
+            ) : (
               <div className="grid grid-cols-2 gap-4">
-                <CustomButton
-                  sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
-                  variants="contained"
-                  label={buttonConfirmText}
-                  onClick={preConfirm ? handleAsyncConfirm : handleConfirm}
-                  loading={loading}
-                  disabled={loading}
-                />
-                {showCancelButton && (
-                  <CustomButton
-                    sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
-                    variants="contained"
-                    label={buttonCancelText}
-                    onClick={handleCancel}
-                    disabled={loading}
-                  />
-                )}
+                {buttons.map((button, index) => {
+                  return (
+                    button.visibility && (
+                      <CustomButton
+                        key={index}
+                        variants={"contained"}
+                        size={"medium"}
+                        sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+                        label={button.label}
+                        onClick={button.onClick}
+                        loading={button.loading}
+                        disabled={button.disabled}
+                      />
+                    )
+                  );
+                })}
               </div>
             )}
           </Container>
