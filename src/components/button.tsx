@@ -1,6 +1,6 @@
 import { Button, CircularProgress } from "@mui/material";
 
-type ButtonProps = {
+export type ButtonProps = {
   variants?: "text" | "outlined" | "contained";
   disabled?: boolean;
   loading?: boolean;

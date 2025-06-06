@@ -4,10 +4,23 @@ import CustomButton from "@components/button";
 import { COMMON_STYLES } from "@styles/common_styles";
 import FormInputControl from "./FormInputControl";
 
-interface FormProps {
+export type inputProps = {
+  name: string;
+  type: string;
+  placeholder?: string;
+  label: string;
+  className?: string;
+  required?: boolean;
+  validations?: Array<any>;
+  customeLabelStyle?: object;
+  selectOptions?: Array<{ display: string; value: any }>;
+  [key: string]: any;
+};
+
+export interface FormProps {
   editData?: any;
   className?: string;
-  inputSchema: Array<any>;
+  inputSchema: Array<inputProps>;
   onSubmit?: (formData: Object) => void;
   formErrMsg?: string;
   buttons?: Array<any>;
@@ -129,10 +142,7 @@ export default function FormMui({
   };
 
   return (
-    <form
-      className={`${className} ${formErrMsg ? "mt-0" : "mt-2"}`}
-      onSubmit={handleSubmit}
-    >
+    <form className={`${className} ${formErrMsg ? "mt-0" : "mt-2"}`} onSubmit={handleSubmit}>
       {formErrMsg && (
         <div className="text-red-500 text-sm md:text-[15px] lg:text-base uppercase mt-2 md:mt-3 text-left font-semibold">
           {formErrMsg}
@@ -165,14 +175,7 @@ export default function FormMui({
         <div className={buttonClassName}>
           {buttons.map((button: any, index: number) => {
             const { label, className, ...rest } = button;
-            return (
-              <CustomButton
-                key={index}
-                label={label}
-                className={`${className}`}
-                {...rest}
-              />
-            );
+            return <CustomButton key={index} label={label} className={`${className}`} {...rest} />;
           })}
         </div>
       )}
