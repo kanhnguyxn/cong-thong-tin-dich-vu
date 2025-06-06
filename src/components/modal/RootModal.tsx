@@ -94,7 +94,7 @@ export function showModal({
             }
           }, ms);
         }
-        autoTurnOff(3000); // Auto close after 3 seconds
+        autoTurnOff(30000); // Auto close after 3 seconds
       }, []);
 
       // Called when the user clicks the button
@@ -137,7 +137,7 @@ export function showModal({
       const commonConfig = {
         variants: "contained" as "contained" | "outlined" | "text",
         size: "medium" as "small" | "medium" | "large",
-        sx: { width: "100%", backgroundColor: "var(--color-blue)" },
+        sx: { width: "35%", backgroundColor: "var(--color-blue)" },
       };
       // Default type for buttons
       const buttons: Array<ModalButtonProps> = useMemo(() => {
@@ -145,7 +145,12 @@ export function showModal({
           {
             label: buttonConfirmText,
             type: "submit",
-            onClick: type === "form" ? null : preConfirm ? handleAsyncConfirm : handleConfirm,
+            onClick:
+              type === "form"
+                ? null
+                : preConfirm
+                ? handleAsyncConfirm
+                : handleConfirm,
             visibility: showNoButton ? false : true,
             loading: loading,
             disabled: loading,
@@ -167,9 +172,16 @@ export function showModal({
           className="fixed top-0 left-0 min-w-full min-h-full bg-[var(--color-gray-light)] z-50 flex justify-center items-center "
           onClick={loading ? undefined : handleOutsideClick}
         >
-          <Container className="z-50 zoom-in " onClick={(e) => e.stopPropagation()}>
-            {type === "alert" && <AlertModal title={title} text={text} icon={icons[icon]} />}
-            {type === "notification" && <NotiModal title={title} icon={icons[icon]} />}
+          <Container
+            className="z-50 zoom-in  w-[32%]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {type === "alert" && (
+              <AlertModal title={title} text={text} icon={icons[icon]} />
+            )}
+            {type === "notification" && (
+              <NotiModal title={title} icon={icons[icon]} />
+            )}
             {type === "form" ? (
               <FormModal
                 handleSubmit={(data) => {
@@ -194,7 +206,10 @@ export function showModal({
                         key={index}
                         variants={"contained"}
                         size={"medium"}
-                        sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+                        sx={{
+                          width: "100%",
+                          backgroundColor: "var(--color-blue)",
+                        }}
                         label={button.label}
                         onClick={button.onClick}
                         loading={button.loading}

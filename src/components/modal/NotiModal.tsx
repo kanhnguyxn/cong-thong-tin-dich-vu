@@ -8,8 +8,18 @@ export interface NotiModalProps {
 
 export default function NotiModal({ title, icon }: NotiModalProps) {
   return (
-    <Box className="flex flex-col items-center justify-center" sx={{ fontSize: { xs: "20px", sm: "22px", md: "24px" } }}>
-      <Typography textAlign={"center"} fontWeight={"bold"} className="uppercase text-[var(--color-black)]">
+    <Box
+      className="flex flex-col items-center justify-center"
+      // sx={{ fontSize: { xs: "20px", sm: "22px", md: "24px" } }}
+    >
+      <Typography
+        textAlign={"center"}
+        fontWeight={"bold"}
+        className="uppercase text-[var(--color-black)] "
+        sx={{
+          fontSize: { xs: "20px", sm: "22px", md: "24px" },
+        }}
+      >
         {title}
       </Typography>
       <Box

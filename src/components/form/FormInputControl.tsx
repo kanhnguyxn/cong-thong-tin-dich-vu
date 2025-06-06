@@ -187,7 +187,7 @@ export default function FormInputControl({
   }
   return (
     <FormControl sx={{ width: "100%", ...formControlStyle }}>
-      <Grid container sx={{ width: "100%" }}>
+      <Grid container sx={{ width: "100%", alignItems: "center" }}>
         <Grid size={orientation === "horizontal" ? 4 : 12}>
           {lableRender ? (
             lableRender()
