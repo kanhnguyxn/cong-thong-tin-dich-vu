@@ -64,7 +64,7 @@ export default function QuyDinhPage() {
           ? "Thêm Quy Định"
           : mode === "edit"
           ? "Sửa Quy Định"
-          : "Xoa quy dinh",
+          : "Xác nhận xóa quy định?",
       type: mode === "delete" ? "alert" : "form",
       icon: mode === "delete" ? "warning" : null,
       inputs: mode !== "delete" ? quyDinhForm : null, // Assuming you have a form schema for adding/editing
