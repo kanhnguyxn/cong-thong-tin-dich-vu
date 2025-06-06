@@ -173,7 +173,13 @@ export function showModal({
           onClick={loading ? undefined : handleOutsideClick}
         >
           <Container
-            className="z-50 zoom-in  w-[32%]"
+            className={`z-50 zoom-in ${
+              type === "notification"
+                ? "w-[20%]"
+                : type === "alert"
+                ? "w-[25%]"
+                : "w-[32%]"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             {type === "alert" && (
@@ -198,7 +204,7 @@ export function showModal({
                 buttons={buttons.filter((button) => button.visibility)}
               />
             ) : (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-row items-center justify-around">
                 {buttons.map((button, index) => {
                   return (
                     button.visibility && (
@@ -207,7 +213,7 @@ export function showModal({
                         variants={"contained"}
                         size={"medium"}
                         sx={{
-                          width: "100%",
+                          width: "35%",
                           backgroundColor: "var(--color-blue)",
                         }}
                         label={button.label}
