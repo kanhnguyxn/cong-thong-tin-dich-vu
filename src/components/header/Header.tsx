@@ -14,7 +14,7 @@ import { useEffect } from "react";
 const infoHeader = {
   logo: "/assets/icons/logo_truong.svg",
   unit: "Trường Đại học Kinh tế - Đại học Đà Nẵng",
-  system: "STUDENT ONLINE SERVICE",
+  system: "CỔNG THÔNG TIN - DỊCH VỤ",
   background_image: "/assets/images/background_header.svg",
 };
 
