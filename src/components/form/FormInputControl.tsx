@@ -2,7 +2,9 @@
 
 import { FormControl, Grid, InputLabel } from "@mui/material";
 import { StyledTextField, labelStyles } from "@styles/style_component";
+import moment from "moment";
 import React from "react";
+import CustomDatePicker from "./input/CustomDatePicker";
 import FileInput from "./input/fileInput";
 import PasswordInput from "./input/PasswordInput";
 import SelectCheckboxInput from "./input/SelectCheckBox";
@@ -12,7 +14,7 @@ type TextFieldVariant = "filled" | "outlined" | "standard";
 
 interface FormInputControlProps {
   // Define the type of field based on your schema
-  onChange: (value: string | any[] | File | null) => void;
+  onChange: (value: string | any[] | moment.Moment | File | null) => void;
   placeholder?: string;
   type?: string;
   className?: string;
@@ -51,11 +53,7 @@ export default function FormInputControl({
   IconComponent,
   orientation = "vertical",
 }: FormInputControlProps) {
-  const error = errMessage.length > 0 && (
-    <div className="text-red-500 text-start px-2 mt-1 italic text-xs">
-      {errMessage}
-    </div>
-  );
+  const error = errMessage.length > 0 && <div className="text-red-500 text-start px-2 mt-1 italic text-xs">{errMessage}</div>;
   let inputEle = (
     <div className="flex flex-col w-full">
       <StyledTextField
@@ -68,16 +66,6 @@ export default function FormInputControl({
         onChange={(e) => onChange(e.target.value)}
       />
     </div>
-    /* <StyledTextField
-        id={name}
-        variant={variant}
-        placeholder={placeholder}
-        className={className}
-        value={value}
-        onBlur={(e) => onBlur(e.target.value)}
-        onChange={(e) => onChange(e.target.value)}
-      />
-      {error} */
   );
 
   switch (type) {
@@ -90,26 +78,15 @@ export default function FormInputControl({
           placeholder={placeholder}
           value={value}
           className={className}
-          onBlur={(
-            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-          ) => onBlur(e.target.value)}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-          ) => onChange(e.target.value)}
+          onBlur={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onBlur(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange(e.target.value)}
         />
       );
       break;
     case "select":
       inputEle = (
         <div className="flex flex-col">
-          <SelectInput
-            value={value}
-            className={className}
-            onChange={onChange}
-            onBlur={onBlur}
-            options={selectOptions}
-          />
-          {error}
+          <SelectInput value={value} className={className} onChange={onChange} onBlur={onBlur} options={selectOptions} />
         </div>
       );
       break;
@@ -120,12 +97,8 @@ export default function FormInputControl({
           variant={variant}
           placeholder={placeholder}
           className={className}
-          onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onBlur?.(e.target.files?.[0] || null)
-          }
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onChange?.(e.target.files?.[0] || null)
-          }
+          onBlur={(e: React.ChangeEvent<HTMLInputElement>) => onBlur?.(e.target.files?.[0] || null)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange?.(e.target.files?.[0] || null)}
         />
       );
       break;
@@ -153,13 +126,7 @@ export default function FormInputControl({
     // }
     case "checkbox-group":
       inputEle = (
-        <SelectCheckboxInput
-          options={selectOptions}
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          className={className}
-        />
+        <SelectCheckboxInput options={selectOptions} value={value} onChange={onChange} onBlur={onBlur} className={className} />
       );
       break;
     case "radio":
@@ -173,7 +140,7 @@ export default function FormInputControl({
                 type="radio"
                 value={option}
                 onChange={(e) => onChange(e.target.value)}
-                onBlur={(e) => onChange(e.target.value)}
+                onBlur={(e) => onBlur(e.target.value)}
               />
               <label>{option}</label>
             </div>
@@ -181,7 +148,8 @@ export default function FormInputControl({
         </>
       );
       break;
-
+    case "date":
+      inputEle = <CustomDatePicker value={value} onChange={(newValue: any) => onChange(newValue)} />;
     default:
       break;
   }
@@ -189,13 +157,7 @@ export default function FormInputControl({
     <FormControl sx={{ width: "100%", ...formControlStyle }}>
       <Grid container sx={{ width: "100%", alignItems: "center" }}>
         <Grid size={orientation === "horizontal" ? 4 : 12}>
-          {lableRender ? (
-            lableRender()
-          ) : (
-            <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
-              {label}
-            </InputLabel>
-          )}
+          {lableRender ? lableRender() : <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>{label}</InputLabel>}
         </Grid>
         <Grid size={orientation === "horizontal" ? 8 : 12}>
           {inputEle} {error}
@@ -203,15 +165,4 @@ export default function FormInputControl({
       </Grid>
     </FormControl>
   );
-  // <Box >
-  //   {inputEle}
-  //   {/* {error} */}
-  // </Box>
-  // return (
-  //   <div>
-  //     {/* <label htmlFor={name}>{label}</label> */}
-  //     {inputEle}
-  //     {/* {isError && <span className="error-message">{errors[name]}</span>} */}
-  //   </div>
-  // );
 }
