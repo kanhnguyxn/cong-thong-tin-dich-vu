@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import CustomButton from "@components/button";
 import { COMMON_STYLES } from "@styles/common_styles";
+import moment from "moment";
 import FormInputControl from "./FormInputControl";
 
 export type inputProps = {
@@ -47,22 +48,44 @@ export default function FormMui({
 
   /*--------------------EFFECT-----------------------*/
   useEffect(() => {
-    if (!editData) return;
+    let _formData = rebuilDefaultFormData();
+    if (editData) {
+      inputSchema.forEach((field: any) => {
+        // nếu trường có giá trị trong editData thì set giá trị đó vào formData
+        if (field.type === "date" && editData[field.name]) {
+          _formData[field.name] = moment(editData[field.name], "DD/MM/YYYY");
+          return;
+        }
+
+        if (editData[field.name] !== undefined || null) {
+          _formData[field.name] = editData[field.name];
+          return;
+        }
+      });
+    }
+
+    setFormData(_formData);
+  }, [editData]);
+
+  const rebuilDefaultFormData = () => {
     let _formData: any = {};
     inputSchema.forEach((field: any) => {
       // nếu trường có giá trị trong editData thì set giá trị đó vào formData
 
-      if (editData[field.name] === undefined || null) {
-        _formData[field.name] = null;
+      if (field.type === "date") {
+        _formData[field.name] = moment(field.defaultValue ? field.defaultValue : new Date());
+        return;
       }
 
-      // nếu không có thì set giá trị mặc định là ""
-      _formData[field.name] = editData[field.name];
+      if (field.defaultValue !== undefined) {
+        _formData[field.name] = field.defaultValue || "";
+        return;
+      }
     });
-    setFormData(_formData);
-  }, [editData]);
+    return _formData;
+  };
   // kiêm tra validation cua tùng trường
-  const validateField = (field: any, value: string, formData: any) => {
+  const validateField = (field: any, value: any, formData: any) => {
     // Xét độ trống của trường
     if (!checkEmptyField(field, value)) {
       return false;
@@ -118,21 +141,23 @@ export default function FormMui({
       return;
     }
     let flag = true;
-
+    const postData = { ...formData };
     // kiểm tra các trường bắt buộc
     inputSchema.forEach((field: any) => {
       if (field.required) {
-        const value = formData[field.name] || "";
+        const value = postData[field.name] || "";
         if (!checkEmptyField(field, value)) {
           flag = false;
         }
+      }
+      if (field.type === "date" && postData[field.name]) {
+        postData[field.name] = postData[field.name].format("DD/MM/YYYY");
       }
     });
     if (!flag) {
       return;
     }
-
-    onSubmit(formData);
+    onSubmit(postData);
 
     // setFormData({}) // Reset form data after submission
   };
