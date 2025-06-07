@@ -25,14 +25,14 @@ export const quyDinhForm = [
   },
   {
     name: "ngayBanHanh",
-    type: "text",
+    type: "date",
     label: "Ngày ban hành:",
     required: true,
     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
   },
   {
     name: "ngayCoHieuLuc",
-    type: "text",
+    type: "date",
     label: "Ngày có hiệu lực:",
     required: true,
     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
