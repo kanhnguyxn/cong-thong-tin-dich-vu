@@ -50,3 +50,20 @@ export const quyDinhForm = [
     className: "rounded-none !mb-0 !px-2 !py-2",
   },
 ];
+
+export const donDangKyAddForm = [
+  {
+    name: "tenDonDangKy",
+    type: "text",
+    label: "Tên đơn",
+    placeholder: "Nhập số ký hiệu",
+    customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
+  },
+  {
+    name: "tenQD",
+    type: "text",
+    label: "",
+    placeholder: "Nhập tên quy định",
+    customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
+  },
+];

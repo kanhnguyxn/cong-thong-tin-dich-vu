@@ -5,7 +5,9 @@ import { StyledTextField, labelStyles } from "@styles/style_component";
 import moment from "moment";
 import React from "react";
 import CustomDatePicker from "./input/CustomDatePicker";
+import CustomRadio from "./input/CustomRadio";
 import FileInput from "./input/fileInput";
+import InputGroup from "./input/InputGroup";
 import PasswordInput from "./input/PasswordInput";
 import SelectCheckboxInput from "./input/SelectCheckBox";
 import SelectInput from "./input/selectInput";
@@ -20,7 +22,7 @@ interface FormInputControlProps {
   className?: string;
   name: string;
   label: string;
-  lableRender?: () => JSX.Element;
+  lableRender?: (label?: string, subLabel?: string) => JSX.Element;
   customeLabelStyle?: object;
   variant?: TextFieldVariant;
   sx?: object;
@@ -32,6 +34,8 @@ interface FormInputControlProps {
   IconComponent?: React.ElementType;
   selectOptions?: any[];
   orientation?: "horizontal" | "vertical";
+  groupSchema?: any[];
+  description: string;
 }
 
 export default function FormInputControl({
@@ -52,6 +56,8 @@ export default function FormInputControl({
   selectOptions,
   IconComponent,
   orientation = "vertical",
+  groupSchema = [],
+  description,
 }: FormInputControlProps) {
   const error = errMessage.length > 0 && <div className="text-red-500 text-start px-2 mt-1 italic text-xs">{errMessage}</div>;
   let inputEle = (
@@ -85,9 +91,14 @@ export default function FormInputControl({
       break;
     case "select":
       inputEle = (
-        <div className="flex flex-col">
-          <SelectInput value={value} className={className} onChange={onChange} onBlur={onBlur} options={selectOptions} />
-        </div>
+        <SelectInput
+          name={name}
+          value={value}
+          className={className}
+          onChange={onChange}
+          onBlur={onBlur}
+          options={selectOptions}
+        />
       );
       break;
     case "file":
@@ -129,6 +140,10 @@ export default function FormInputControl({
         <SelectCheckboxInput options={selectOptions} value={value} onChange={onChange} onBlur={onBlur} className={className} />
       );
       break;
+
+    case "radio-group":
+      inputEle = <CustomRadio value={value} options={selectOptions} onChange={onChange} name={name} />;
+      break;
     case "radio":
       inputEle = (
         <>
@@ -150,14 +165,33 @@ export default function FormInputControl({
       break;
     case "date":
       inputEle = <CustomDatePicker value={value} onChange={(newValue: any) => onChange(newValue)} />;
+
     default:
       break;
   }
-  return (
+  return type === "input-group" ? (
+    <Grid container sx={{ width: "100%", alignItems: "center" }}>
+      <Grid sx={{ overflowWrap: "break-word" }} size={orientation === "horizontal" ? 4 : 12}>
+        {lableRender ? (
+          lableRender(label, description)
+        ) : (
+          <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>{label}</InputLabel>
+        )}
+      </Grid>
+      <Grid size={orientation === "horizontal" ? 8 : 12}>
+        <InputGroup onBlur={onBlur} inputSchema={groupSchema} onChange={(data: any) => onChange(data)} />
+        {error}
+      </Grid>
+    </Grid>
+  ) : (
     <FormControl sx={{ width: "100%", ...formControlStyle }}>
       <Grid container sx={{ width: "100%", alignItems: "center" }}>
-        <Grid size={orientation === "horizontal" ? 4 : 12}>
-          {lableRender ? lableRender() : <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>{label}</InputLabel>}
+        <Grid sx={{ overflowWrap: "break-word" }} size={orientation === "horizontal" ? 4 : 12}>
+          {lableRender ? (
+            lableRender(label, description)
+          ) : (
+            <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>{label}</InputLabel>
+          )}
         </Grid>
         <Grid size={orientation === "horizontal" ? 8 : 12}>
           {inputEle} {error}

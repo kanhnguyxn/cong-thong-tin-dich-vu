@@ -9,7 +9,7 @@ export type inputProps = {
   name: string;
   type: string;
   placeholder?: string;
-  label: string;
+  label?: string;
   className?: string;
   required?: boolean;
   validations?: Array<any>;
@@ -70,17 +70,20 @@ export default function FormMui({
   const rebuilDefaultFormData = () => {
     let _formData: any = {};
     inputSchema.forEach((field: any) => {
+      const _defaultValue = field.defaultValue;
       // nếu trường có giá trị trong editData thì set giá trị đó vào formData
 
       if (field.type === "date") {
-        _formData[field.name] = moment(field.defaultValue ? field.defaultValue : new Date());
+        _formData[field.name] = moment(_defaultValue ? _defaultValue : new Date());
         return;
       }
 
-      if (field.defaultValue !== undefined) {
-        _formData[field.name] = field.defaultValue || "";
+      if (field.type === "radio-group" && field.selectOptions) {
+        _formData[field.name] = _defaultValue || field.selectOptions[0]?.value || "";
         return;
       }
+
+      _formData[field.name] = _defaultValue || "";
     });
     return _formData;
   };
@@ -118,7 +121,21 @@ export default function FormMui({
   };
   /*--------------------HELPER FUNCTION-----------------------*/
   // kiểm tra dữ liệu của các trường bắt buộc
-  const checkEmptyField = (field: any, value: string) => {
+  const checkEmptyField = (field: any, value: any) => {
+    if (field.type === "input-group") {
+      return field.groupSchema.some((groupField: any) => {
+        console.log("groupField", value[groupField.name]);
+
+        if (groupField.required && value[groupField.name] === undefined) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            [field.name]: `Nhập thiếu trường ${groupField.name}`,
+          }));
+          return false;
+        }
+      });
+    }
+
     if (value.length === 0 && field.required) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -187,7 +204,7 @@ export default function FormMui({
             errMessage={errors[name]}
             name={name}
             className={`${COMMON_STYLES.input} ${className} `}
-            label={label}
+            label={label || ""}
             orientation={orientation}
             {...rest}
           />

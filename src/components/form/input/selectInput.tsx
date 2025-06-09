@@ -1,6 +1,8 @@
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useEffect, useState } from "react";
 
 interface SelectInputProps {
+  name: string; // name of the select input
   value?: any; // có du lieu san hoac mac dich
   onChange: (value: any) => void; // function to handle change
   options?: {
@@ -8,7 +10,9 @@ interface SelectInputProps {
     value: any;
   }[]; // options to select from
   className?: string; // class name for styling
-  onBlur?: (value: any) => void; // function to handle blur event
+  onBlur?: (value: any) => void;
+  label?: string;
+  placeholder?: string; // function to handle blur event
 }
 
 export default function SelectInput({
@@ -17,6 +21,9 @@ export default function SelectInput({
   onBlur,
   options,
   className = "",
+  name,
+  label,
+  placeholder = "---Chọn---",
   ...props
 }: SelectInputProps) {
   const [selectedValue, setSelectedValue] = useState("");
@@ -33,42 +40,40 @@ export default function SelectInput({
       return;
     }
 
-    setSelectedValue(selectedOption.display);
+    setSelectedValue(selectedOption.value);
   }, [value]);
 
+  const handleSelectChange = (e: SelectChangeEvent) => {
+    const selectedValue = e.target.value;
+    // Handle the default "---Chọn---" option
+    onChange && onChange(selectedValue);
+    setSelectedValue(selectedValue);
+  };
+
   return (
-    <select
+    <Select
+      labelId="demo-simple-select-label"
+      id="demo-simple-select"
       value={selectedValue}
-      onChange={(e) => {
-        setSelectedValue(e.target.value);
-
-        // Handle the default "---Chọn---" option
-        if (e.target.value === "") {
-          onChange("");
-          return;
-        }
-
-        const selectedOption = options?.find(
-          (option) => option.display === e.target.value
-        );
-        if (selectedOption) {
-          onChange(selectedOption.value);
-        }
-      }}
-      className={className}
+      label={label}
+      displayEmpty={true}
+      onChange={handleSelectChange}
+      className={`w-full ${className}`}
       onBlur={(e) => {
         if (onBlur) {
           onBlur(e.target.value);
         }
       }}
-      {...props}
+      inputProps={{ size: "small" }}
     >
-      <option value="">---Chọn---</option>
+      <MenuItem value="" disabled>
+        {placeholder}
+      </MenuItem>
       {options.map((option, index) => (
-        <option key={index} value={option.display}>
+        <MenuItem key={`${name}-radio-${index}`} value={option.value}>
           {option.display}
-        </option>
+        </MenuItem>
       ))}
-    </select>
+    </Select>
   );
 }
