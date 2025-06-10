@@ -18,11 +18,13 @@ import { titleStyles } from "@styles/style_component";
 
 interface FormModal {
   title: string | React.ReactNode; // Title can be a string or a React node
-  inputSchema?: Array<unknown>; // Define the type based on your schema
+  inputSchema?: Array<any>; // Define the type based on your schema
   handleSubmit?: (data: object | null) => void; // Define the type based on your form data
-  buttons?: Array<ButtonFormItem>;
+  buttons?: Array<any>;
   formOrientation?: "horizontal" | "vertical"; // Optional prop for form orientation
   editData?: object;
+  orientation?: "horizontal" | "vertical";
+  styleFormModal?: string; // Optional prop for custom styles
 }
 
 export default function FormModal({
@@ -32,9 +34,10 @@ export default function FormModal({
   buttons = [],
   editData = {},
   formOrientation = "horizontal",
+  styleFormModal = "",
 }: FormModal) {
   return (
-    <Box className="flex flex-col">
+    <Box className={`flex flex-col ${styleFormModal}`}>
       <Typography
         fontSize={{
           xs: "18px",
