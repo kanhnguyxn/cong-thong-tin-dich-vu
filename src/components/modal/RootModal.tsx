@@ -33,12 +33,14 @@ interface ModalProps {
   preConfirm?: () => Promise<any>;
   inputs?: Array<inputProps> | [];
   editData?: object;
+  formOrientation?: "horizontal" | "vertical";
   handleAsyncSubmit?: (data?: any) => Promise<any>;
   handleSubmitForm?: (data?: any) => void;
 }
 
 interface ModalButtonProps extends ButtonProps {
   visibility?: boolean;
+  label: string; // Make label required to match ButtonFormItem
 }
 
 export type ModalResult = {
@@ -61,6 +63,7 @@ export function showModal({
   showNoButton = false,
   inputs,
   editData,
+  formOrientation,
 }: ModalProps): Promise<ModalResult> {
   // Close any existing modal before creating a new one
   if (modalRoot && activeModal) {
@@ -145,12 +148,7 @@ export function showModal({
           {
             label: buttonConfirmText,
             type: "submit",
-            onClick:
-              type === "form"
-                ? null
-                : preConfirm
-                ? handleAsyncConfirm
-                : handleConfirm,
+            onClick: type === "form" ? null : preConfirm ? handleAsyncConfirm : handleConfirm,
             visibility: showNoButton ? false : true,
             loading: loading,
             disabled: loading,
@@ -173,21 +171,11 @@ export function showModal({
           onClick={loading ? undefined : handleOutsideClick}
         >
           <Container
-            className={`z-50 zoom-in ${
-              type === "notification"
-                ? "w-[20%]"
-                : type === "alert"
-                ? "w-[25%]"
-                : "w-[32%]"
-            }`}
+            className={`z-50 zoom-in ${type === "notification" ? "w-[20%]" : type === "alert" ? "w-[25%]" : "w-[32%]"}`}
             onClick={(e) => e.stopPropagation()}
           >
-            {type === "alert" && (
-              <AlertModal title={title} text={text} icon={icons[icon]} />
-            )}
-            {type === "notification" && (
-              <NotiModal title={title} icon={icons[icon]} />
-            )}
+            {type === "alert" && <AlertModal title={title} text={text} icon={icons[icon]} />}
+            {type === "notification" && <NotiModal title={title} icon={icons[icon]} />}
             {type === "form" ? (
               <FormModal
                 handleSubmit={(data) => {
@@ -196,11 +184,12 @@ export function showModal({
                     return;
                   }
                   handleSubmitForm && handleSubmitForm(data);
-                  handleConfirm();
+                  handleConfirm(data);
                 }}
                 title={title}
                 inputSchema={inputs}
                 editData={editData}
+                formOrientation={formOrientation}
                 buttons={buttons.filter((button) => button.visibility)}
               />
             ) : (

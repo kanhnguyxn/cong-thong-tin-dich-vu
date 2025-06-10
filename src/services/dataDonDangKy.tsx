@@ -10,6 +10,7 @@ export const dataDonDangKy = [
         name: "field1",
         type: "checkbox-group",
         label: "Học kỳ:",
+        description: "Mô tả: Chọn học kỳ bạn muốn đăng ký bảng điểm",
         selectOptions: ["Học kỳ 1", "Học kỳ 2", "Toàn khóa"],
         required: true,
       },

@@ -5,7 +5,7 @@ interface SelectInputProps {
   name: string; // name of the select input
   value?: any; // có du lieu san hoac mac dich
   onChange: (value: any) => void; // function to handle change
-  options?: {
+  options: {
     display: string; // label to display
     value: any;
   }[]; // options to select from
@@ -67,7 +67,7 @@ export default function SelectInput({
       inputProps={{ size: "small" }}
     >
       <MenuItem value="" disabled>
-        {placeholder}
+        <span className="text-gray-400">{placeholder}</span>
       </MenuItem>
       {options.map((option, index) => (
         <MenuItem key={`${name}-radio-${index}`} value={option.value}>
