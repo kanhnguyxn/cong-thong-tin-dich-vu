@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "@redux/hook";
 import { useEffect, useState } from "react";
 import NavBar from "./Navbar";
 import QuyDinhTable from "./QuyDinhTable";
+import Loading from "src/app/loading";
 
 export default function QuyDinhPage() {
   const dispatch = useAppDispatch();
@@ -49,10 +50,6 @@ export default function QuyDinhPage() {
     );
   }, [quyDinh, department, option, searchQuery]);
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
   const handleOpenModal = (
     mode: "add" | "edit" | "delete" | string,
     data?: any
@@ -69,15 +66,7 @@ export default function QuyDinhPage() {
       icon: mode === "delete" ? "warning" : null,
       inputs: mode !== "delete" ? quyDinhForm : null, // Assuming you have a form schema for adding/editing
       editData: editData || null,
-      handleAsyncSubmit:
-        mode === "delete"
-          ? null
-          : async (data: any) => {
-              // Handle the form submission logic here
-              // mode === "add" ? add api : edit api
-              console.log("Submitted data:", data);
-              return new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate an API call
-            },
+      handleAsyncSubmit: mode === "delete" ? null : async (data: any) => {},
       preConfirm:
         mode === "delete"
           ? async () => {
@@ -124,86 +113,86 @@ export default function QuyDinhPage() {
     filteredData.length === 0;
 
   return (
-    // <>
-    //   {loadingRedux ? (
-    //     <div className="flex justify-center items-center w-full h-full">
-    //       <Loading />
-    //     </div>
-    //   ) : (
-    <div className="flex flex-col w-full relative">
-      {/* Header */}
-      <div className="border-b-2 border-b-[var(--color-gray-fill)] w-full p-3 flex justify-between sticky top-[234px] md:top-[121px] bg-white z-40">
-        <h3 className="text-xl md:text-3xl uppercase font-bold">
-          Tra cứu Quy định
-        </h3>
-        {/* <SearchBar onSearch={handleSearch} /> */}
-        <div className="grid grid-cols-3 gap-2">
-          <CustomButton
-            label="Thêm"
-            variants="contained"
-            size="large"
-            type="button"
-            sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
-            onClick={() => {
-              handleOpenModal("add");
-            }}
-          />{" "}
-          <CustomButton
-            label="Chỉnh sửa"
-            variants="contained"
-            size="large"
-            type="button"
-            disabled={selected.length !== 1}
-            sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
-            onClick={async () => {
-              handleOpenModal("edit", selected[0]);
-            }}
-          />
-          <CustomButton
-            label="Xóa"
-            variants="contained"
-            size="large"
-            type="button"
-            disabled={selected.length !== 1}
-            sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
-            onClick={() => {
-              handleOpenModal("delete", selected[0]);
-
-              // Call delete API or dispatch action to delete quy dinh
-              //
-            }}
-          />
+    <>
+      {loadingRedux ? (
+        <div className="flex justify-center items-center w-full h-full">
+          <Loading />
         </div>
-      </div>
+      ) : (
+        <div className="flex flex-col w-full relative">
+          {/* Header */}
+          <div className="border-b-2 border-b-[var(--color-gray-fill)] w-full p-3 flex justify-between sticky top-[234px] md:top-[121px] bg-white z-40">
+            <h3 className="text-xl md:text-3xl uppercase font-bold">
+              Tra cứu Quy định
+            </h3>
+            {/* <SearchBar onSearch={handleSearch} /> */}
+            <div className="grid grid-cols-3 gap-2">
+              <CustomButton
+                label="Thêm"
+                variants="contained"
+                size="large"
+                type="button"
+                sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+                onClick={() => {
+                  handleOpenModal("add");
+                }}
+              />{" "}
+              <CustomButton
+                label="Chỉnh sửa"
+                variants="contained"
+                size="large"
+                type="button"
+                disabled={selected.length !== 1}
+                sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+                onClick={async () => {
+                  handleOpenModal("edit", selected[0]);
+                }}
+              />
+              <CustomButton
+                label="Xóa"
+                variants="contained"
+                size="large"
+                type="button"
+                disabled={selected.length !== 1}
+                sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+                onClick={() => {
+                  handleOpenModal("delete", selected[0]);
 
-      {/* Main layout */}
-      <div className="flex flex-col md:flex-row w-full md:h-full">
-        {/* Sidebar */}
-        <div className="w-full md:w-[25%] lg:w-[20%] p-2 md:fixed md:top-[200px] md:left-0 md:h-[calc(100vh-250px)] bg-white z-30">
-          <NavBar onSelectionsChange={handleSelectionsChange} />
-        </div>
-
-        {/* Content */}
-        <div className="w-full md:ml-[25%] lg:ml-[20%] px-4 pt-4">
-          {option && (
-            <h5 className="w-full text-center uppercase font-semibold text-[var(--color-blue)] text-lg md:text-2xl mb-2">
-              {option}
-            </h5>
-          )}
-
-          {isEmpty ? (
-            <div className="flex justify-center items-center w-full h-full">
-              <p className="uppercase font-light text-lg md:text-2xl text-[var(--color-gray)] text-center">
-                Trống
-              </p>
+                  // Call delete API or dispatch action to delete quy dinh
+                  //
+                }}
+              />
             </div>
-          ) : (
-            <QuyDinhTable data={filteredData} />
-          )}
+          </div>
+
+          {/* Main layout */}
+          <div className="flex flex-col md:flex-row w-full md:h-full">
+            {/* Sidebar */}
+            <div className="w-full md:w-[25%] lg:w-[20%] p-2 md:fixed md:top-[200px] md:left-0 md:h-[calc(100vh-250px)] bg-white z-30">
+              <NavBar onSelectionsChange={handleSelectionsChange} />
+            </div>
+
+            {/* Content */}
+            <div className="w-full md:ml-[25%] lg:ml-[20%] px-4 pt-4">
+              {option && (
+                <h5 className="w-full text-center uppercase font-semibold text-[var(--color-blue)] text-lg md:text-2xl mb-2">
+                  {option}
+                </h5>
+              )}
+
+              {isEmpty ? (
+                <div className="flex justify-center items-center w-full h-full">
+                  <p className="uppercase font-light text-lg md:text-2xl text-[var(--color-gray)] text-center">
+                    Trống
+                  </p>
+                </div>
+              ) : (
+                <QuyDinhTable data={filteredData} />
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    //   )}
-    // </>
+      )}
+    </>
   );
 }
