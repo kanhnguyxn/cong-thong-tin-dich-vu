@@ -80,7 +80,7 @@ const quyDinhSlice = createSlice({
       .addCase(fetchQuyDinhCanBo.fulfilled, (state, action) => {
         console.log("action.payload in fetchQuyDinhCanBo", action.payload);
         state.loading = false;
-        state.quyDinh = action.payload as QuyDinhState["quyDinh"];
+        state.quyDinh = action.payload;
       })
       .addCase(fetchQuyDinhCanBo.rejected, (state, action) => {
         state.loading = false;

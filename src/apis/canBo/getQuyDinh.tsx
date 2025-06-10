@@ -1,20 +1,21 @@
-// import { GetStatusCode, methods } from "@apis/config";
-// import { fetchWithAuth } from "@apis/fetchWithAuth";
-
-import { get } from "http";
+import { GetStatusCode, methods } from "@apis/config";
+import { fetchWithAuth } from "@apis/fetchWithAuth";
 
 // export const getQuyDinh = async () => {
 //   try {
 //     const resData = await fetchWithAuth({
 //       // url đến API lấy quy định
-//       url: "/van-ban/quy-dinh",
+//       url: "/staff/regulations/department",
 //       method: methods.GET,
 //     });
 
 //     GetStatusCode(resData.status);
-//     return resData.data;
+//     return { status: true, data: resData.data };
 //   } catch (error) {
-//     throw new Error(error || "Lỗi khi lấy quy định");
+//     return {
+//       status: false,
+//       message: error.message || "Lỗi khi lấy quy định",
+//     };
 //   }
 // };
 
