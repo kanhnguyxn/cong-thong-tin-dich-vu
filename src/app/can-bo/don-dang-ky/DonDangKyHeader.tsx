@@ -15,7 +15,7 @@ export default function DonDangKyHeader({}) {
       <div className="flex flex-end gap-2">
         <CustomButton
           label={isAdd ? "Xác nhận" : "Thêm"}
-          className="w-full"
+          sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
           onClick={() => {
             if (!isAdd) {
               showModal({
@@ -73,7 +73,7 @@ export default function DonDangKyHeader({}) {
         />
         <CustomButton
           label={isAdd ? "Hủy" : "Xóa"}
-          className="flex"
+          sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
           onClick={() => {
             if (isAdd) {
               router.back();
