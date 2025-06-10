@@ -28,6 +28,11 @@ export async function fetchWithAuth({ method, url, data }: fetchOptions) {
       },
       body: data ? JSON.stringify(data) : null,
     });
+    console.log("fetchWithAuth", {
+      method,
+      url,
+      data,
+    });
 
     if (res.status === 401) {
       await refreshToken();
