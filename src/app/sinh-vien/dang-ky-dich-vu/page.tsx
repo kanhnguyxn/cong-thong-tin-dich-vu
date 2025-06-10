@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import DonDangKyForm from "./DonDangKyForm";
 import DonDangKyTable from "./donDangKyTable";
-import { fetchDonDangKy } from "@redux/features/donDangKySlice";
+import { fetchDonDangKySV } from "@redux/features/donDangKySlice";
 import { useAppDispatch } from "@redux/hook";
 
 export default function ĐonangKyPage() {
@@ -12,7 +12,7 @@ export default function ĐonangKyPage() {
 
   useEffect(() => {
     console.log("ĐonangKyPage");
-    dispatch(fetchDonDangKy());
+    dispatch(fetchDonDangKySV());
   }, [dispatch]);
 
   const handleDangKy = (maDon: string) => {
@@ -42,7 +42,7 @@ export default function ĐonangKyPage() {
         )}
       </div>
       <div className="w-full h-full flex justify-center items-start">
-        {!openDonDangKy && <DonDangKyTable onDangKy={handleDangKy} />}
+        {!openDonDangKy && <DonDangKyTable donDangKy={handleDangKy} />}
         {openDonDangKy && <DonDangKyForm maDonDangKy={maDonDangKy} />}
       </div>
     </div>
