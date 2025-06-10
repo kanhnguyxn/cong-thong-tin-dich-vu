@@ -36,11 +36,13 @@ interface ModalProps {
   formOrientation?: "horizontal" | "vertical";
   handleAsyncSubmit?: (data?: any) => Promise<any>;
   handleSubmitForm?: (data?: any) => void;
+  orientation?: "horizontal" | "vertical";
+  styleFormModal?: string; // Optional prop for custom styles
 }
 
 interface ModalButtonProps extends ButtonProps {
   visibility?: boolean;
-  label: string; // Make label required to match ButtonFormItem
+  label: string; // Required to match ButtonFormItem
 }
 
 export type ModalResult = {
@@ -62,6 +64,8 @@ export function showModal({
   showCancelButton = true,
   showNoButton = false,
   inputs,
+  orientation,
+  styleFormModal = "",
   editData,
   formOrientation,
 }: ModalProps): Promise<ModalResult> {
@@ -148,7 +152,12 @@ export function showModal({
           {
             label: buttonConfirmText,
             type: "submit",
-            onClick: type === "form" ? null : preConfirm ? handleAsyncConfirm : handleConfirm,
+            onClick:
+              type === "form"
+                ? null
+                : preConfirm
+                ? handleAsyncConfirm
+                : handleConfirm,
             visibility: showNoButton ? false : true,
             loading: loading,
             disabled: loading,
@@ -171,11 +180,21 @@ export function showModal({
           onClick={loading ? undefined : handleOutsideClick}
         >
           <Container
-            className={`z-50 zoom-in ${type === "notification" ? "w-[20%]" : type === "alert" ? "w-[25%]" : "w-[32%]"}`}
+            className={`z-50 zoom-in ${
+              type === "notification"
+                ? "w-[20%]"
+                : type === "alert"
+                ? "w-[25%]"
+                : "w-[32%]"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
-            {type === "alert" && <AlertModal title={title} text={text} icon={icons[icon]} />}
-            {type === "notification" && <NotiModal title={title} icon={icons[icon]} />}
+            {type === "alert" && (
+              <AlertModal title={title} text={text} icon={icons[icon]} />
+            )}
+            {type === "notification" && (
+              <NotiModal title={title} icon={icons[icon]} />
+            )}
             {type === "form" ? (
               <FormModal
                 handleSubmit={(data) => {
@@ -191,6 +210,7 @@ export function showModal({
                 editData={editData}
                 formOrientation={formOrientation}
                 buttons={buttons.filter((button) => button.visibility)}
+                styleFormModal={styleFormModal}
               />
             ) : (
               <div className="flex flex-row items-center justify-around">

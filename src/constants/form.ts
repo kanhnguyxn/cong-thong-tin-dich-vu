@@ -67,3 +67,22 @@ export const donDangKyAddForm = [
     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
   },
 ];
+
+export const bieuMauForm=[
+  {
+    name: "tenBM",
+    type: "text",
+    label: "Tên biểu mẫu:",
+    required: true,
+    placeholder: "Nhập tên biểu mẫu",
+    customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
+  },
+  {
+    name: "lienKet",
+    type: "text",
+    label: "Thêm liên kết:",
+    required: true,
+    placeholder: "Nhập liên kết tải xuống",
+    customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
+  },
+]

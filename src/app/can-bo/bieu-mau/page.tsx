@@ -3,13 +3,16 @@ import { useEffect, useState } from "react";
 
 import { SearchBar } from "@components/SearchBar";
 import { BieuMauTable } from "./BieuMauTable";
-import AddButton from "./addButton";
-import DeleteButton from "@components/DeleteButton";
+// import AddButton from "./addButton";
+// import DeleteButton from "@components/DeleteButton";
 import { fetchBieuMau } from "@redux/features/bieuMauSlice";
-import { deleteBieuMau } from "@apis/canBo/deletaBieuMau";
+// import { deleteBieuMau } from "@apis/canBo/deletaBieuMau";
 import { useAppDispatch, useAppSelector } from "@redux/hook";
 import Loading from "src/app/loading";
+import { showModal } from "@components/modal/RootModal";
 // import dataBieuMau from "../../../services/dataBieuMauCanBo";
+import { bieuMauForm } from "@constants/form";
+import CustomButton from "@components/button";
 
 export default function BieuMauPage() {
   const dispatch = useAppDispatch();
@@ -37,15 +40,51 @@ export default function BieuMauPage() {
     setData(filteredData);
     // console.log(filteredData, query);
   };
-  // xoa bieu mau
-  const handleDelete = async () => {
-    const response = await deleteBieuMau(selectedBieuMau as string[]);
 
-    return {
-      status: response.status,
-      message: response.message || (response.data ? "Success" : "Error"),
-    };
+  const handleOpenModal = (mode: "add" | "delete" | string) => {
+    showModal({
+      title: mode === "add" ? "Thêm biểu mẫu" : "Xoá biểu mẫu",
+      type: mode === "add" ? "form" : "alert",
+      icon: mode === "delete" ? "warning" : null,
+      inputs: mode !== "delete" ? bieuMauForm : null,
+      formOrientation: "vertical",
+      styleFormModal: "w-full px-8",
+      handleAsyncSubmit:
+        mode === "delete"
+          ? null
+          : async (formData: any) => {
+              console.log("formData", formData);
+            },
+      preConfirm:
+        mode === "delete"
+          ? async () => {
+              if (selectedBieuMau.length === 0) {
+                return "Vui lòng chọn biểu mẫu để xoá";
+              }
+            }
+          : null,
+    }).then((res: any) => {
+      if (res.confirm) {
+        switch (mode) {
+          case "add":
+            handleModalHelper("Thêm", "success");
+            break;
+          case "delete":
+            handleModalHelper("Xoá", "success");
+            break;
+        }
+      }
+    });
   };
+  const handleModalHelper = (title, status: "success" | "error") => {
+    showModal({
+      title: `${title} ${status === "success" ? "thành công" : "thất bại"}`,
+      icon: status,
+      type: "notification",
+      showNoButton: true,
+    });
+  };
+
   return (
     <>
       {loadingRedux ? (
@@ -61,15 +100,25 @@ export default function BieuMauPage() {
             <div className="flex flex-row gap-2">
               <SearchBar onSearch={onSearch}></SearchBar>
               <div className="grid grid-cols-2 gap-2">
-                <DeleteButton
-                  title="Xoá biểu mẫu"
-                  handleDelete={handleDelete}
-                  disable={selectedBieuMau.length === 0}
-                  successEffect={() => {
-                    dispatch(fetchBieuMau());
+                <CustomButton
+                  label="Thêm"
+                  variants="contained"
+                  size="large"
+                  type="button"
+                  sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+                  onClick={() => {
+                    handleOpenModal("add");
                   }}
                 />
-                <AddButton />
+                <CustomButton
+                  label="xoá"
+                  variants="contained"
+                  size="large"
+                  type="button"
+                  disabled={selectedBieuMau.length === 0}
+                  sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+                  onClick={() => handleOpenModal("delete")}
+                />
               </div>
             </div>
           </div>
