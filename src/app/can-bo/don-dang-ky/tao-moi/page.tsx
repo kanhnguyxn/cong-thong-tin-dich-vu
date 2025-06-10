@@ -45,7 +45,9 @@ export default function page({}) {
           borderRadius: "0.5rem",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         }}
-        lableRender={() => <span className="text-lg font-semibold">Tên đơn</span>}
+        lableRender={() => (
+          <span className="text-lg font-semibold">Tên đơn</span>
+        )}
         onChange={(value) => {
           setFormName(value as string);
         }}
@@ -61,14 +63,22 @@ export default function page({}) {
           }}
         />
       ))}
-      <Grid container spacing={2} className="w-full flex justify-center mt-10 mb-36">
-        <Grid size={3}>
-          <CustomButton label="Thêm trường thông tin" sx={{ width: "100%" }} onClick={addField}></CustomButton>
+      <Grid
+        container
+        spacing={2}
+        className="w-full flex justify-around mt-10 mb-36"
+      >
+        <Grid size={5}>
+          <CustomButton
+            label="Thêm trường thông tin"
+            sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+            onClick={addField}
+          ></CustomButton>
         </Grid>
         <Grid size={3}>
           <CustomButton
             label="Lưu đơn"
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
             onClick={() => {
               console.log("Form data:", {
                 tendon: formName,

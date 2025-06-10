@@ -38,6 +38,7 @@ interface ModalProps {
   handleSubmitForm?: (data?: any) => void;
   orientation?: "horizontal" | "vertical";
   styleFormModal?: string; // Optional prop for custom styles
+  classContainer?: string; // Optional prop for custom container class
 }
 
 interface ModalButtonProps extends ButtonProps {
@@ -64,6 +65,7 @@ export function showModal({
   showCancelButton = true,
   showNoButton = false,
   inputs,
+  classContainer = "",
   orientation,
   styleFormModal = "",
   editData,
@@ -85,7 +87,7 @@ export function showModal({
   activeModal = container;
 
   modalRoot = createRoot(container);
-
+  console.log("container", classContainer);
   return new Promise((resolve) => {
     activeResolve = resolve;
 
@@ -174,19 +176,22 @@ export function showModal({
         ];
       }, [loading]);
 
+      const getWidthClass = (type) => {
+        if (type === "notification") return "w-[20%]";
+        if (type === "alert") return "w-[25%]";
+        return "w-[32%]";
+      };
+
+      const containerClass = classContainer || getWidthClass(type);
+      console.log("classContainer:", classContainer);
+      console.log("type:", type);
       return createPortal(
         <div
           className="fixed top-0 left-0 min-w-full min-h-full bg-[var(--color-gray-light)] z-50 flex justify-center items-center "
           onClick={loading ? undefined : handleOutsideClick}
         >
           <Container
-            className={`z-50 zoom-in ${
-              type === "notification"
-                ? "w-[20%]"
-                : type === "alert"
-                ? "w-[25%]"
-                : "w-[32%]"
-            }`}
+            className={`z-50 zoom-in ${containerClass}`}
             onClick={(e) => e.stopPropagation()}
           >
             {type === "alert" && (
