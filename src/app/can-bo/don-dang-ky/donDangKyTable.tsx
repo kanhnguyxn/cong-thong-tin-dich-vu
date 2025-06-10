@@ -1,4 +1,3 @@
-// "use client";
 import CustomTable from "@components/Table";
 import { useAppSelector } from "@redux/hook";
 import { Container } from "@components/Container";
@@ -12,22 +11,21 @@ export default function DonDangKyTable({ donDangKy }: DonDangKyTableProps) {
     { id: "stt", label: "STT", width: "5ch" },
     { id: "tenDon", label: "Tên đơn" },
     { id: "donVi", label: "Đơn vị phụ trách", width: "20ch" },
-    { id: "dangKy", label: "Đăng ký", width: "20ch" },
+    { id: "dangKy", label: "xem", width: "20ch" },
   ];
-
-  // Lấy dữ liệu từ Redux
-  const rawDonDangKy = useAppSelector((state) => state.donDangKy.donDangKySV);
+  //   / Lấy dữ liệu từ Redux
+  const rawDonDangKy = useAppSelector((state) => state.donDangKy.donDangKyCB);
 
   const formattedData = rawDonDangKy.map((item: any, index: number) => ({
     stt: index + 1,
     tenDon: item.tenDon,
-    donVi: item.tenPB || "Phòng đào tạo",
+    donVi: item.tenPB || "chưa có thông tin",
     dangKy: (
       <button
         className="px-4 py-2 bg-[var(--color-blue)] text-white rounded-lg hover:bg-blue-600 transition-colors"
         onClick={() => donDangKy(item.maDon)}
       >
-        Đăng ký
+        xem
       </button>
     ),
     maDon: item.maDon,
@@ -43,21 +41,13 @@ export default function DonDangKyTable({ donDangKy }: DonDangKyTableProps) {
     return { textAlign: "center" };
   };
 
-  const getTableHeaderStyles = (columnId: string) => {
-    return {
-      borderRight: columnId !== "dangKy" ? "2px solid white" : undefined,
-      backgroundColor: "var(--color-blue)",
-      color: "white",
-    };
-  };
-
   return (
     <Container className="w-full md:max-w-[90%] mb-6 mx-6 mt-3 md:border-2 border-[var(--color-gray-stroke)]">
       <CustomTable
         columns={columns}
         data={formattedData}
         tableCellStyles={getTableCellStyles}
-        tableHeaderStyles={getTableHeaderStyles}
+        hasSelective
       />
     </Container>
   );

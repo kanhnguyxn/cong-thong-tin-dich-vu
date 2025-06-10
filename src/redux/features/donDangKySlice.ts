@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDonDangKy } from "@apis/sinhVien/getDonDangKy";
-import { getDonDangKyMockup } from "@apis/canBo/getDonDangKy";
+import { getDonDangKy as getDonDangKySinhVien } from "@apis/sinhVien/getDonDangKy";
+import { getDonDangKy as getDonDangKyCanBo } from "@apis/canBo/getDonDangKy";
 
 interface DonDangKyState {
     donDangKySV: {
@@ -15,9 +15,16 @@ interface DonDangKyState {
     }[];
     donDangKyCB: {
         maDon: string;
-        tenDDK: string;
-        thongtinChitiet: any[];
+        maPB: string;
+        tenDon: string;
+        maCB: string;
+        maQL: string;
+        thongTinChiTiet: string;
+        thoiGianDang: string;
+        trangThai: boolean;
+        tenPB: string;
     }[];
+    selected:unknown[];
     loading: boolean;
     error: string | null;
 }
@@ -25,24 +32,25 @@ interface DonDangKyState {
 const initialState: DonDangKyState = {
     donDangKySV: [],
     donDangKyCB: [],
+    selected: [],
     loading: false,
     error: null,
 };
 
-export const fetchDonDangKy = createAsyncThunk(
-    "donDangKy/fetchDonDangKy",
+export const fetchDonDangKySV = createAsyncThunk(
+    "donDangKy/fetchDonDangKySV",
     async () => {
         console.log("fetchDonDangKy");
-        const resData = await getDonDangKy();
+        const resData = await getDonDangKySinhVien();
         return resData;
     }
 );
 
-export const fetchDonDangKyMockup = createAsyncThunk(
-    "donDangKy/fetchDonDangKyMockup",
+export const fetchDonDangKyCanBo = createAsyncThunk(
+    "donDangKy/fetchDonDangKyCanBo",
     async () => {
-        console.log("fetchDonDangKyMockup");
-        const resData = await getDonDangKyMockup();
+        console.log("fetchDonDangKyCanBo");
+        const resData = await getDonDangKyCanBo();
         return resData;
     }
 );
@@ -51,36 +59,40 @@ const donDangKySlice = createSlice({
     name: "donDangKy",
     initialState,
     reducers: {
-        // xoa tat ca don dang ky
-        deleteAllDonDangKy: (state) => {
-            state.donDangKySV = [];
-        },
+        // xu ly du lieu duoc chon
+            addSelectedDonDangKy: (state, action) => {
+              state.selected = action.payload;
+            }
+        
     },
     extraReducers: (builder)=>{
         // don dk cua sinh vien
-        builder.addCase(fetchDonDangKy.pending, (state)=>{
+        builder.addCase(fetchDonDangKySV.pending, (state)=>{
             state.loading = true;
-
         })
-        builder.addCase(fetchDonDangKy.fulfilled, (state, action)=>{
+        builder.addCase(fetchDonDangKySV.fulfilled, (state, action)=>{
             console.log("fetchDonDangKy.fulfilled", action.payload);
             state.loading = false;
             state.donDangKySV = Array.isArray(action.payload) ? action.payload : [action.payload];
         })
-        builder.addCase(fetchDonDangKy.rejected, (state, action)=>{
+        builder.addCase(fetchDonDangKySV.rejected, (state, action)=>{
             state.loading = false;
             state.error = action.error.message || "Lỗi không xác định";
         })        
     
     // don dk cua can bo
-    .addCase(fetchDonDangKyMockup.pending, (state)=>{
+    .addCase(fetchDonDangKyCanBo.pending, (state)=>{
             state.loading = true;
         })
-        .addCase(fetchDonDangKyMockup.fulfilled, (state, action)=>{
+        .addCase(fetchDonDangKyCanBo.fulfilled, (state, action)=>{
             state.loading = false;
-            state.donDangKyCB = Array.isArray(action.payload) ? action.payload : [action.payload];
+            if (action.payload && action.payload.data) {
+                state.donDangKyCB = Array.isArray(action.payload.data) ? action.payload.data : [action.payload.data];
+            } else {
+                state.donDangKyCB = [];
+            }
         })
-        .addCase(fetchDonDangKyMockup.rejected, (state, action)=>{
+        .addCase(fetchDonDangKyCanBo.rejected, (state, action)=>{
             state.loading = false;
             state.error = action.error.message || "Lỗi không xác định";
         });
@@ -88,4 +100,4 @@ const donDangKySlice = createSlice({
 });
 
 export default donDangKySlice.reducer;
-export const { deleteAllDonDangKy } = donDangKySlice.actions;
+export const { addSelectedDonDangKy } = donDangKySlice.actions;
