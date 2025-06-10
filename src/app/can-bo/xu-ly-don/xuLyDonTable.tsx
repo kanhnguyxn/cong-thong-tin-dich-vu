@@ -12,6 +12,7 @@ import CustomTable from "@components/Table";
 import FormMui from "@components/form/Form";
 
 import FormDonDangKy from "./formDonDangKy";
+import SelectInput from "@components/form/input/selectInput";
 
 export default function XuLyDonTable({ data }) {
   const dispatch = useAppDispatch();
@@ -78,23 +79,22 @@ export default function XuLyDonTable({ data }) {
       //   ten don laf button mo form don dang ky
       tenDon: <FormDonDangKy maDonCT={item.maDonCT} maDon={item.maDon} />,
       trangThai: (
-        <FormMui
-          inputSchema={[
-            {
-              name: "trangThai",
-              type: "select",
-              selectOptions: [
-                { display: "Chờ xử lý", value: "Đang xử lý" },
-                { display: "Đã xử lý", value: "Đã duyệt" },
-                { display: "Đã hủy", value: "Bị từ chối" },
-              ],
-              className: "w-full border-none !mb-0",
-              value: item.trangThai,
-              onChange: (value) => {
-                handleStatusChange(item, value);
-              },
-            },
+        <SelectInput
+          name="trangThai"
+          label="Trạng thái"
+          value={item.trangThai}
+          onChange={(value) => {
+            handleStatusChange(item, value);
+          }}
+          options={[
+            { display: "Đang xử lý", value: "Đang xử lý" },
+            { display: "Đã duyệt", value: "Đã duyệt" },
+            { display: "Bị từ chối", value: "Bị từ chối" },
           ]}
+          sx={{
+            "& .MuiSelect-select": { border: "none" },
+            "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+          }}
         />
       ),
     }));
@@ -111,6 +111,13 @@ export default function XuLyDonTable({ data }) {
       textAlign: "left",
     };
   };
+  const getTableHeaderStyles = (columnId: string) => {
+    return {
+      borderRight: "2px solid white",
+      backgroundColor: "var(--color-blue)",
+      color: "white",
+    };
+  };
 
   return (
     <div className="w-full">
@@ -123,6 +130,7 @@ export default function XuLyDonTable({ data }) {
         columns={columns}
         data={formattedData}
         tableCellStyles={tableCellStyles}
+        tableHeaderStyles={getTableHeaderStyles}
         idCol="stt"
       />
     </div>

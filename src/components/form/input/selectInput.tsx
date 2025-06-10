@@ -13,6 +13,7 @@ interface SelectInputProps {
   onBlur?: (value: any) => void;
   label?: string;
   placeholder?: string; // function to handle blur event
+  sx?: {}; // additional styles
 }
 
 export default function SelectInput({
@@ -24,6 +25,7 @@ export default function SelectInput({
   name,
   label,
   placeholder = "---Chọn---",
+  sx = {},
   ...props
 }: SelectInputProps) {
   const [selectedValue, setSelectedValue] = useState("");
@@ -52,6 +54,7 @@ export default function SelectInput({
 
   return (
     <Select
+      // variant="standard"
       labelId="demo-simple-select-label"
       id="demo-simple-select"
       value={selectedValue}
@@ -65,6 +68,7 @@ export default function SelectInput({
         }
       }}
       inputProps={{ size: "small" }}
+      sx={sx}
     >
       <MenuItem value="" disabled>
         <span className="text-gray-400">{placeholder}</span>
