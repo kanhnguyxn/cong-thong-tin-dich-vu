@@ -21,12 +21,12 @@ interface FormInputControlProps {
   type?: string;
   className?: string;
   name: string;
-  label: string;
+  label?: string;
   lableRender?: (label?: string, subLabel?: string) => JSX.Element;
   customeLabelStyle?: object;
   variant?: TextFieldVariant;
   sx?: object;
-  onBlur: (value: any) => void;
+  onBlur?: (value: any) => void;
   errMessage?: string;
   value?: any;
   formControlStyle?: object;
@@ -35,7 +35,8 @@ interface FormInputControlProps {
   selectOptions?: any[];
   orientation?: "horizontal" | "vertical";
   groupSchema?: any[];
-  description: string;
+  description?: string;
+  rows?: number;
 }
 
 export default function FormInputControl({
@@ -44,7 +45,7 @@ export default function FormInputControl({
   type,
   className,
   name,
-  label,
+  label = "",
   lableRender,
   customeLabelStyle,
   variant,
@@ -58,6 +59,7 @@ export default function FormInputControl({
   orientation = "vertical",
   groupSchema = [],
   description,
+  rows,
 }: FormInputControlProps) {
   const error = errMessage.length > 0 && <div className="text-red-500 text-start px-2 mt-1 italic text-xs">{errMessage}</div>;
   let inputEle = (
@@ -67,9 +69,11 @@ export default function FormInputControl({
         variant={variant}
         placeholder={placeholder}
         className={className}
-        value={value}
-        onBlur={(e) => onBlur(e.target.value)}
+        value={value || ""}
+        onBlur={(e) => onBlur && onBlur(e.target.value)}
         onChange={(e) => onChange(e.target.value)}
+        rows={rows}
+        multiline={rows ? true : false}
       />
     </div>
   );
@@ -96,6 +100,7 @@ export default function FormInputControl({
           value={value}
           className={className}
           onChange={onChange}
+          placeholder={placeholder}
           onBlur={onBlur}
           options={selectOptions}
         />

@@ -21,6 +21,7 @@ interface FormModal {
   inputSchema?: Array<unknown>; // Define the type based on your schema
   handleSubmit?: (data: object | null) => void; // Define the type based on your form data
   buttons?: Array<ButtonFormItem>;
+  formOrientation?: "horizontal" | "vertical"; // Optional prop for form orientation
   editData?: object;
 }
 
@@ -30,7 +31,8 @@ export default function FormModal({
   handleSubmit,
   buttons = [],
   editData = {},
-}) {
+  formOrientation = "horizontal",
+}: FormModal) {
   return (
     <Box className="flex flex-col">
       <Typography
@@ -50,7 +52,7 @@ export default function FormModal({
         editData={editData}
         inputSchema={inputSchema}
         onSubmit={handleSubmit}
-        orientation="horizontal"
+        orientation={formOrientation}
         className="flex flex-col gap-2 md:gap-3"
         buttons={buttons}
         buttonClassName="flex flex-row justify-around"
