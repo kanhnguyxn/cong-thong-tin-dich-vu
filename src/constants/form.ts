@@ -86,3 +86,21 @@ export const bieuMauForm=[
     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
   },
 ]
+
+// export const bieuMauForm = [
+//   {
+//     name: "tenBM",
+//     type: "text",
+//     label: "Tên biểu mẫu:",
+//     required: true,
+//     placeholder: "Nhập tên biểu mẫu",
+//     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
+//   },
+//   {
+//     name: "file",
+//     label: "Tải lên biểu mẫu",
+//     type: "file",
+//     required: true,
+//     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
+//   },
+// ];

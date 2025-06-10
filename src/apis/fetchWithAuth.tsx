@@ -8,9 +8,15 @@ interface fetchOptions {
   method?: string;
   url: string;
   data?: any;
+  headers?: Record<string, string>;
 }
 
-export async function fetchWithAuth({ method, url, data }: fetchOptions) {
+export async function fetchWithAuth({
+  method,
+  url,
+  data,
+  headers,
+}: fetchOptions) {
   const { access, refresh } = getToken();
 
   if (!refresh) {
@@ -18,14 +24,20 @@ export async function fetchWithAuth({ method, url, data }: fetchOptions) {
     window.location.href = "/tai-khoan/dang-nhap";
     return;
   }
+  // header mặc định
+  const hedearsDefault = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${access}`,
+  };
+  // Nếu có header thì merge với header mặc định
+  if (headers) {
+    Object.assign(hedearsDefault, headers);
+  }
 
   const run = async () => {
     let res = await fetch(`${API_BASE_URL}${url}`, {
       method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${access}`,
-      },
+      headers: hedearsDefault,
       body: data ? JSON.stringify(data) : null,
     });
     console.log("fetchWithAuth", {

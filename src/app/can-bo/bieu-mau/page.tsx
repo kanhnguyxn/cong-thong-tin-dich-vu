@@ -50,7 +50,7 @@ export default function BieuMauPage() {
       icon: mode === "delete" ? "warning" : null,
       inputs: mode !== "delete" ? bieuMauForm : null,
       formOrientation: "vertical",
-      styleFormModal: "w-full px-8",
+      classContainer: "w-[25%]",
       handleAsyncSubmit:
         mode === "delete"
           ? null
@@ -69,7 +69,12 @@ export default function BieuMauPage() {
       if (res.confirm) {
         switch (mode) {
           case "add":
-            handleModalHelper("Thêm", "success");
+            if (res.data.status) {
+              handleModalHelper("Thêm", "success");
+              dispatch(fetchBieuMau());
+            } else {
+              handleModalHelper("Thêm", "error");
+            }
             break;
           case "delete":
             if (res.data.status) {
