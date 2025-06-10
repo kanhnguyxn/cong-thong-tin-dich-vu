@@ -61,10 +61,6 @@ export const BieuMauTable = ({ data }) => {
 
   const handleSelected = (selectedData: any[]) => {
     const selectedIds = selectedData.map((item) => item.maBM);
-    console.log("BieuMauTable - handleSelected:", {
-      selectedData,
-      selectedIds,
-    });
     dispatch(addSelectedBieuMau(selectedIds));
   };
 

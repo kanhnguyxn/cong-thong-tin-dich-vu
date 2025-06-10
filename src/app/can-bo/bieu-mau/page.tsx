@@ -2,17 +2,18 @@
 import { useEffect, useState } from "react";
 
 import { SearchBar } from "@components/SearchBar";
-import { BieuMauTable } from "./BieuMauTable";
-// import AddButton from "./addButton";
-// import DeleteButton from "@components/DeleteButton";
-import { fetchBieuMau } from "@redux/features/bieuMauSlice";
-// import { deleteBieuMau } from "@apis/canBo/deletaBieuMau";
-import { useAppDispatch, useAppSelector } from "@redux/hook";
-import Loading from "src/app/loading";
 import { showModal } from "@components/modal/RootModal";
-// import dataBieuMau from "../../../services/dataBieuMauCanBo";
 import { bieuMauForm } from "@constants/form";
 import CustomButton from "@components/button";
+
+import { useAppDispatch, useAppSelector } from "@redux/hook";
+import { fetchBieuMau } from "@redux/features/bieuMauSlice";
+
+import { deleteBieuMau } from "@apis/canBo/deleteBieuMau";
+
+import Loading from "src/app/loading";
+
+import { BieuMauTable } from "./BieuMauTable";
 
 export default function BieuMauPage() {
   const dispatch = useAppDispatch();
@@ -21,6 +22,7 @@ export default function BieuMauPage() {
     (state) => state.bieuMau
   );
   const selectedBieuMau = useAppSelector((state) => state.bieuMau.selected);
+  // const [maBMList, setMaBMList] = useState<string[]>([]);
 
   useEffect(() => {
     dispatch(fetchBieuMau());
@@ -58,9 +60,9 @@ export default function BieuMauPage() {
       preConfirm:
         mode === "delete"
           ? async () => {
-              if (selectedBieuMau.length === 0) {
-                return "Vui lòng chọn biểu mẫu để xoá";
-              }
+              console.log("maBMList", selectedBieuMau);
+              const res = await deleteBieuMau(selectedBieuMau as string[]);
+              return res;
             }
           : null,
     }).then((res: any) => {
@@ -70,7 +72,12 @@ export default function BieuMauPage() {
             handleModalHelper("Thêm", "success");
             break;
           case "delete":
-            handleModalHelper("Xoá", "success");
+            if (res.data.status) {
+              handleModalHelper("Xoá", "success");
+              dispatch(fetchBieuMau());
+            } else {
+              handleModalHelper("Xoá", "error");
+            }
             break;
         }
       }

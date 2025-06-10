@@ -87,7 +87,6 @@ export function showModal({
   activeModal = container;
 
   modalRoot = createRoot(container);
-  console.log("container", classContainer);
   return new Promise((resolve) => {
     activeResolve = resolve;
 
@@ -183,8 +182,6 @@ export function showModal({
       };
 
       const containerClass = classContainer || getWidthClass(type);
-      console.log("classContainer:", classContainer);
-      console.log("type:", type);
       return createPortal(
         <div
           className="fixed top-0 left-0 min-w-full min-h-full bg-[var(--color-gray-light)] z-50 flex justify-center items-center "
