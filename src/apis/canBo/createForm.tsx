@@ -2,7 +2,10 @@ import { GetStatusCode, methods } from "@apis/config";
 import { fetchWithAuth } from "@apis/fetchWithAuth";
 
 type CreateFormResquest = {
-  maCB: string;
+  // // phai la ma CB
+  // maQL: string;
+  // // khong can
+  // maPB: string;
   tenDon: string;
   thongTinChiTiet: string;
 };
@@ -12,7 +15,12 @@ export default async function createForm(data: CreateFormResquest) {
     const res = await fetchWithAuth({
       method: methods.POST,
       url: "/staff/registration-forms",
-      data: data,
+      data: {
+        maQL: "QL_ADMIN",
+        maPB: "PB01",
+        tenDon: data.tenDon,
+        thongTinChiTiet: data.thongTinChiTiet,
+      },
     });
     GetStatusCode(res.statusCode);
     return {

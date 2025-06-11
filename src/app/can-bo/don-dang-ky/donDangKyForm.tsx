@@ -68,11 +68,67 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
 
   // hien thi thong tin chi tiet cua don
   let parsedFields = [];
+  let hasLink = false;
+  let linkUrl = "";
+
   try {
-    parsedFields = JSON.parse(donDangKy?.thongTinChiTiet || "[]");
+    const parsed = JSON.parse(donDangKy?.thongTinChiTiet || "[]");
+
+    // Kiểm tra nếu thongTinChiTiet chứa link
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      !Array.isArray(parsed) &&
+      (parsed as any).link
+    ) {
+      hasLink = true;
+      linkUrl = (parsed as any).link;
+    } else {
+      parsedFields = parsed;
+    }
   } catch (error) {
     console.error("Error parsing thongTinChiTiet:", error);
     parsedFields = [];
+  }
+
+  // Nếu có link thì chuyển hướng
+  useEffect(() => {
+    if (hasLink && linkUrl) {
+      window.open(linkUrl, "_blank");
+    }
+  }, [hasLink, linkUrl]);
+
+  // Nếu có link thì hiển thị thông báo đang chuyển hướng
+  if (hasLink) {
+    return (
+      <Container
+        className="size-fit px-8 py-6 mx-4 my-5 md:mx-0 md:min-w-[60%] lg:min-w-[50%] md:max-w-[80%]"
+        shadow
+      >
+        <div className="text-center py-8">
+          <h6 className="text-lg font-bold text-[var(--color-blue)]">
+            Đang chuyển hướng...
+          </h6>
+          <p className="text-gray-600 mt-2">
+            Bạn sẽ được chuyển tới: {linkUrl}
+          </p>
+          <p className="text-sm text-gray-500 mt-4">
+            Nếu không tự động chuyển hướng,
+            <a
+              href={linkUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline ml-1"
+            >
+              nhấn vào đây
+            </a>
+          </p>
+        </div>
+      </Container>
+    );
+  }
+
+  if (parsedFields.length === 0) {
   }
 
   const inputSchema = parsedFields.map((item: any) => ({
