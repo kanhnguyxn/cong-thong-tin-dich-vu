@@ -40,7 +40,19 @@ const initialState: GioiThieuState = {
 const gioiThieuSlice = createSlice({
   name: "gioiThieu",
   initialState,
-  reducers: {},
+  reducers: {
+    // reset tat ca du lieu khi logout
+    resetGioiThieu: (state) => {
+      state.gioiThieu = {
+        tieuDe: "",
+        noiDung: "",
+        hinhAnh: "",
+        thongTinLienHe: []
+      };
+      state.loading = false;
+      state.error = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGioiThieu.pending, (state) => {
@@ -59,6 +71,7 @@ const gioiThieuSlice = createSlice({
   },
 });
 
+export const { resetGioiThieu } = gioiThieuSlice.actions;
 export default gioiThieuSlice.reducer;
     
 

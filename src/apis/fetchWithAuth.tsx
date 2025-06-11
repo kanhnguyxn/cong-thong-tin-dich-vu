@@ -20,7 +20,7 @@ export async function fetchWithAuth({
   const { access, refresh } = getToken();
 
   if (!refresh) {
-    alert("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
+    // alert("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
     window.location.href = "/tai-khoan/dang-nhap";
     return;
   }

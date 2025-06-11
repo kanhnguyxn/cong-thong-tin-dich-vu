@@ -60,10 +60,17 @@ const donDangKySlice = createSlice({
     initialState,
     reducers: {
         // xu ly du lieu duoc chon
-            addSelectedDonDangKy: (state, action) => {
-              state.selected = action.payload;
-            }
-        
+        addSelectedDonDangKy: (state, action) => {
+            state.selected = action.payload;
+        },
+        // xoa tat ca don dang ky khi logout
+        deleteAllDonDangKy: (state) => {
+            state.donDangKySV = [];
+            state.donDangKyCB = [];
+            state.selected = [];
+            state.loading = false;
+            state.error = null;
+        }
     },
     extraReducers: (builder)=>{
         // don dk cua sinh vien
@@ -100,4 +107,4 @@ const donDangKySlice = createSlice({
 });
 
 export default donDangKySlice.reducer;
-export const { addSelectedDonDangKy } = donDangKySlice.actions;
+export const { addSelectedDonDangKy, deleteAllDonDangKy } = donDangKySlice.actions;

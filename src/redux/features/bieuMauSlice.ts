@@ -37,6 +37,13 @@ const bieuMauSlice = createSlice({
     // xu ly du lieu duoc chon
     addSelectedBieuMau: (state, action) => {
       state.selected = action.payload;
+    },
+    // reset tat ca du lieu khi logout
+    resetBieuMau: (state) => {
+      state.bieuMau = [];
+      state.selected = [];
+      state.loading = false;
+      state.error = null;
     }
 
   },
@@ -58,4 +65,4 @@ const bieuMauSlice = createSlice({
   },
 });
 export default bieuMauSlice.reducer;
-export const {addSelectedBieuMau } = bieuMauSlice.actions;
+export const {addSelectedBieuMau, resetBieuMau } = bieuMauSlice.actions;
