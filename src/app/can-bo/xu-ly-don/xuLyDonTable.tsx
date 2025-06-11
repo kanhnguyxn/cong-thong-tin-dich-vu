@@ -14,7 +14,12 @@ import FormMui from "@components/form/Form";
 import FormDonDangKy from "./formDonDangKy";
 import SelectInput from "@components/form/input/selectInput";
 
-export default function XuLyDonTable({ data }) {
+interface XuLyDonTableProps {
+  data: any[];
+  useMockData?: boolean;
+}
+
+export default function XuLyDonTable({ data }: XuLyDonTableProps) {
   const dispatch = useAppDispatch();
   const [alert, setAlert] = useState<{
     open: boolean;
@@ -39,6 +44,7 @@ export default function XuLyDonTable({ data }) {
   const filteredData = useMemo(() => {
     return safeData.filter((item) => item.trangThai === "Đang xử lý");
   }, [safeData]);
+
   const alertTimer = async (time: number) => {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -47,6 +53,7 @@ export default function XuLyDonTable({ data }) {
       }, time);
     });
   };
+
   //   thay doi trang thai se goi API cap nhat trang thai
   const handleStatusChange = async (don, newStatus) => {
     const data = {
@@ -67,7 +74,7 @@ export default function XuLyDonTable({ data }) {
         message: "Không thể cập nhật trạng thái",
       });
     }
-    await alertTimer(2000); // Ẩn alert sau 3 giây
+    await alertTimer(2000); // Ẩn alert sau 2 giây
     // console.log("Cập nhật dữ liệu");
     dispatch(fetchDonDangKyChiTiet());
   };
@@ -77,7 +84,13 @@ export default function XuLyDonTable({ data }) {
       stt: index + 1,
       mssv: item.mssv,
       //   ten don laf button mo form don dang ky
-      tenDon: <FormDonDangKy maDonCT={item.maDonCT} maDon={item.maDon} />,
+      tenDon: (
+        <FormDonDangKy
+          maDonCT={item.maDonCT}
+          maDon={item.maDon}
+          useMockData={true} // Luôn sử dụng mock data
+        />
+      ),
       trangThai: (
         <SelectInput
           name="trangThai"

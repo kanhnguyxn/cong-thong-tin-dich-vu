@@ -1,7 +1,6 @@
 import { Container } from "@components/Container";
 import FormMui from "@components/form/Form";
 import { Button, InputLabel, Modal } from "@mui/material";
-import { useAppSelector } from "@redux/hook";
 import { labelStyles } from "@styles/style_component";
 import {
   customeLabelStyle,
@@ -9,6 +8,7 @@ import {
   typeClassNameMap,
 } from "src/app/sinh-vien/dang-ky-dich-vu/styles";
 import { useState } from "react";
+import { mockDonDangKy, mockDonDangKyChiTiet } from "@services/mockFormData";
 
 const labelRebder = (label: string | string[]) => {
   if (Array.isArray(label)) {
@@ -30,20 +30,23 @@ const labelRebder = (label: string | string[]) => {
   return label;
 };
 
-export default function FormDonDangKy({ maDon, maDonCT }) {
+interface FormDonDangKyProps {
+  maDon: string;
+  maDonCT: string;
+  useMockData?: boolean;
+}
+
+export default function FormDonDangKy({ maDon, maDonCT }: FormDonDangKyProps) {
   const [open, setOpen] = useState(false);
 
-  const rawDonDangKy = useAppSelector((state) => state.donDangKy.donDangKyCB);
-  const rawDonDangKyChiTiet = useAppSelector(
-    (state) => state.donDangKyChiTiet.donDangKyChiTiet
-  );
-
-  const donDangKy = rawDonDangKy?.find((item) => item.maDon === maDon) || {
+  // Chỉ sử dụng mock data
+  const donDangKy = mockDonDangKy?.find((item) => item.maDon === maDon) || {
     maDon: "",
     tenDDK: "",
     thongtinChitiet: [],
   };
-  const donDangKyChiTiet = rawDonDangKyChiTiet?.find(
+
+  const donDangKyChiTiet = mockDonDangKyChiTiet?.find(
     (item) => item.maDonCT === maDonCT
   );
 
@@ -83,7 +86,7 @@ export default function FormDonDangKy({ maDon, maDonCT }) {
           },
         }}
       >
-        {donDangKy.tenDDK || "Đơn không xác định"}
+        {donDangKy?.tenDDK || "Đơn không xác định"}
       </Button>
 
       <Modal
@@ -94,7 +97,7 @@ export default function FormDonDangKy({ maDon, maDonCT }) {
         <Container className="size-fit px-8 py-6 mx-4 my-5 md:mx-0 md:min-w-[60%] lg:min-w-[50%] md:max-w-[80%]">
           <div className="flex justify-between items-center mb-4">
             <h6 className="w-full text-lg md:text-xl lg:text-2xl font-bold uppercase">
-              {donDangKy.tenDDK || "Đơn không xác định"}
+              {donDangKy?.tenDDK || "Đơn không xác định"}
             </h6>
             <Button onClick={handleClose} sx={{ minWidth: "auto" }}>
               ✕
