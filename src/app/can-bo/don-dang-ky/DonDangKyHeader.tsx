@@ -3,6 +3,7 @@
 import CustomButton from "@components/button";
 import { showModal } from "@components/modal/RootModal";
 import { usePathname, useRouter } from "next/navigation";
+import createForm from "@apis/canBo/createForm";
 
 export default function DonDangKyHeader({}) {
   const pathName = usePathname().split("/");
@@ -50,9 +51,14 @@ export default function DonDangKyHeader({}) {
                         type: "form",
                         formOrientation: "vertical",
                         handleAsyncSubmit: async (data: any) => {
-                          // Handle the form submission logic here
-                          console.log("Submitted data:", data);
-                          return;
+                          const dataSubMit = {
+                            tenDon: data.tendonDangKy,
+                            thongTinChiTiet: JSON.stringify({
+                              link: data.link,
+                            }),
+                          };
+                          const res = await createForm(dataSubMit);
+                          return res;
                         },
                         inputs: [
                           {
@@ -70,6 +76,30 @@ export default function DonDangKyHeader({}) {
                             placeholder: "Nhập tên đơn",
                           },
                         ],
+                      }).then((res: any) => {
+                        if (res.confirm) {
+                          if (res.data.status) {
+                            showModal({
+                              title: "Thêm đơn thành công",
+                              icon: "success",
+                              type: "notification",
+                              showNoButton: true,
+                            }).then(() => {
+                              // refresh trang
+                              console.log("refresh");
+                              window.location.reload();
+                              // router.refresh();
+                            });
+                            //  load lai trang
+                          } else {
+                            showModal({
+                              title: "Thêm đơn thất bại",
+                              icon: "error",
+                              type: "notification",
+                              showNoButton: true,
+                            });
+                          }
+                        }
                       });
                     }
                   }

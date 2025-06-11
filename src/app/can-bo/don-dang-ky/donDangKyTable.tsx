@@ -48,6 +48,7 @@ export default function DonDangKyTable({ donDangKy }: DonDangKyTableProps) {
         data={formattedData}
         tableCellStyles={getTableCellStyles}
         hasSelective
+        idCol="stt"
       />
     </Container>
   );

@@ -128,8 +128,10 @@ export function showModal({
         }
         setLoading(true);
         try {
-          const resData = preConfirm && (await preConfirm());
-          handleAsyncSubmit && (await handleAsyncSubmit(data));
+          const resData = handleAsyncSubmit
+            ? await handleAsyncSubmit(data)
+            : preConfirm && (await preConfirm());
+
           handleConfirm(resData);
         } catch (e) {
           // Optionally, handle error (stay open, show error, etc.)
