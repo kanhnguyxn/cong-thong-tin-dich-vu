@@ -4,7 +4,7 @@ import { InputLabel } from "@mui/material";
 import { labelStyles } from "@styles/style_component";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@redux/hook";
-import { fetchDonDangKy } from "@redux/features/donDangKySlice";
+import { fetchDonDangKySV } from "@redux/features/donDangKySlice";
 import { getDonDangKyChiTiet } from "@apis/sinhVien/getDonDangKyChiTiet";
 import SelectInput from "@components/form/input/selectInput";
 
@@ -25,7 +25,7 @@ export default function KtraDonDangKyForm({ onChange }: DonDangKyFormProps) {
   // Gọi API để lấy danh sách đơn đăng ký và chi tiết khi component mount
   useEffect(() => {
     if (rawDonDangKy.length === 0) {
-      dispatch(fetchDonDangKy());
+      dispatch(fetchDonDangKySV());
     }
 
     // Lấy tất cả chi tiết đơn đăng ký
