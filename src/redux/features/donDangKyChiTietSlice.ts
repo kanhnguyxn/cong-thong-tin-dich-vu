@@ -1,15 +1,24 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDonDangKyCTMockup } from "@apis/canBo/getDonDangKyCT";
+import { getDonDangKyCT } from "@apis/canBo/getDonDangKyCT";
+
 
 
 interface DonDangKyChiTietState {
     donDangKyChiTiet: {
-        maDonCT: string;
-        tenDon: string;
-        maDon?: string;
-        mssv?: string;
-        trangThai: string;
-        thongtinChitiet: any[]; // Đổi từ string thành array để khớp với dữ liệu thực tế
+    maDon: string;
+    maDonCT: string;
+    tenDon: string;
+    maSV: string;
+    hocKyHienTai: string;
+    ngayTaoDonCT: Date;
+    thongTinChiTiet: string;
+    trangThaiXuLy: string;
+    hoTen: string;
+    lop: string;
+    khoa: string;
+    email: string;
+    chuyenNganh: string;
+    khoaHoc: string; // Đổi từ string thành array để khớp với dữ liệu thực tế
     }[];
     loading: boolean;
     error: string | null;
@@ -25,7 +34,7 @@ export const fetchDonDangKyChiTiet = createAsyncThunk(
     "donDangKyChiTiet/fetchDonDangKyChiTiet",
     async () => {
         console.log("fetchDonDangKyChiTiet");
-        const resData = await getDonDangKyCTMockup();
+        const resData = await getDonDangKyCT();
         return resData;
     }
 );

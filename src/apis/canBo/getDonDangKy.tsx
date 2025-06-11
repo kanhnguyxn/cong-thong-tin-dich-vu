@@ -29,7 +29,7 @@ type Response = {
 export async function getDonDangKy() {
   try {
     const resData = (await fetchWithAuth({
-      url: `/staff/forms/department`,
+      url: `/staff/forms`,
       method: methods.GET,
     })) as Response;
     GetStatusCode(resData.statusCode);

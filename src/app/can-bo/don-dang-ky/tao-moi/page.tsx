@@ -6,11 +6,45 @@ import CustomButton from "@components/button";
 import FormInputControl from "@components/form/FormInputControl";
 import { Grid } from "@mui/material";
 import FieldForm from "./FieldForm";
+import createForm from "@apis/canBo/createForm";
+import { useAppSelector } from "@redux/hook";
+import { stringify } from "querystring";
+import { Notification } from "@components/Notification";
+import ICONS from "@components/icons";
 
 export default function page({}) {
   const [formName, setFormName] = useState("");
   const [fieldData, setFieldData] = useState<any[]>([]);
   const [numfields, setNumFields] = useState<number>(0);
+  const [success, setSuccess] = useState<boolean | null>(null);
+  const [flag, setFlag] = useState(false);
+  const user = useAppSelector((state) => state.auth.user);
+  const maCB = user?.username || "";
+
+  const handleSubmit = async (tenDon, thongTinChiTiet) => {
+    console.log("Submitting form with data:", {
+      maCB: maCB,
+      tenDon: tenDon,
+      thongTinChiTiet: thongTinChiTiet,
+    });
+    const data = {
+      maCB: maCB,
+      tenDon: tenDon,
+      thongTinChiTiet: JSON.stringify(thongTinChiTiet),
+    };
+    const res = await createForm(data);
+    if (res.status) {
+      setSuccess(true);
+      setFlag(true);
+    } else {
+      setSuccess(false);
+      setFlag(true);
+    }
+  };
+  const onCloseNotification = () => {
+    setFlag(false);
+    setSuccess(null);
+  };
 
   const handleOnChangeField = (value: any, index: number) => {
     setFieldData((prev) => {
@@ -33,64 +67,80 @@ export default function page({}) {
     setNumFields((prev) => prev - 1);
   };
   return (
-    <div className="flex flex-col w-[60%] h-full items-center justify-start gap-4 p-4 bg-gray-100 rounded-lg shadow-md position-relative">
-      <FormInputControl
-        name="tenDon"
-        label="Tên đơn"
-        value={formName}
-        placeholder="Nhập tên đơn"
-        formControlStyle={{
-          backgroundColor: "white",
-          padding: "1rem",
-          borderRadius: "0.5rem",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        }}
-        lableRender={() => (
-          <span className="text-lg font-semibold">Tên đơn</span>
-        )}
-        onChange={(value) => {
-          setFormName(value as string);
-        }}
-      ></FormInputControl>
-      {Array.from({ length: numfields }).map((_, index) => (
-        <FieldForm
-          key={`field${index}`}
-          value={fieldData[index]}
-          onRemove={() => onRemoveField(index)}
-          label={`Trường thông tin ${index + 1}`}
-          onChange={(value: any) => {
-            handleOnChangeField(value, index);
+    <>
+      <div className="flex flex-col w-[60%] h-full items-center justify-start gap-4 p-4 bg-gray-100 rounded-lg shadow-md position-relative">
+        <FormInputControl
+          name="tenDon"
+          label="Tên đơn"
+          value={formName}
+          placeholder="Nhập tên đơn"
+          formControlStyle={{
+            backgroundColor: "white",
+            padding: "1rem",
+            borderRadius: "0.5rem",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
           }}
-        />
-      ))}
-      <Grid
-        container
-        spacing={2}
-        className="w-full flex justify-around mt-10 mb-36"
-      >
-        <Grid size={5}>
-          <CustomButton
-            label="Thêm trường thông tin"
-            sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
-            onClick={addField}
-          ></CustomButton>
-        </Grid>
-        <Grid size={3}>
-          <CustomButton
-            label="Lưu đơn"
-            sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
-            onClick={() => {
-              console.log("Form data:", {
-                tendon: formName,
-                thongtinchitiet: fieldData.map((field, index) => ({
+          lableRender={() => (
+            <span className="text-lg font-semibold">Tên đơn</span>
+          )}
+          onChange={(value) => {
+            setFormName(value as string);
+          }}
+        ></FormInputControl>
+        {Array.from({ length: numfields }).map((_, index) => (
+          <FieldForm
+            key={`field${index}`}
+            value={fieldData[index]}
+            onRemove={() => onRemoveField(index)}
+            label={`Trường thông tin ${index + 1}`}
+            onChange={(value: any) => {
+              handleOnChangeField(value, index);
+            }}
+          />
+        ))}
+        <Grid
+          container
+          spacing={2}
+          className="w-full flex justify-around mt-10 mb-36"
+        >
+          <Grid size={5}>
+            <CustomButton
+              label="Thêm trường thông tin"
+              sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+              onClick={addField}
+            ></CustomButton>
+          </Grid>
+          <Grid size={3}>
+            <CustomButton
+              label="Lưu đơn"
+              sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
+              onClick={async () => {
+                const tendon = formName;
+                const thongtinChiTiet = fieldData.map((field, index) => ({
                   name: `field${index + 1}`,
                   ...field,
-                })),
-              });
-            }}
-          ></CustomButton>
+                }));
+                console.log(thongtinChiTiet);
+                await handleSubmit(tendon, thongtinChiTiet);
+              }}
+            ></CustomButton>
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+      {flag && (
+        <Notification
+          success={success}
+          onClose={onCloseNotification}
+          message={{
+            success: "Đăng ký thành công",
+            fail: "Đăng ký thất bại",
+          }}
+          icon={{
+            success: ICONS.SUCCESS,
+            fail: ICONS.FAIL,
+          }}
+        />
+      )}
+    </>
   );
 }

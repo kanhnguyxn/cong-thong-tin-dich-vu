@@ -1,5 +1,6 @@
 import "@styles/animations.css";
 import "@styles/globals.css";
+import ReduxProvider from "./reduxProvider";
 
 export default function RootLayout({
   children,
@@ -8,7 +9,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <body className="flex flex-col min-h-screen max-w-full">{children}</body>
+      <body className="flex flex-col min-h-screen max-w-full">
+        <ReduxProvider>{children}</ReduxProvider>
+      </body>
     </html>
   );
 }
