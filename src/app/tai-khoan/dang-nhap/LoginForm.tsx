@@ -66,6 +66,12 @@ export default function LoginForm() {
       // Lưu refreshToken sống 7 ngày (604800 giây)
       document.cookie = `refresh=${refreshToken}; path=/; max-age=604800`;
 
+      // luu user type vao cookie
+      document.cookie = `userType=${
+        data.data.userType || "unknown"
+      }; path=/; max-age=604800`;
+      localStorage.setItem("userType", data.data.userType || "unknown");
+
       const userType = data.data.userType?.trim().toLowerCase();
 
       // console.log("userType", userType);
