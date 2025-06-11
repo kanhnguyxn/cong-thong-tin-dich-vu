@@ -43,7 +43,7 @@ export default function AvatarMenu() {
         link: "/doi-mat-khau",
       },
     ],
-    staff: [{ name: "Đổi mật khẩu", link: "doi-mat-khau" }],
+    staff: [{ name: "Đổi mật khẩu", link: "/doi-mat-khau" }],
   };
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
