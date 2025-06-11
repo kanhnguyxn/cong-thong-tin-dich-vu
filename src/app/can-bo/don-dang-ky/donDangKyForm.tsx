@@ -86,16 +86,6 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
     variant: "standard",
   }));
 
-  const buttons = [
-    {
-      label: "Đăng ký",
-      type: "submit",
-      variants: "contained",
-      size: "large",
-      sx: { ...buttonStyles },
-    },
-  ];
-
   return (
     <>
       <Container
@@ -109,8 +99,6 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
           <FormMui
             className="w-full flex flex-col text-left"
             inputSchema={inputSchema}
-            buttons={buttons}
-            buttonClassName="w-full flex justify-center items-center"
           />
         ) : (
           <div className="text-center py-4">
