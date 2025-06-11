@@ -153,7 +153,7 @@ export default function QuyDinhPage() {
                 variants="contained"
                 size="large"
                 type="button"
-                disabled={selected.length !== 1}
+                disabled={selected.length === 0}
                 sx={{ width: "100%", backgroundColor: "var(--color-blue)" }}
                 onClick={() => {
                   handleOpenModal("delete", selected[0]);
