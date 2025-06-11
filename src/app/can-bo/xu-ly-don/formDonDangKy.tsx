@@ -8,7 +8,8 @@ import {
   typeClassNameMap,
 } from "src/app/sinh-vien/dang-ky-dich-vu/styles";
 import { useState } from "react";
-import { mockDonDangKy, mockDonDangKyChiTiet } from "@services/mockFormData";
+import { useAppSelector } from "@redux/hook";
+// import { mockDonDangKy, mockDonDangKyChiTiet } from "@services/mockFormData";
 
 const labelRebder = (label: string | string[]) => {
   if (Array.isArray(label)) {
@@ -33,41 +34,200 @@ const labelRebder = (label: string | string[]) => {
 interface FormDonDangKyProps {
   maDon: string;
   maDonCT: string;
-  useMockData?: boolean;
 }
 
 export default function FormDonDangKy({ maDon, maDonCT }: FormDonDangKyProps) {
   const [open, setOpen] = useState(false);
-
+  const donDangKyCT = useAppSelector(
+    (state) => state.donDangKyChiTiet.donDangKyChiTiet
+  );
+  const donDangKy = useAppSelector((state) => state.donDangKy.donDangKyCB);
   // Chỉ sử dụng mock data
-  const donDangKy = mockDonDangKy?.find((item) => item.maDon === maDon) || {
+  const rawDonDangKy = donDangKy?.find((item) => item.maDon === maDon) || {
     maDon: "",
-    tenDDK: "",
-    thongtinChitiet: [],
+    tenDon: "",
+    thongTinChiTiet: "[]",
   };
+  // console.log("rawDonDangKy:", rawDonDangKy);
 
-  const donDangKyChiTiet = mockDonDangKyChiTiet?.find(
+  const rawDonDangKyChiTiet = donDangKyCT?.find(
     (item) => item.maDonCT === maDonCT
   );
 
-  // Đảm bảo thongtinChiTiet luôn là array
-  const thongtinChiTiet = donDangKy?.thongtinChitiet || [];
+  // console.log("rawDonDangKyChiTiet:", rawDonDangKyChiTiet);
 
-  // Lấy dữ liệu đã điền từ donDangKyChiTiet.thongtinChitiet[0] nếu có
-  const submittedData = donDangKyChiTiet?.thongtinChitiet?.[0] || {};
+  let donDangKyJson = [];
+  let donDangKyCTJson = [];
+  let submittedData = {};
+  try {
+    donDangKyJson = JSON.parse(rawDonDangKy?.thongTinChiTiet || "[]");
+    donDangKyCTJson = JSON.parse(rawDonDangKyChiTiet?.thongTinChiTiet || "[]");
 
-  const inputSchema = thongtinChiTiet.map((item: any) => ({
-    ...item,
-    label: labelRebder(item.label),
-    formControlStyle,
-    customeLabelStyle,
-    value: submittedData[item.name] || "", // Sử dụng dữ liệu đã submit
-    className: `${
-      typeClassNameMap[item.type] || ""
-    } grid grid-cols-[5%_95%] gap-4 md:gap-1 text-left`,
-    variant: "standard",
-    disabled: true, // Làm cho tất cả input chỉ để xem
-  }));
+    // Debug template structure chi tiết
+    donDangKyJson.forEach((item, index) => {
+      console.log(`Template field ${index}:`, {
+        name: item.name,
+        type: item.type,
+        label: item.label,
+        options: item.options,
+        value: item.value,
+        hasOptions: !!item.options,
+        optionsLength: item.options?.length,
+      });
+    });
+
+    // Tạo submittedData từ donDangKyCTJson nếu có
+    if (Array.isArray(donDangKyCTJson)) {
+      submittedData = donDangKyCTJson.reduce((acc, item) => {
+        if (item.name) {
+          acc[item.name] = item.value || "";
+        }
+        return acc;
+      }, {});
+    } else if (
+      typeof donDangKyCTJson === "object" &&
+      donDangKyCTJson !== null
+    ) {
+      // Nếu donDangKyCTJson là object thay vì array
+      submittedData = donDangKyCTJson;
+    }
+    console.log("submittedData processed:", submittedData);
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    donDangKyJson = [];
+    donDangKyCTJson = [];
+    submittedData = {};
+  }
+
+  const studentInfoRows = [
+    [
+      {
+        name: "tenSV",
+        label: "Tên sinh viên",
+        type: "text",
+        value: rawDonDangKyChiTiet?.hoTen || "",
+        formControlStyle,
+        customeLabelStyle: {
+          ...customeLabelStyle,
+          textAlign: "left",
+          justifyContent: "flex-start",
+          display: "flex",
+          alignItems: "center",
+        },
+        className: "grid grid-cols-[30%_70%] gap-2 items-center text-left",
+        orientation: "horizontal",
+        disabled: true,
+      },
+      {
+        name: "maSV",
+        label: "Mã sinh viên",
+        type: "text",
+        value: rawDonDangKyChiTiet?.maSV || "",
+        formControlStyle,
+        customeLabelStyle: {
+          ...customeLabelStyle,
+          textAlign: "left",
+          justifyContent: "flex-start",
+          display: "flex",
+          alignItems: "center",
+        },
+        className: "grid grid-cols-[30%_70%] gap-2 items-center text-left",
+        orientation: "horizontal",
+        disabled: true,
+      },
+    ],
+    [
+      {
+        name: "lop",
+        label: "Lớp",
+        type: "text",
+        value: rawDonDangKyChiTiet?.lop || "",
+        formControlStyle,
+        customeLabelStyle: {
+          ...customeLabelStyle,
+          textAlign: "left",
+          justifyContent: "flex-start",
+          display: "flex",
+          alignItems: "center",
+        },
+        className: "grid grid-cols-[30%_70%] gap-2 items-center text-left",
+        orientation: "horizontal",
+        disabled: true,
+      },
+      {
+        name: "khoa",
+        label: "Khoa",
+        type: "text",
+        value: rawDonDangKyChiTiet?.khoa || "",
+        formControlStyle,
+        customeLabelStyle: {
+          ...customeLabelStyle,
+          textAlign: "left",
+          justifyContent: "flex-start",
+          display: "flex",
+          alignItems: "center",
+        },
+        className: "grid grid-cols-[30%_70%] gap-2 items-center text-left",
+        orientation: "horizontal",
+        disabled: true,
+      },
+    ],
+    [
+      {
+        name: "chuyenNganh",
+        label: "Chuyên ngành",
+        type: "text",
+        value: rawDonDangKyChiTiet?.chuyenNganh || "",
+        formControlStyle,
+        customeLabelStyle: {
+          ...customeLabelStyle,
+          textAlign: "left",
+          justifyContent: "flex-start",
+          display: "flex",
+          alignItems: "center",
+        },
+        className: "grid grid-cols-[30%_70%] gap-2 items-center text-left",
+        orientation: "horizontal",
+        disabled: true,
+      },
+      {
+        name: "khoaHoc",
+        label: "Khóa học",
+        type: "text",
+        value: rawDonDangKyChiTiet?.khoaHoc || "",
+        formControlStyle,
+        customeLabelStyle: {
+          ...customeLabelStyle,
+          textAlign: "left",
+          justifyContent: "flex-start",
+          display: "flex",
+          alignItems: "center",
+        },
+        className: "grid grid-cols-[30%_70%] gap-2 items-center text-left",
+        orientation: "horizontal",
+        disabled: true,
+      },
+    ],
+  ];
+
+  const dynamicFields = donDangKyJson.map((item: any) => {
+    const fieldValue = submittedData[item.name] || item.value || "";
+
+    return {
+      ...item,
+      value: fieldValue,
+      label: labelRebder(item.label),
+      formControlStyle,
+      customeLabelStyle,
+      className: `${
+        typeClassNameMap[item.type] || ""
+      } grid grid-cols-[5%_95%] gap-4 md:gap-1 text-left`,
+      variant: "standard",
+      disabled: true, // Làm cho tất cả input chỉ để xem
+    };
+  });
+
+  const inputSchema = [...dynamicFields];
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -86,27 +246,58 @@ export default function FormDonDangKy({ maDon, maDonCT }: FormDonDangKyProps) {
           },
         }}
       >
-        {donDangKy?.tenDDK || "Đơn không xác định"}
+        {rawDonDangKy?.tenDon || "Đơn không xác định"}
       </Button>
 
       <Modal
         open={open}
         onClose={handleClose}
-        className="flex items-center justify-center"
+        className="flex items-center justify-center max-w-full max-h-full"
       >
-        <Container className="size-fit px-8 py-6 mx-4 my-5 md:mx-0 md:min-w-[60%] lg:min-w-[50%] md:max-w-[80%]">
-          <div className="flex justify-between items-center mb-4">
+        <Container className="size-fit px-8 py-6 mx-4 my-5 md:mx-0 md:min-w-[60%] lg:min-w-[50%] md:max-w-[70%] max-h-[80vh] flex flex-col">
+          <div className="flex justify-between items-center mb-4 flex-shrink-0">
             <h6 className="w-full text-lg md:text-xl lg:text-2xl font-bold uppercase">
-              {donDangKy?.tenDDK || "Đơn không xác định"}
+              {rawDonDangKy?.tenDon || "Đơn không xác định"}
             </h6>
             <Button onClick={handleClose} sx={{ minWidth: "auto" }}>
               ✕
             </Button>
           </div>
-          <FormMui
-            inputSchema={inputSchema}
-            className="w-full flex flex-col text-left "
-          />
+          <div className="flex-1 overflow-y-auto">
+            {/* Thông tin sinh viên - layout 2 cột */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">
+                Thông tin sinh viên
+              </h3>
+              {studentInfoRows.map((row, rowIndex) => (
+                <div
+                  key={rowIndex}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
+                >
+                  {row.map((field, fieldIndex) => (
+                    <FormMui
+                      key={field.name}
+                      inputSchema={[field]}
+                      className="w-full"
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+
+            {/* Thông tin đơn đăng ký */}
+            {inputSchema.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">
+                  Thông tin đơn đăng ký
+                </h3>
+                <FormMui
+                  inputSchema={inputSchema}
+                  className="w-full flex flex-col text-left"
+                />
+              </div>
+            )}
+          </div>
         </Container>
       </Modal>
     </>
