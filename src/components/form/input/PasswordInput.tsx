@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
-
 import { StyledTextField } from "@styles/style_component";
 import ICONS from "@components/icons";
 import { IconButton, InputAdornment } from "@mui/material";
 
-export default function PasswordInput({ ...props }) {
+export default function PasswordInput({ value, onChange, ...props }) {
   const [showPassword, setShowPassword] = useState(false);
+
   return (
     <StyledTextField
       type={showPassword ? "text" : "password"}
+      value={value ?? ""} // Ensure value is never undefined
+      onChange={onChange} // Ensure onChange is provided
       slotProps={{
         input: {
           endAdornment: (
@@ -18,7 +20,7 @@ export default function PasswordInput({ ...props }) {
               <IconButton
                 onClick={() => setShowPassword((prev) => !prev)}
                 edge="end"
-                tabIndex={-1} // khong focus vao button
+                tabIndex={-1}
               >
                 {showPassword ? ICONS.VISUALITY_ON : ICONS.VISUALITY_OFF}
               </IconButton>
