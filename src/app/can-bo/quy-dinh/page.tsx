@@ -50,11 +50,46 @@ export default function QuyDinhPage() {
     );
   }, [quyDinh, department, option, searchQuery]);
 
+  // Hàm format ngày tháng từ ISO format sang DD/MM/YYYY format cho editData
+  const formatDateForEdit = (isoDate: string): string => {
+    if (!isoDate) return "";
+
+    try {
+      const date = new Date(isoDate);
+
+      // Kiểm tra xem date có hợp lệ không
+      if (isNaN(date.getTime())) {
+        return isoDate; // Trả về chuỗi gốc nếu không parse được
+      }
+
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`; // Output: "01/01/2024"
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return isoDate; // Trả về chuỗi gốc nếu có lỗi
+    }
+  };
+
   const handleOpenModal = (
     mode: "add" | "edit" | "delete" | string,
     data?: any
   ) => {
-    const editData = data ? quyDinh.find((item) => item.maQD === data) : null;
+    const rawEditData = data
+      ? quyDinh.find((item) => item.maQD === data)
+      : null;
+
+    // Format dữ liệu ngày tháng cho editData nếu là mode edit
+    let editData = null;
+    if (rawEditData && mode === "edit") {
+      editData = {
+        ...rawEditData,
+        ngayBanHanh: formatDateForEdit(rawEditData.ngayBanHanh),
+        ngayCoHieuLuc: formatDateForEdit(rawEditData.ngayCoHieuLuc),
+      };
+    }
+
     showModal({
       title:
         mode === "add"

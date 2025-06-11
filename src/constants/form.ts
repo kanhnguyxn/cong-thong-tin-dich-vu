@@ -16,6 +16,14 @@ export const quyDinhForm = [
     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
   },
   {
+    name: "lienKet",
+    type: "text",
+    label: "Thêm liên kết:",
+    required: true,
+    placeholder: "Nhập liên kết tải xuống",
+    customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
+  },
+  {
     name: "noiBanHanh",
     type: "text",
     label: "Nơi ban hành:",

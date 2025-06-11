@@ -41,12 +41,12 @@ export default function DropDown({ onSelectionsChange }: DropDownProps) {
   const { quyDinh, loading } = useAppSelector((state) => state.quyDinh);
 
   const departments = useMemo(() => {
-    if (loading || !quyDinh) return [];
+    if (loading || !quyDinh || !Array.isArray(quyDinh)) return [];
     const uniqueMap = new Map();
     for (const item of quyDinh) {
       if (!uniqueMap.has(item.maPB)) {
-        // uniqueMap.set(item.maPB, item.tenPB);
-        uniqueMap.set("Dao Tao", "Dao Tao");
+        uniqueMap.set(item.maPB, item.tenPB);
+        // uniqueMap.set("Dao Tao", "Dao Tao");
       }
     }
     return Array.from(uniqueMap.entries()).map(([maPB, tenPB]) => ({
