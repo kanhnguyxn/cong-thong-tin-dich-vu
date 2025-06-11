@@ -59,9 +59,9 @@ export default function XuLyDonTable({ data }: XuLyDonTableProps) {
   // loc ra nhung don co trang thai là ""
 
   const formattedData = useMemo(() => {
-    console.log("donXuLy trong formattedData:", donXuLy);
+    // console.log("donXuLy trong formattedData:", donXuLy);
     const rowData = donXuLy.map((row, index) => {
-      console.log("Dòng dữ liệu:", row);
+      // console.log("Dòng dữ liệu:", row);
       return {
         stt: index + 1,
         mssv: row.maSV,
