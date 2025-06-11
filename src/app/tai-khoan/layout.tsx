@@ -60,7 +60,7 @@ export default function Layout({ children }: LayoutProps) {
               },
             }}
           >
-            STUDENT ONLINE SERVICE
+            CỔNG THÔNG TIN - DỊCH VỤ
           </Typography>
           {children}
         </Container>
