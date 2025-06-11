@@ -64,17 +64,17 @@ export default function FormDonDangKy({ maDon, maDonCT }: FormDonDangKyProps) {
     donDangKyCTJson = JSON.parse(rawDonDangKyChiTiet?.thongTinChiTiet || "[]");
 
     // Debug template structure chi tiết
-    donDangKyJson.forEach((item, index) => {
-      console.log(`Template field ${index}:`, {
-        name: item.name,
-        type: item.type,
-        label: item.label,
-        options: item.options,
-        value: item.value,
-        hasOptions: !!item.options,
-        optionsLength: item.options?.length,
-      });
-    });
+    // donDangKyJson.forEach((item, index) => {
+    //   console.log(`Template field ${index}:`, {
+    //     name: item.name,
+    //     type: item.type,
+    //     label: item.label,
+    //     options: item.options,
+    //     value: item.value,
+    //     hasOptions: !!item.options,
+    //     optionsLength: item.options?.length,
+    //   });
+    // });
 
     // Tạo submittedData từ donDangKyCTJson nếu có
     if (Array.isArray(donDangKyCTJson)) {
@@ -91,9 +91,9 @@ export default function FormDonDangKy({ maDon, maDonCT }: FormDonDangKyProps) {
       // Nếu donDangKyCTJson là object thay vì array
       submittedData = donDangKyCTJson;
     }
-    console.log("submittedData processed:", submittedData);
+    // console.log("submittedData processed:", submittedData);
   } catch (error) {
-    console.error("Error parsing JSON:", error);
+    // console.error("Error parsing JSON:", error);
     donDangKyJson = [];
     donDangKyCTJson = [];
     submittedData = {};

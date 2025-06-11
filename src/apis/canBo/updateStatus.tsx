@@ -5,9 +5,9 @@ export async function updateStatus({ maDonCT, trangThai }) {
   try {
     const response = await fetchWithAuth({
       // doi url cho dung
-      url: `/don-dang-ky/${maDonCT}/trang-thai`,
+      url: `/staff/forms/${maDonCT}/status`,
       method: methods.PUT,
-      data: JSON.stringify({ maDonCT, trangThai }),
+      data: { trangThaiXuLy: trangThai },
     });
 
     GetStatusCode(response.status);
