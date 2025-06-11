@@ -131,16 +131,50 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
   if (parsedFields.length === 0) {
   }
 
-  const inputSchema = parsedFields.map((item: any) => ({
-    ...item,
-    label: labelRebder(item.label),
-    formControlStyle,
-    customeLabelStyle,
-    className: `${
-      typeClassNameMap[item.type] || ""
-    } grid grid-cols-[5%_95%] gap-4 md:gap-1 text-left`,
-    variant: "standard",
-  }));
+  const inputSchema = parsedFields.map((item: any) => {
+    // Debug: Log để kiểm tra dữ liệu
+    if (item.type === "select") {
+      console.log("Select field data:", item);
+      console.log("Original selectOptions:", item.selectOptions);
+    }
+
+    const formattedSelectOptions = item.selectOptions
+      ? Array.isArray(item.selectOptions)
+        ? item.selectOptions.map((option: any) => {
+            // Nếu option đã là object có display và value thì giữ nguyên
+            if (
+              typeof option === "object" &&
+              option.display &&
+              option.value !== undefined
+            ) {
+              return option;
+            }
+            // Nếu option là string thì convert thành object
+            return {
+              display: option,
+              value: option,
+            };
+          })
+        : []
+      : [];
+
+    if (item.type === "select") {
+      console.log("Formatted selectOptions:", formattedSelectOptions);
+    }
+
+    return {
+      ...item,
+      label: labelRebder(item.label),
+      formControlStyle,
+      customeLabelStyle,
+      className: `${
+        typeClassNameMap[item.type] || ""
+      } grid grid-cols-[5%_95%] gap-4 md:gap-1 text-left`,
+      variant: "standard",
+      // Đảm bảo selectOptions có đúng format cho SelectInput
+      selectOptions: formattedSelectOptions,
+    };
+  });
 
   return (
     <>

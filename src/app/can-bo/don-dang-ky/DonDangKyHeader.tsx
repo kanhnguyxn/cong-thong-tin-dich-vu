@@ -4,12 +4,47 @@ import CustomButton from "@components/button";
 import { showModal } from "@components/modal/RootModal";
 import { usePathname, useRouter } from "next/navigation";
 import createForm from "@apis/canBo/createForm";
+import { deleteDonDangKy } from "@apis/canBo/deleteDonDangKy";
+import { useAppSelector } from "@redux/hook";
 
 export default function DonDangKyHeader({}) {
   const pathName = usePathname().split("/");
   const router = useRouter();
   const isAdd = pathName[pathName.length - 1] === "tao-moi";
-
+  const selectedDonDangKy = useAppSelector((state) => state.donDangKy.selected);
+  const handleOpenModal = () => {
+    showModal({
+      title: "Xóa đơn đăng ký",
+      type: "alert",
+      formOrientation: "vertical",
+      preConfirm: async () => {
+        const res = await deleteDonDangKy(selectedDonDangKy as string[]);
+        return res;
+      },
+    }).then((res: any) => {
+      if (res.confirm) {
+        if (res.data.status) {
+          showModal({
+            title: "Xóa đơn thành công",
+            icon: "success",
+            type: "notification",
+            showNoButton: true,
+          }).then(() => {
+            // refresh trang
+            console.log("refresh");
+            window.location.reload();
+          });
+        } else {
+          showModal({
+            title: "Xóa đơn thất bại",
+            icon: "error",
+            type: "notification",
+            showNoButton: true,
+          });
+        }
+      }
+    });
+  };
   return (
     <div className="border-b-2 border-b-[var(--color-gray-fill)] w-full p-3 grid grid-cols-6 sticky  top-[234px] md:top-[121px] bg-white z-40">
       <h3 className="text-xl md:text-3xl uppercase font-bold">Đơn Đăng Ký</h3>
@@ -86,7 +121,7 @@ export default function DonDangKyHeader({}) {
                               showNoButton: true,
                             }).then(() => {
                               // refresh trang
-                              console.log("refresh");
+                              // console.log("refresh");
                               window.location.reload();
                               // router.refresh();
                             });
@@ -115,6 +150,8 @@ export default function DonDangKyHeader({}) {
           onClick={() => {
             if (isAdd) {
               router.back();
+            } else {
+              handleOpenModal();
             }
           }}
         />

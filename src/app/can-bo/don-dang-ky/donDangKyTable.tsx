@@ -1,12 +1,15 @@
 import CustomTable from "@components/Table";
 import { useAppSelector } from "@redux/hook";
 import { Container } from "@components/Container";
+import { addSelectedDonDangKy } from "@redux/features/donDangKySlice";
+import { useDispatch } from "react-redux";
 
 interface DonDangKyTableProps {
   donDangKy: (maDon: string) => void;
 }
 
 export default function DonDangKyTable({ donDangKy }: DonDangKyTableProps) {
+  const dispatch = useDispatch();
   const columns = [
     { id: "stt", label: "STT", width: "5ch" },
     { id: "tenDon", label: "Tên đơn" },
@@ -40,6 +43,10 @@ export default function DonDangKyTable({ donDangKy }: DonDangKyTableProps) {
     }
     return { textAlign: "center" };
   };
+  const handleSelected = (selectedRows: any[]) => {
+    const selectedDonDangKy = selectedRows.map((row) => row.maDon);
+    dispatch(addSelectedDonDangKy(selectedDonDangKy));
+  };
 
   return (
     <Container className="w-full md:max-w-[90%] mb-6 mx-6 mt-3 md:border-2 border-[var(--color-gray-stroke)]">
@@ -49,6 +56,7 @@ export default function DonDangKyTable({ donDangKy }: DonDangKyTableProps) {
         tableCellStyles={getTableCellStyles}
         hasSelective
         idCol="stt"
+        handleSelected={handleSelected}
       />
     </Container>
   );

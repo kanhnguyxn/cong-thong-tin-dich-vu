@@ -20,7 +20,7 @@ export default function SelectInput({
   value,
   onChange,
   onBlur,
-  options,
+  options = [],
   className = "",
   name,
   label,
@@ -73,11 +73,13 @@ export default function SelectInput({
       <MenuItem value="" disabled>
         <span className="text-gray-400">{placeholder}</span>
       </MenuItem>
-      {options.map((option, index) => (
-        <MenuItem key={`${name}-radio-${index}`} value={option.value}>
-          {option.display}
-        </MenuItem>
-      ))}
+      {options &&
+        options.length > 0 &&
+        options.map((option, index) => (
+          <MenuItem key={`${name}-radio-${index}`} value={option.value}>
+            {option.display}
+          </MenuItem>
+        ))}
     </Select>
   );
 }
