@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import NavBar from "./Navbar";
 import QuyDinhTable from "./QuyDinhTable";
 import Loading from "src/app/loading";
+import { deleteQuyDinh } from "@apis/canBo/deleteQuyDinh";
 
 export default function QuyDinhPage() {
   const dispatch = useAppDispatch();
@@ -51,15 +52,15 @@ export default function QuyDinhPage() {
   }, [quyDinh, department, option, searchQuery]);
 
   // Hàm format ngày tháng từ ISO format sang DD/MM/YYYY format cho editData
-  const formatDateForEdit = (isoDate: string): string => {
+  const formatDateForEdit = (isoDate: string | Date): string => {
     if (!isoDate) return "";
 
     try {
-      const date = new Date(isoDate);
+      const date = isoDate instanceof Date ? isoDate : new Date(isoDate);
 
       // Kiểm tra xem date có hợp lệ không
       if (isNaN(date.getTime())) {
-        return isoDate; // Trả về chuỗi gốc nếu không parse được
+        return typeof isoDate === "string" ? isoDate : ""; // Trả về chuỗi gốc nếu không parse được
       }
 
       const day = String(date.getDate()).padStart(2, "0");
@@ -68,7 +69,7 @@ export default function QuyDinhPage() {
       return `${day}/${month}/${year}`; // Output: "01/01/2024"
     } catch (error) {
       console.error("Error formatting date:", error);
-      return isoDate; // Trả về chuỗi gốc nếu có lỗi
+      return typeof isoDate === "string" ? isoDate : ""; // Trả về chuỗi gốc nếu có lỗi
     }
   };
 
@@ -105,8 +106,8 @@ export default function QuyDinhPage() {
       preConfirm:
         mode === "delete"
           ? async () => {
-              // Simulate an API call for deletion confirmation
-              return new Promise((resolve) => setTimeout(resolve, 2000));
+              const res = await deleteQuyDinh(selected as string[]);
+              return res;
             }
           : null,
     }).then((res: any) => {
@@ -120,7 +121,10 @@ export default function QuyDinhPage() {
             handleModalHelper("Sửa ", "success");
             break;
           default:
-            handleModalHelper("Xóa", "success");
+            if (res.data.status) {
+              handleModalHelper("Xóa", "success");
+              dispatch(fetchQuyDinhCanBo());
+            } else handleModalHelper("Xóa", "error");
             break;
         }
       }
