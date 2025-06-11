@@ -9,12 +9,24 @@ export default async function middleware(req : NextRequest) {
   const cookiesObj = await cookies();
   const acesssToken =  (cookiesObj).get("access")?.value;
   const refreshToken = (cookiesObj).get("refresh")?.value;
+
+  // Extract pathname from request URL
+  const pathname = new URL(req.url).pathname;
+  
+  // goi usertype tu cookies
+  const userType = cookiesObj.get("userType")?.value;
   // console.log("acesssToken", acesssToken);
   // console.log("refreshToken", refreshToken);
  
   // 2.1. Nếu thiếu token chuyển về trang đăng nhập.
-  if(!refreshToken) {
+  if(!refreshToken || userType === "unknown") {
     return NextResponse.redirect(new URL("/tai-khoan/dang-nhap", req.url));
+  }
+  if(userType === "student" && pathname.startsWith('/can-bo')){
+    return new Response("Not found", { status: 404 });
+  }
+  if(userType === "staff" && pathname.startsWith('/sinh-vien')){
+    return new Response("Not found", { status: 404 });
   }
   // 2.2. Nếu có token cho phép truy cập vào trang.
   return NextResponse.next();
