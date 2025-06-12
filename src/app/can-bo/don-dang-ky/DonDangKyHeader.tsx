@@ -85,6 +85,7 @@ export default function DonDangKyHeader({}) {
                         title: "Liên kết",
                         type: "form",
                         formOrientation: "vertical",
+                        classContainer: "w-[30%] px-8",
                         handleAsyncSubmit: async (data: any) => {
                           const dataSubMit = {
                             tenDon: data.tendonDangKy,
@@ -154,6 +155,9 @@ export default function DonDangKyHeader({}) {
               handleOpenModal();
             }
           }}
+          disabled={
+            isAdd ? false : !selectedDonDangKy || selectedDonDangKy.length === 0
+          }
         />
       </div>
     </div>
