@@ -9,8 +9,9 @@ export async function updateStatus({ maDonCT, trangThai }) {
       method: methods.PUT,
       data: { trangThaiXuLy: trangThai },
     });
+    console.log("Response from updateStatus:", response);
 
-    GetStatusCode(response.status);
+    GetStatusCode(response.statusCode);
     return {
       status: true,
       message: "Cập nhật trạng thái thành công",

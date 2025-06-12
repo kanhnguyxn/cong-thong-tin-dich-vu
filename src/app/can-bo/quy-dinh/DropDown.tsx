@@ -56,7 +56,7 @@ export default function DropDown({ onSelectionsChange }: DropDownProps) {
   }, [quyDinh, loading]);
 
   const handleSelectChange = (maPB: string, newValue: string) => {
-    setSelectedValues({ [maPB]: newValue });
+    setSelectedValues((prev) => ({ ...prev, [maPB]: newValue }));
 
     if (onSelectionsChange) {
       onSelectionsChange(maPB, newValue);
