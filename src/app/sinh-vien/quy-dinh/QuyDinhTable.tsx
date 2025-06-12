@@ -6,7 +6,7 @@ import { formatDate } from "@components/formatDate";
 const columns = [
   { id: "sokyhieu", label: "Số ký hiệu", width: "16ch" },
   { id: "quydinh", label: "Tên quy định" },
-  { id: "noibanhanh", label: "Nơi ban hành", width: "12ch" },
+  { id: "noibanhanh", label: "Nơi ban hành", width: "20ch" },
   { id: "ngaybanhanh", label: "Ngày ban hành", width: "12ch" },
   { id: "ngayhieuluc", label: "Ngày có hiệu lực", width: "12ch" },
   { id: "hieuluc", label: "Hiệu lực", width: "10ch" },
