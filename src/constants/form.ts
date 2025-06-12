@@ -37,14 +37,6 @@ export const quyDinhForm = [
      customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
   },
   {
-    name: "noiBanHanh",
-    type: "text",
-    label: "Nơi ban hành:",
-    required: true,
-    placeholder: "Nhập nơi ban hành",
-    customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
-  },
-  {
     name: "ngayBanHanh",
     type: "date",
     label: "Ngày ban hành:",
