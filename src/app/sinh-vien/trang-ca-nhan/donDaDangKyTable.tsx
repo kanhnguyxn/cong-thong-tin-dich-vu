@@ -1,4 +1,3 @@
-
 import CustomTable from "@components/Table";
 import { Container } from "@components/Container";
 import { formatThoiGianXuLy } from "@components/formatDate";
@@ -17,13 +16,14 @@ export default function DonDaDangKyTable({
     { id: "tenDon", label: "Tên đơn" },
     { id: "thoiGian", label: "Thời gian", width: "12ch" },
     { id: "donViThucHien", label: "Đơn vị phụ trách", width: "20ch" },
-    { id: "trangThai", label: "Trạng thái", width: "15ch" },
+    { id: "trangThaiXuLy", label: "Trạng thái", width: "15ch" },
     { id: "ghiChu", label: "Ghi chú", width: "20ch" },
   ];
 
   // Không cần gọi API nữa vì data được truyền qua props
 
   // Format dữ liệu cho table
+  console.log("Dữ liệu đơn đã đăng ký:", data);
   const formattedData = Array.isArray(data)
     ? data.map((item, index) => ({
         stt: index + 1,
@@ -38,21 +38,23 @@ export default function DonDaDangKyTable({
         ),
         donViThucHien: item.donViThucHien || item.donVi || "Phòng đào tạo",
         trangThai:
-          typeof item.trangThai === "boolean"
-            ? item.trangThai
-              ? "Đã xử lý"
-              : "Chưa xử lý"
-            : item.trangThai || "Chờ xử lý",
+          item.trangThaiXuLy == "Ðã duy?t"
+            ? "Đã duyệt"
+            : item.trangThaiXuLy == "B? t? ch?i"
+            ? "Bị từ chối"
+            : "Đang xử lý",
         ghiChu: item.ghiChu || "Không có ghi chú",
       }))
     : [];
 
   const getTableCellStyles = (columnId: string, row: any) => {
     if (columnId === "trangThai") {
-      let color = "red"; // Mặc định màu đỏ cho "Chưa xử lý"
-      if (row.trangThai === "Đã xử lý") {
+      let color = "orange"; // Mặc định màu cam cho "Đang xử lý"
+      if (row.trangThaiXuLy === "Đã duyệt") {
         color = "green";
-      } else if (row.trangThai === "Đang xử lý") {
+      } else if (row.trangThaiXuLy === "B? t? ch?i") {
+        color = "red";
+      } else if (row.trangThaiXuLy === "Đang xử lý") {
         color = "orange";
       }
       return {
@@ -60,6 +62,7 @@ export default function DonDaDangKyTable({
         color: color,
         textTransform: "uppercase",
         fontWeight: "bold",
+        fontFamily: "'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif",
       };
     }
     if (columnId === "donViThucHien") {

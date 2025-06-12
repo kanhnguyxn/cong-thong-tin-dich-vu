@@ -2,6 +2,7 @@ import { GetStatusCode, methods } from "@apis/config";
 import { fetchWithAuth } from "@apis/fetchWithAuth";
 
 export const updateQuyDinh = async (maQD, data) => {
+  console.log("updateQuyDinh", maQD, data);
   try {
     const resData = await fetchWithAuth({
       // url đến API update quy định

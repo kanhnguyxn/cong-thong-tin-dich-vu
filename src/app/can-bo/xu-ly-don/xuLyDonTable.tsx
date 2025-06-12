@@ -98,6 +98,7 @@ export default function XuLyDonTable({ data }: XuLyDonTableProps) {
       trangThai: newStatus,
     };
     const response = await updateStatus(requestData);
+    console.log("Response from updateStatus:", response);
     if (response.status) {
       setAlert({
         open: true,

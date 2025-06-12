@@ -12,6 +12,7 @@ import Loading from "src/app/loading";
 import { deleteQuyDinh } from "@apis/canBo/deleteQuyDinh";
 import { addQuyDinh } from "@apis/canBo/addQuyDinh";
 import { updateQuyDinh } from "@apis/canBo/updateQuyDinh";
+import { useDispatch } from "react-redux";
 
 // ham lay tg hien tai
 async function formated_dateTime(tg) {
@@ -64,6 +65,8 @@ export default function QuyDinhPage() {
     (state) => state.quyDinh
   );
   const selected = useAppSelector((state) => state.quyDinh.selected);
+  const user = useAppSelector((state) => state.auth.user);
+  const userName = user?.username || "Người dùng";
 
   const [department, setDepartment] = useState("");
   const [option, setOption] = useState("");
@@ -87,7 +90,8 @@ export default function QuyDinhPage() {
     }
     // Filter quy dinh based on department and option
     const filtered = quyDinh.filter(
-      (item) => item.maPB === department || item.loaiVanBan === option
+      (item) =>
+        (!department || item.maPB === department) && item.loaiVanBan === option
     );
     setFilteredData(
       searchQuery
@@ -198,6 +202,7 @@ export default function QuyDinhPage() {
 
               const dataUpdate = {
                 ...data,
+                maCB: userName,
                 ngayBanHanh: ngayBanHanh,
                 ngayCoHieuLuc: ngayCoHieuLuc,
                 thoiGianDang: thoiGianDang,

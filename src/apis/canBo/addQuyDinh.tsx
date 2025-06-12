@@ -10,29 +10,21 @@ import { fetchWithAuth } from "@apis/fetchWithAuth";
 
 export async function addQuyDinh(data: any) {
   // thieu ma quy dinh
-  const {
-    tenQD,
-    loaiVanBan,
-    lienKet,
-    noiBanHanh,
-    ngayBanHanh,
-    ngayCoHieuLuc,
-    hieuLuc,
-  } = data;
+  // const {
+  //   tenQD,
+  //   loaiVanBan,
+  //   lienKet,
+  //   noiBanHanh,
+  //   ngayBanHanh,
+  //   ngayCoHieuLuc,
+  //   hieuLuc,
+  // } = data;
   try {
     const resData = await fetchWithAuth({
       // url them bieu mau
       url: "/staff/regulations",
       method: methods.POST,
-      data: {
-        tenQD,
-        loaiVanBan,
-        lienKet,
-        noiBanHanh,
-        ngayBanHanh,
-        ngayCoHieuLuc,
-        hieuLuc,
-      },
+      data: data,
     });
     GetStatusCode(resData.statusCode);
     return { status: true, data: resData.data };
