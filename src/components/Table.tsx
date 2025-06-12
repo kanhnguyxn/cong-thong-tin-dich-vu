@@ -90,7 +90,9 @@ export default function CustomTable({
 
   // khoi tao du lieu displayData
   useEffect(() => {
-    setDisplayData(hasSelective ? data?.map((row) => ({ ...row, selected: false })) : data);
+    setDisplayData(
+      hasSelective ? data?.map((row) => ({ ...row, selected: false })) : data
+    );
   }, [data]);
 
   // Gọi handeleChange khi displayData thay đổi
@@ -114,7 +116,10 @@ export default function CustomTable({
             <TableRow>
               {hasSelective && (
                 <SelectiveCell
-                  checked={displayData.length > 0 && displayData.every((row) => row.selected)}
+                  checked={
+                    displayData.length > 0 &&
+                    displayData.every((row) => row.selected)
+                  }
                   onChange={(checked) => {
                     const _data = displayData.map((row) => ({
                       ...row,
@@ -140,29 +145,40 @@ export default function CustomTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {displayData?.map((row, index) => (
-              <TableRow key={idCol ? row[idCol] : index} sx={getTableBodyStyles(row)}>
-                {hasSelective && (
-                  <SelectiveCell
-                    checked={row?.selected || false}
-                    onChange={() => {
-                      const _data = displayData.map((item) => {
-                        if (item[idCol] === row[idCol]) {
-                          return { ...item, selected: !item.selected };
-                        }
-                        return item;
-                      });
-                      setDisplayData(_data);
-                    }}
-                  />
-                )}
-                {columns.map((column) => (
-                  <TableCell key={column.id} sx={getTableCellStyles(column.id, row)}>
-                    {row[column.id]}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
+            {displayData?.map((row, index) => {
+              // Tạo unique key: nếu có idCol và row[idCol] tồn tại thì dùng, không thì dùng index
+              const uniqueKey =
+                idCol && row[idCol] !== null && row[idCol] !== undefined
+                  ? `${idCol}-${row[idCol]}`
+                  : `row-${index}`;
+
+              return (
+                <TableRow key={uniqueKey} sx={getTableBodyStyles(row)}>
+                  {hasSelective && (
+                    <SelectiveCell
+                      checked={row?.selected || false}
+                      onChange={() => {
+                        const _data = displayData.map((item) => {
+                          if (item[idCol] === row[idCol]) {
+                            return { ...item, selected: !item.selected };
+                          }
+                          return item;
+                        });
+                        setDisplayData(_data);
+                      }}
+                    />
+                  )}
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      sx={getTableCellStyles(column.id, row)}
+                    >
+                      {row[column.id]}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
@@ -175,7 +191,10 @@ interface SelectiveCellProps {
   checked?: boolean;
 }
 
-export const SelectiveCell = ({ onChange, checked = false }: SelectiveCellProps) => {
+export const SelectiveCell = ({
+  onChange,
+  checked = false,
+}: SelectiveCellProps) => {
   const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.(e.target.checked);
   };
@@ -188,7 +207,11 @@ export const SelectiveCell = ({ onChange, checked = false }: SelectiveCellProps)
         width: "5ch",
       }}
     >
-      <Checkbox checked={checked} sx={{ color: "var(--color-blue)" }} onChange={handleOnchange} />
+      <Checkbox
+        checked={checked}
+        sx={{ color: "var(--color-blue)" }}
+        onChange={handleOnchange}
+      />
     </TableCell>
   );
 };

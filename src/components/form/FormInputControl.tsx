@@ -177,20 +177,34 @@ export default function FormInputControl({
     case "radio":
       inputEle = (
         <>
-          {selectOptions.map((option, index) => (
-            <div key={index} className={`flex items-center gap-2 ${className}`}>
-              <input
-                className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] checked:appearance-auto rounded-full"
-                name={name}
-                type="radio"
-                value={option}
-                checked={value === option}
-                onChange={(e) => onChange(e.target.value)}
-                onBlur={(e) => onBlur && onBlur(e.target.value)}
-              />
-              <label>{option}</label>
-            </div>
-          ))}
+          {selectOptions.map((option, index) => {
+            // Xử lý cả trường hợp option là object {display, value} và string
+            const displayText =
+              option?.display ||
+              option?.value ||
+              option ||
+              `Option ${index + 1}`;
+            const optionValue =
+              option?.value !== undefined ? option.value : option;
+
+            return (
+              <div
+                key={index}
+                className={`flex items-center gap-2 ${className}`}
+              >
+                <input
+                  className="appearance-none w-5 h-5 border-2 border-[var(--color-blue)] checked:appearance-auto rounded-full"
+                  name={name}
+                  type="radio"
+                  value={optionValue}
+                  checked={value === optionValue}
+                  onChange={(e) => onChange(e.target.value)}
+                  onBlur={(e) => onBlur && onBlur(e.target.value)}
+                />
+                <label>{displayText}</label>
+              </div>
+            );
+          })}
         </>
       );
       break;
