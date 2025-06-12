@@ -75,11 +75,23 @@ export default function SelectInput({
       </MenuItem>
       {options &&
         options.length > 0 &&
-        options.map((option, index) => (
-          <MenuItem key={`${name}-radio-${index}`} value={option.value}>
-            {option.display}
-          </MenuItem>
-        ))}
+        options.map((option, index) => {
+          // Đảm bảo option có cấu trúc đúng
+          const displayText =
+            option?.display || option?.value || option || `Option ${index + 1}`;
+          const optionValue =
+            option?.value !== undefined ? option.value : option;
+
+          return (
+            <MenuItem
+              key={`${name}-radio-${index}`}
+              value={optionValue}
+              sx={{ color: "black", fontSize: "14px" }}
+            >
+              <span style={{ color: "black" }}>{displayText}</span>
+            </MenuItem>
+          );
+        })}
     </Select>
   );
 }

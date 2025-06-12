@@ -5,7 +5,7 @@ import NavBar from "./Navbar";
 import QuyDinhTable from "./QuyDinhTable";
 import { SearchBar } from "@components/SearchBar";
 import { useAppDispatch, useAppSelector } from "@redux/hook";
-import { fetchQuyDinhCanBo } from "@redux/features/quyDinhSlice";
+import { fetchQuyDinh } from "@redux/features/quyDinhSlice";
 import Loading from "src/app/loading";
 
 export default function QuyDinhPage() {
@@ -22,7 +22,7 @@ export default function QuyDinhPage() {
 
   useEffect(() => {
     setLoading(true);
-    dispatch(fetchQuyDinhCanBo());
+    dispatch(fetchQuyDinh());
     // neu loadingRedux la true thi khong can setLoading nua
     if (!loadingRedux) {
       setLoading(false);
