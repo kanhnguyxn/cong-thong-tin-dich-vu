@@ -24,7 +24,7 @@ interface DonDangKyFormProps {
   maDonDangKy: string;
 }
 
-const labelRebder = (label: string | string[]) => {
+const labelRebder = (label: string | string[], description?: string) => {
   if (Array.isArray(label)) {
     return (
       // string dau tien lam tieu def con cacs chuoi con laij laf subtitle
@@ -41,7 +41,18 @@ const labelRebder = (label: string | string[]) => {
       </div>
     );
   }
-  return label;
+  return (
+    <div className="flex flex-col gap-2 w-full text-wrap">
+      <InputLabel sx={{ ...labelStyles, ...customeLabelStyle }}>
+        {label}
+      </InputLabel>
+      {description && (
+        <span className="font-light pl-3 text-sm text-gray-600">
+          {description}
+        </span>
+      )}
+    </div>
+  );
 };
 
 export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
@@ -162,7 +173,7 @@ export default function DonDangKyForm({ maDonDangKy }: DonDangKyFormProps) {
 
     return {
       ...item,
-      label: labelRebder(item.label),
+      label: labelRebder(item.label, item.description),
       formControlStyle,
       customeLabelStyle,
       className: `${
