@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "@redux/hook";
 import { fetchBieuMau } from "@redux/features/bieuMauSlice";
 
 import { deleteBieuMau } from "@apis/canBo/deleteBieuMau";
+import { addBieuMau } from "@apis/canBo/addBieuMau";
 
 import Loading from "src/app/loading";
 
@@ -56,6 +57,8 @@ export default function BieuMauPage() {
           ? null
           : async (formData: any) => {
               console.log("formData", formData);
+              const res = await addBieuMau(formData);
+              return res;
             },
       preConfirm:
         mode === "delete"
