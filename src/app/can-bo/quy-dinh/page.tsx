@@ -11,15 +11,51 @@ import QuyDinhTable from "./QuyDinhTable";
 import Loading from "src/app/loading";
 import { deleteQuyDinh } from "@apis/canBo/deleteQuyDinh";
 import { addQuyDinh } from "@apis/canBo/addQuyDinh";
+import { updateQuyDinh } from "@apis/canBo/updateQuyDinh";
 
 // ham lay tg hien tai
 async function formated_dateTime(tg) {
-  const currentDate = new Date();
-  let date_time = tg + " " + currentDate.toLocaleTimeString();
+  try {
+    console.log("formated_dateTime input:", tg);
 
-  // chuyen thanh string
-  const dateObject = new Date(date_time);
-  return dateObject.toISOString();
+    if (!tg) {
+      console.error("formated_dateTime: tg is null or undefined");
+      return new Date().toISOString();
+    }
+
+    // Nếu tg đã là ISO string thì return luôn
+    if (typeof tg === "string" && tg.includes("T") && tg.includes("Z")) {
+      console.log("formated_dateTime: already ISO format");
+      return tg;
+    }
+
+    const currentDate = new Date();
+    let date_time = tg + " " + currentDate.toLocaleTimeString();
+    // console.log("formated_dateTime combined:", date_time);
+
+    // chuyen thanh string
+    const dateObject = new Date(date_time);
+    // console.log("formated_dateTime dateObject:", dateObject);
+
+    if (isNaN(dateObject.getTime())) {
+      // console.error("formated_dateTime: Invalid date created:", date_time);
+      // Thử parse chỉ ngày
+      const dateOnly = new Date(tg);
+      if (!isNaN(dateOnly.getTime())) {
+        // console.log("formated_dateTime: Using date only");
+        return dateOnly.toISOString();
+      }
+      // Fallback to current date
+      return new Date().toISOString();
+    }
+
+    const result = dateObject.toISOString();
+    // console.log("formated_dateTime result:", result);
+    return result;
+  } catch (error) {
+    // console.error("formated_dateTime error:", error);
+    return new Date().toISOString();
+  }
 }
 
 export default function QuyDinhPage() {
@@ -88,9 +124,13 @@ export default function QuyDinhPage() {
     mode: "add" | "edit" | "delete" | string,
     data?: any
   ) => {
+    console.log("handleOpenModal called with mode:", mode, "and data:", data);
+
     const rawEditData = data
       ? quyDinh.find((item) => item.maQD === data)
       : null;
+
+    console.log("rawEditData found:", rawEditData);
 
     // Format dữ liệu ngày tháng cho editData nếu là mode edit
     let editData = null;
@@ -101,6 +141,8 @@ export default function QuyDinhPage() {
         ngayCoHieuLuc: formatDateForEdit(rawEditData.ngayCoHieuLuc),
       };
     }
+
+    console.log("editData created:", editData);
 
     showModal({
       title:
@@ -116,14 +158,58 @@ export default function QuyDinhPage() {
       handleAsyncSubmit:
         mode === "delete"
           ? null
-          : async (data: any) => {
-              console.log("formData", data);
+          : mode === "add"
+          ? async (data: any) => {
+              console.log("Add mode - formData:", data);
               if (data.hieuLuc === "còn") data.hieuLuc = true;
               else if (data.hieuLuc === "hết") data.hieuLuc = false;
               data.ngayBanHanh = await formated_dateTime(data.ngayBanHanh);
               data.ngayCoHieuLuc = await formated_dateTime(data.ngayCoHieuLuc);
               const res = await addQuyDinh(data);
-              console.log("res", res);
+              // console.log("Add mode - res:", res);
+              return res;
+            }
+          : async (data: any) => {
+              // console.log("Edit mode - formData:", data);
+              // console.log("Edit mode - editData:", editData);
+
+              // console.log("Edit mode - Processing hieuLuc...");
+              if (data.hieuLuc === "còn") data.hieuLuc = true;
+              else if (data.hieuLuc === "hết") data.hieuLuc = false;
+              // console.log("Edit mode - hieuLuc processed:", data.hieuLuc);
+
+              // console.log("Edit mode - Processing dates...");
+              const ngayBanHanh = await formated_dateTime(data.ngayBanHanh);
+              // console.log("Edit mode - ngayBanHanh formatted:", ngayBanHanh);
+
+              const ngayCoHieuLuc = await formated_dateTime(data.ngayCoHieuLuc);
+              // console.log(
+              //   "Edit mode - ngayCoHieuLuc formatted:",
+              //   ngayCoHieuLuc
+              // );
+
+              const thoiGianDang = await formated_dateTime(
+                new Date().toLocaleDateString("vi-VN")
+              );
+              // console.log(
+              //   "Edit mode - thoiGianDang formatted:",
+              //   thoiGianDang
+              // );
+
+              const dataUpdate = {
+                ...data,
+                ngayBanHanh: ngayBanHanh,
+                ngayCoHieuLuc: ngayCoHieuLuc,
+                thoiGianDang: thoiGianDang,
+              };
+              // console.log("Edit mode - dataUpdate:", dataUpdate);
+
+              const maQD = editData.maQD; // Lấy mã quy định từ editData
+              // console.log("Edit mode - maQD:", maQD);
+              // console.log("Edit mode - About to call updateQuyDinh...");
+
+              const res = await updateQuyDinh(maQD, dataUpdate);
+
               return res;
             },
       preConfirm:
@@ -146,7 +232,13 @@ export default function QuyDinhPage() {
             }
             break;
           case "edit":
-            handleModalHelper("Sửa ", "success");
+            if (res.data.status) {
+              handleModalHelper("Sửa", "success");
+              dispatch(fetchQuyDinhCanBo());
+            } else {
+              handleModalHelper("Sửa", "error");
+            }
+
             break;
           default:
             if (res.data.status) {
