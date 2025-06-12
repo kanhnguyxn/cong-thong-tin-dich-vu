@@ -14,12 +14,9 @@ export async function addBieuMau(data: any) {
       // url them bieu mau
       url: "/staff/templates",
       method: methods.POST,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
       data: {
-        TenBm: data.tenBM,
-        File: data.file,
+        tenBM: data.tenBM,
+        lienKet: data.lienKet,
       },
     });
     GetStatusCode(resData.statusCode);
