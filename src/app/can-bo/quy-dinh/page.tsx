@@ -10,6 +10,17 @@ import NavBar from "./Navbar";
 import QuyDinhTable from "./QuyDinhTable";
 import Loading from "src/app/loading";
 import { deleteQuyDinh } from "@apis/canBo/deleteQuyDinh";
+import { addQuyDinh } from "@apis/canBo/addQuyDinh";
+
+// ham lay tg hien tai
+async function formated_dateTime(tg) {
+  const currentDate = new Date();
+  let date_time = tg + " " + currentDate.toLocaleTimeString();
+
+  // chuyen thanh string
+  const dateObject = new Date(date_time);
+  return dateObject.toISOString();
+}
 
 export default function QuyDinhPage() {
   const dispatch = useAppDispatch();
@@ -102,7 +113,19 @@ export default function QuyDinhPage() {
       icon: mode === "delete" ? "warning" : null,
       inputs: mode !== "delete" ? quyDinhForm : null, // Assuming you have a form schema for adding/editing
       editData: editData || null,
-      handleAsyncSubmit: mode === "delete" ? null : async (data: any) => {},
+      handleAsyncSubmit:
+        mode === "delete"
+          ? null
+          : async (data: any) => {
+              console.log("formData", data);
+              if (data.hieuLuc === "còn") data.hieuLuc = true;
+              else if (data.hieuLuc === "hết") data.hieuLuc = false;
+              data.ngayBanHanh = await formated_dateTime(data.ngayBanHanh);
+              data.ngayCoHieuLuc = await formated_dateTime(data.ngayCoHieuLuc);
+              const res = await addQuyDinh(data);
+              console.log("res", res);
+              return res;
+            },
       preConfirm:
         mode === "delete"
           ? async () => {
@@ -115,7 +138,12 @@ export default function QuyDinhPage() {
         // Handle the success case
         switch (mode) {
           case "add":
-            handleModalHelper("Thêm ", "success");
+            if (res.data.status) {
+              handleModalHelper("Thêm", "success");
+              dispatch(fetchQuyDinhCanBo());
+            } else {
+              handleModalHelper("Thêm", "error");
+            }
             break;
           case "edit":
             handleModalHelper("Sửa ", "success");
