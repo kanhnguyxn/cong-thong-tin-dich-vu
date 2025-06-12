@@ -43,13 +43,16 @@ export default function DonDaDangKyTable({
     : [];
 
   const getTableCellStyles = (columnId: string, row: any) => {
-    if (columnId === "trangThai") {
+    if (columnId === "trangThaiXuLy") {
       let color = "orange"; // Mặc định màu cam cho "Đang xử lý"
-      if (row.trangThaiXuLy === "Đã duyệt") {
+      if (row.trangThaiXuLy == "Đã duyệt") {
+        // console.log("Trạng thái đã duyệt:", row.trangThaiXuLy);
         color = "green";
-      } else if (row.trangThaiXuLy === "Bị từ chối") {
+      } else if (row.trangThaiXuLy == "Bị từ chối") {
+        // console.log("Trạng thái đã duyệt:", row.trangThaiXuLy);
         color = "red";
-      } else if (row.trangThaiXuLy === "Đang xử lý") {
+      } else if (row.trangThaiXuLy == "Đang xử lý") {
+        // console.log("Trạng thái đã duyệt:", row.trangThaiXuLy);
         color = "orange";
       }
       return {
