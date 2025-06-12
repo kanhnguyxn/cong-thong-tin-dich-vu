@@ -24,6 +24,19 @@ export const quyDinhForm = [
     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
   },
   {
+    name:"loaiVanBan",
+    type: "select",
+    label: "Loại văn bản:",
+    required: true,
+    selectOptions: [
+      { display: "Văn bản Quy phạm pháp luật", value: "Văn bản Quy phạm pháp luật" },
+      { display: "Văn bản Quy phạm nội bộ do DHDN ban hành", value: "Văn bản Quy phạm nội bộ do DHDN ban hành" },
+      { display: "TVăn bản Quy phạm nội bộ do DHKT ban hành", value: "Văn bản Quy phạm nội bộ do DHKT ban hành" },
+    
+    ],
+     customeLabelStyle: { color: "black", padding: "0px 0px 4px 4px" },
+  },
+  {
     name: "noiBanHanh",
     type: "text",
     label: "Nơi ban hành:",
