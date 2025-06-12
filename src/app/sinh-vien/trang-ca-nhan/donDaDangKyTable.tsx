@@ -37,12 +37,7 @@ export default function DonDaDangKyTable({
             new Date().toISOString().split("T")[0]
         ),
         donViThucHien: item.donViThucHien || item.donVi || "Phòng đào tạo",
-        trangThai:
-          item.trangThaiXuLy == "Ðã duy?t"
-            ? "Đã duyệt"
-            : item.trangThaiXuLy == "B? t? ch?i"
-            ? "Bị từ chối"
-            : "Đang xử lý",
+        trangThai: item.trangThaiXuLy,
         ghiChu: item.ghiChu || "Không có ghi chú",
       }))
     : [];
@@ -52,7 +47,7 @@ export default function DonDaDangKyTable({
       let color = "orange"; // Mặc định màu cam cho "Đang xử lý"
       if (row.trangThaiXuLy === "Đã duyệt") {
         color = "green";
-      } else if (row.trangThaiXuLy === "B? t? ch?i") {
+      } else if (row.trangThaiXuLy === "Bị từ chối") {
         color = "red";
       } else if (row.trangThaiXuLy === "Đang xử lý") {
         color = "orange";

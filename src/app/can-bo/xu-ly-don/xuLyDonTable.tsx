@@ -42,7 +42,7 @@ export default function XuLyDonTable({ data }: XuLyDonTableProps) {
     // loc ra nhung don co trang thai la "Ðang x? lý"
     if (data.length > 0) {
       const filteredData = data.filter(
-        (item) => item.trangThaiXuLy === "Ðang x? lý"
+        (item) => item.trangThaiXuLy === "Đang xử lý"
       );
       setDonXuLy(filteredData);
     }
